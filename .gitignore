@@ -1,0 +1,6 @@
+# Archivos de conf de rider
+.idea/
+
+# Compilados
+*/obj/
+*/bin/
