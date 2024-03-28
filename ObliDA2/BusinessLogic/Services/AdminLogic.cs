@@ -1,4 +1,5 @@
-﻿namespace BusinessLogic;
+﻿using BusinessLogic.Models;
+namespace BusinessLogic.Services;
 
 public class AdminLogic
 {
@@ -8,9 +9,9 @@ public class AdminLogic
     {
         Admins = new List<Admin>();
     }
-    public void CreateAdmin(int id)
+    public void CreateAdmin(int id,string name)
     {
-        Admin newAdmin = new Admin(){Id = id};
+        Admin newAdmin = new Admin(){Id = id, Name = name};
         Admins.Add(newAdmin);
     }
 
