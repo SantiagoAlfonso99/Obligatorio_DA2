@@ -1,0 +1,12 @@
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\bin\Debug\net8.0\BusinessLogic.deps.json
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\bin\Debug\net8.0\BusinessLogic.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\bin\Debug\net8.0\BusinessLogic.pdb
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfoInputs.cache
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.AssemblyInfo.cs
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.sourcelink.json
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\refint\BusinessLogic.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\BusinessLogic.pdb
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\BusinessLogic\obj\Debug\net8.0\ref\BusinessLogic.dll
