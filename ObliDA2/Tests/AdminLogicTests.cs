@@ -21,7 +21,7 @@ public class AdminLogicTests
     public void ValidAdminCreation()
     {
         AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId,ValidName);
+        adminService.CreateAdmin(UserId, ValidName, "a");
         Assert.AreEqual(UserId,adminService.AdminsCount());
     }
     
@@ -30,6 +30,23 @@ public class AdminLogicTests
     public void InValidAdminNameThrowsException()
     {
         AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId,InvalidName);
+        adminService.CreateAdmin(UserId, InvalidName, "a");
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidUserException))]
+    public void InvalidAdminPasswordThrowsException()
+    {
+        AdminLogic adminService = new AdminLogic();
+        adminService.CreateAdmin(UserId, InvalidName, "");
+    }
+    
+    [TestMethod]
+    public void SetAttributesShouldAssignCorrectly()
+    {
+        AdminLogic adminService = new AdminLogic();
+        adminService.CreateAdmin(UserId, ValidName, "a");
+        Admin returnedAdmin = adminService.ReturnAdmin(UserId);
+        Assert.IsTrue((returnedAdmin.Password == "a"));
     }
 }
