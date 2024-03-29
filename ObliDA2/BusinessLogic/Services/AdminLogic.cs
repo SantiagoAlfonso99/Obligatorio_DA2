@@ -9,9 +9,9 @@ public class AdminLogic
     {
         Admins = new List<Admin>();
     }
-    public void CreateAdmin(int id, string name, string password)
+    public void CreateAdmin(int id, string name, string password, string email)
     {
-        Admin newAdmin = new Admin(){Id = id, Name = name, Password = password};
+        Admin newAdmin = new Admin(){Id = id, Name = name, Password = password, Email = email};
         Admins.Add(newAdmin);
     }
 

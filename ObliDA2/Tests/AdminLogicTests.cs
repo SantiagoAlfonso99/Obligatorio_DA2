@@ -23,7 +23,7 @@ public class AdminLogicTests
     [TestMethod]
     public void ValidAdminCreation()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword);
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword, "pepe@gmail.com");
         Assert.AreEqual(UserId,adminService.AdminsCount());
     }
     
@@ -31,21 +31,43 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void InValidAdminNameThrowsException()
     {
-        adminService.CreateAdmin(UserId, InvalidName, ValidPassword);
+        adminService.CreateAdmin(UserId, InvalidName, ValidPassword, "pepe@gmail.com");
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void InvalidAdminPasswordThrowsException()
     {
-        adminService.CreateAdmin(UserId, InvalidName, InvalidPassword);
+        adminService.CreateAdmin(UserId, ValidName, InvalidPassword, "pepe@gmail.com");
     }
     
     [TestMethod]
     public void SetAttributesShouldAssignCorrectly()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword);
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword, "pepe@gmail.com");
+        Admin expectedAdmin = new Admin() { Id = UserId, Name = ValidName, Password = ValidPassword, Email = "pepe@gmail.com" };
         Admin returnedAdmin = adminService.ReturnAdmin(UserId);
-        Assert.IsTrue((returnedAdmin.Password == ValidPassword));
+        Assert.IsTrue((returnedAdmin.AreEqual(expectedAdmin)));
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidUserException))]
+    public void EmptyEmailThrowsException()
+    {
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword, "");
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidUserException))]
+    public void EmailWithoutSymbolThrowsException()
+    {
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword, "pepe.com");
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidUserException))]
+    public void EmailWithoutTextAtTheEndThrowsException()
+    {
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword, "pepe@");
     }
 }
