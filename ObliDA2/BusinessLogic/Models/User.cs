@@ -4,6 +4,8 @@ namespace BusinessLogic.Models;
 
 public abstract class User
 {
+    private const string RegexMatch = @"^[a-zA-Z0-9]+@[a-zA-Z]+\.com$";
+    
     private string name;
     private string password;
     private string email;
@@ -51,7 +53,7 @@ public abstract class User
     
     private bool IsEmailValid(string emailInput)
     {
-        return !string.IsNullOrEmpty(emailInput) && Regex.IsMatch(emailInput, @"^[a-zA-Z0-9]+@[a-zA-Z]+\.com$" );
+        return !string.IsNullOrEmpty(emailInput) && Regex.IsMatch(emailInput, RegexMatch);
     }
     
     public bool AreEqual(User otherUser)
