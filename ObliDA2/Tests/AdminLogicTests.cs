@@ -10,18 +10,20 @@ public class AdminLogicTests
     private const int UserId = 1;
     private const string InvalidName = "";
     private const string ValidName = "pepe";
+    private const string ValidPassword = "a";
+    private const string InvalidPassword = "";
+    private AdminLogic adminService;
     
     [TestInitialize]
     public void Initialize()
     {
-        
+        adminService = new AdminLogic();
     }
     
     [TestMethod]
     public void ValidAdminCreation()
     {
-        AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId, ValidName, "a");
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword);
         Assert.AreEqual(UserId,adminService.AdminsCount());
     }
     
@@ -29,24 +31,21 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void InValidAdminNameThrowsException()
     {
-        AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId, InvalidName, "a");
+        adminService.CreateAdmin(UserId, InvalidName, ValidPassword);
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void InvalidAdminPasswordThrowsException()
     {
-        AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId, InvalidName, "");
+        adminService.CreateAdmin(UserId, InvalidName, InvalidPassword);
     }
     
     [TestMethod]
     public void SetAttributesShouldAssignCorrectly()
     {
-        AdminLogic adminService = new AdminLogic();
-        adminService.CreateAdmin(UserId, ValidName, "a");
+        adminService.CreateAdmin(UserId, ValidName, ValidPassword);
         Admin returnedAdmin = adminService.ReturnAdmin(UserId);
-        Assert.IsTrue((returnedAdmin.Password == "a"));
+        Assert.IsTrue((returnedAdmin.Password == ValidPassword));
     }
 }
