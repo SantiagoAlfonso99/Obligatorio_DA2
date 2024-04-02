@@ -151,4 +151,28 @@ public class AdminLogicTests
         Admin returnedAdmin = adminService.Update(UserId, newAttributes);
         adminRepo.VerifyAll();
     }
+    
+    [TestMethod]
+    public void DeleteFunctionShouldReturnTrueForExistingId()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
+        adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
+        adminRepo.Setup(repo => repo.Remove(It.IsAny<Admin>()));
+        adminService = new AdminLogic(adminRepo.Object);
+        bool successfullyDelete = adminService.Delete(UserId);
+        adminRepo.VerifyAll();
+        Assert.IsTrue(successfullyDelete);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidAdminException))]
+    public void DeleteFunctionThrowsExceptionForNonExistentId()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
+        adminService = new AdminLogic(adminRepo.Object);
+        bool successfullyDelete = adminService.Delete(UserId);
+        adminRepo.VerifyAll();
+    }
 }

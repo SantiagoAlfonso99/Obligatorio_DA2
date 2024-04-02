@@ -43,4 +43,15 @@ public class AdminLogic
         adminRepo.Update(returnedAdmin);
         return returnedAdmin;
     }
+    
+    public bool Delete(int id)
+    {
+        if (!adminRepo.Exists(id))
+        {
+            throw new InvalidAdminException();
+        }
+        Admin returnedAdmin = adminRepo.Get(id);
+        adminRepo.Remove(returnedAdmin);
+        return true;
+    }
 }
