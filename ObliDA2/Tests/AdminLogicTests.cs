@@ -175,4 +175,14 @@ public class AdminLogicTests
         bool successfullyDelete = adminService.Delete(UserId);
         adminRepo.VerifyAll();
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidAdminException))]
+    public void EmptyLastNameThrowsException()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = "" };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
+    }
 }
