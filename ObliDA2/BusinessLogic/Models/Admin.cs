@@ -17,4 +17,17 @@ public class Admin : User
         }
     }
     
+    public bool AreEqual(Admin otherAdmin)
+    {
+        if (otherAdmin == null)
+        {
+            return false;
+        }
+        return this.Name == otherAdmin.Name 
+               && this.Password == otherAdmin.Password
+               && this.Id == otherAdmin.Id
+               && this.Email == otherAdmin.Email
+               && this.LastName == otherAdmin.LastName;
+    }
+    
 }

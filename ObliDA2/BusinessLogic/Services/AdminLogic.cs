@@ -40,6 +40,7 @@ public class AdminLogic
         Admin returnedAdmin = adminRepo.Get(id);
         returnedAdmin.Name = updatedAdmin.Name;
         returnedAdmin.Password = updatedAdmin.Password;
+        returnedAdmin.LastName = updatedAdmin.LastName;
         adminRepo.Update(returnedAdmin);
         return returnedAdmin;
     }

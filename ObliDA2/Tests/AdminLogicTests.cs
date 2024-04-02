@@ -13,6 +13,7 @@ public class AdminLogicTests
     private const string EmptyString = "";
     private const string ValidName = "pepe";
     private const string ValidPassword = "a";
+    private const string ValidLastName = "perez";
     private const string InvalidPassword = "";
     private const string EmailWithoutTextAtTheEnd = "pepe@";
     private const string EmailWithoutSymbol = "pepe.com";
@@ -20,6 +21,7 @@ public class AdminLogicTests
     private const int ExpectedCount = 1;
     private const string OtherName = "otherName";
     private const string OtherPassword = "otherPassword";
+    private const string OtherLastName = "otherLastName";
     private AdminLogic adminService;
     private Mock<IAdminRepository> adminRepo;
         
@@ -43,7 +45,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void InValidAdminNameThrowsException()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = EmptyString };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = EmptyString, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         adminService = new AdminLogic(adminRepo.Object);
         Admin returnedAdmin = adminService.Create(newAdmin);
@@ -54,7 +56,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void InvalidAdminPasswordThrowsException()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = InvalidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = InvalidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         adminService = new AdminLogic(adminRepo.Object);
         Admin returnedAdmin = adminService.Create(newAdmin);
@@ -64,7 +66,7 @@ public class AdminLogicTests
     [TestMethod]
     public void SetAttributesShouldAssignCorrectly()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         adminService = new AdminLogic(adminRepo.Object);
         Admin returnedAdmin = adminService.Create(newAdmin);
@@ -76,7 +78,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void EmptyEmailThrowsException()
     {
-        Admin newAdmin = new Admin() { Email = EmptyString, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = EmptyString, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         Admin returnedAdmin = adminService.Create(newAdmin);
         adminRepo.VerifyAll();
@@ -86,7 +88,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void EmailWithoutSymbolThrowsException()
     {
-        Admin newAdmin = new Admin() { Email = EmailWithoutSymbol, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = EmailWithoutSymbol, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         Admin returnedAdmin = adminService.Create(newAdmin);
         adminRepo.VerifyAll();
@@ -96,7 +98,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidUserException))]
     public void EmailWithoutTextAtTheEndThrowsException()
     {
-        Admin newAdmin = new Admin() { Email = EmailWithoutTextAtTheEnd, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = EmailWithoutTextAtTheEnd, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         Admin returnedAdmin = adminService.Create(newAdmin);
         adminRepo.VerifyAll();
@@ -105,7 +107,7 @@ public class AdminLogicTests
     [TestMethod]
     public void GetByIdShouldReturnsTheExpectedAdmin()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
         adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
         adminService = new AdminLogic(adminRepo.Object);
@@ -118,7 +120,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidAdminException))]
     public void GetByIdFunctionShouldThrowExceptionForNonExistentId()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
         adminService = new AdminLogic(adminRepo.Object);
         Admin returnedAdmin = adminService.GetById(UserId);
@@ -128,9 +130,9 @@ public class AdminLogicTests
     [TestMethod]
     public void CorrectAttributeAssignmentForUpdatedAdmin()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
-        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName };
-        Admin expectedAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = OtherPassword, Name = OtherName};
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
+        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName, LastName = OtherLastName };
+        Admin expectedAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = OtherPassword, Name = OtherName, LastName = "otherLastName"};
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
         adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
         adminRepo.Setup(repo => repo.Update(It.IsAny<Admin>()));
@@ -144,9 +146,9 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidAdminException))]
     public void UpdateFunctionShouldThrowExceptionForNonExistentId()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
-        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName };
+        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName, LastName = OtherLastName };
         adminService = new AdminLogic(adminRepo.Object);
         Admin returnedAdmin = adminService.Update(UserId, newAttributes);
         adminRepo.VerifyAll();
@@ -155,7 +157,7 @@ public class AdminLogicTests
     [TestMethod]
     public void DeleteFunctionShouldReturnTrueForExistingId()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
         adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
         adminRepo.Setup(repo => repo.Remove(It.IsAny<Admin>()));
@@ -169,7 +171,7 @@ public class AdminLogicTests
     [ExpectedException(typeof(InvalidAdminException))]
     public void DeleteFunctionThrowsExceptionForNonExistentId()
     {
-        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
         adminService = new AdminLogic(adminRepo.Object);
         bool successfullyDelete = adminService.Delete(UserId);

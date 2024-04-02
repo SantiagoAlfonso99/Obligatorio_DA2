@@ -55,16 +55,4 @@ public abstract class User
     {
         return !string.IsNullOrEmpty(emailInput) && Regex.IsMatch(emailInput, RegexMatch);
     }
-    
-    public bool AreEqual(User otherUser)
-    {
-        if (otherUser == null)
-        {
-            return false;
-        }
-        return this.Name == otherUser.Name 
-               && this.Password == otherUser.Password
-               && this.Id == otherUser.Id
-               && this.Email == otherUser.Email;
-    }
 }
