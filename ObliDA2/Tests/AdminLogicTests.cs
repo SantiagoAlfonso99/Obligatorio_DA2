@@ -2,6 +2,8 @@ using System.Data.Common;
 using BusinessLogic.Exceptions;
 using BusinessLogic.Models;
 using BusinessLogic.Services;
+using BusinessLogic.IRepository;
+using Moq;
 namespace Tests;
 
 [TestClass]
@@ -15,62 +17,86 @@ public class AdminLogicTests
     private const string EmailWithoutTextAtTheEnd = "pepe@";
     private const string EmailWithoutSymbol = "pepe.com";
     private const string ValidEmail = "pepe@gmail.com";
+    private const int ExpectedCount = 1;
     private AdminLogic adminService;
-    
+    private Mock<IAdminRepository> adminRepo;
+        
     [TestInitialize]
     public void Initialize()
     {
-        adminService = new AdminLogic();
+        adminRepo = new Mock<IAdminRepository>(MockBehavior.Strict);
     }
     
     [TestMethod]
     public void ValidAdminCreation()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword, ValidEmail);
-        Assert.AreEqual(UserId,adminService.AdminsCount());
+        adminRepo.Setup(repo => repo.Count()).Returns(1);
+        adminService = new AdminLogic(adminRepo.Object);
+        int returnedCount = adminService.Count();
+        adminRepo.VerifyAll();
+        Assert.AreEqual(ExpectedCount, returnedCount);
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void InValidAdminNameThrowsException()
     {
-        adminService.CreateAdmin(UserId, EmptyString, ValidPassword, ValidEmail);
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = EmptyString };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void InvalidAdminPasswordThrowsException()
     {
-        adminService.CreateAdmin(UserId, ValidName, InvalidPassword, ValidEmail);
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = InvalidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
     }
     
     [TestMethod]
     public void SetAttributesShouldAssignCorrectly()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword, ValidEmail);
-        Admin expectedAdmin = new Admin() { Id = UserId, Name = ValidName, Password = ValidPassword, Email = "pepe@gmail.com" };
-        Admin returnedAdmin = adminService.ReturnAdmin(UserId);
-        Assert.IsTrue((returnedAdmin.AreEqual(expectedAdmin)));
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
+        Assert.IsTrue(newAdmin.AreEqual(returnedAdmin));
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void EmptyEmailThrowsException()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword, EmptyString);
+        Admin newAdmin = new Admin() { Email = EmptyString, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void EmailWithoutSymbolThrowsException()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword, EmailWithoutSymbol);
+        Admin newAdmin = new Admin() { Email = EmailWithoutSymbol, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
     }
     
     [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void EmailWithoutTextAtTheEndThrowsException()
     {
-        adminService.CreateAdmin(UserId, ValidName, ValidPassword, EmailWithoutTextAtTheEnd);
+        Admin newAdmin = new Admin() { Email = EmailWithoutTextAtTheEnd, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
+        Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
     }
 }

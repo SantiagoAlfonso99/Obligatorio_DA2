@@ -1,27 +1,28 @@
-﻿using BusinessLogic.Models;
+﻿using BusinessLogic.IRepository;
+using BusinessLogic.Models;
 namespace BusinessLogic.Services;
 
 public class AdminLogic
 {
-    private List<Admin> Admins;
+    private IAdminRepository adminRepo;
 
-    public AdminLogic()
+    public AdminLogic(IAdminRepository adminRepoIn)
     {
-        Admins = new List<Admin>();
+        adminRepo = adminRepoIn;
     }
-    public void CreateAdmin(int id, string name, string password, string email)
+    public Admin Create(Admin adminIn)
     {
-        Admin newAdmin = new Admin(){Id = id, Name = name, Password = password, Email = email};
-        Admins.Add(newAdmin);
+        adminRepo.Add(adminIn);
+        return adminIn;
     }
 
-    public Admin ReturnAdmin(int id)
+    public Admin GetById(int id)
     {
-        return Admins.FirstOrDefault(admin => admin.Id == id);
+        return adminRepo.Get(id);
     }
     
-    public int AdminsCount()
+    public int Count()
     {
-        return Admins.Count;
+        return adminRepo.Count();
     }
 }
