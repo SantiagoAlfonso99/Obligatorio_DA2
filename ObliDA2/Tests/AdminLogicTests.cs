@@ -18,6 +18,8 @@ public class AdminLogicTests
     private const string EmailWithoutSymbol = "pepe.com";
     private const string ValidEmail = "pepe@gmail.com";
     private const int ExpectedCount = 1;
+    private const string OtherName = "otherName";
+    private const string OtherPassword = "otherPassword";
     private AdminLogic adminService;
     private Mock<IAdminRepository> adminRepo;
         
@@ -107,7 +109,7 @@ public class AdminLogicTests
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
         adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
         adminService = new AdminLogic(adminRepo.Object);
-        Admin returnedAdmin = adminService.GetById(1);
+        Admin returnedAdmin = adminService.GetById(UserId);
         adminRepo.VerifyAll();
         Assert.IsTrue(newAdmin.AreEqual(returnedAdmin));
     }
@@ -119,7 +121,7 @@ public class AdminLogicTests
         Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
         adminService = new AdminLogic(adminRepo.Object);
-        Admin returnedAdmin = adminService.GetById(2);
+        Admin returnedAdmin = adminService.GetById(UserId);
         adminRepo.VerifyAll();
     }
     
@@ -127,13 +129,13 @@ public class AdminLogicTests
     public void CorrectAttributeAssignmentForUpdatedAdmin()
     {
         Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
-        Admin newAttributes = new Admin() { Password = "otherPassword", Name = "otherName" };
-        Admin expectedAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = "otherPassword", Name = "otherName"};
+        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName };
+        Admin expectedAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = OtherPassword, Name = OtherName};
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
         adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
         adminRepo.Setup(repo => repo.Update(It.IsAny<Admin>()));
         adminService = new AdminLogic(adminRepo.Object);
-        Admin returnedAdmin = adminService.Update(1,newAttributes);
+        Admin returnedAdmin = adminService.Update(UserId,newAttributes);
         adminRepo.VerifyAll();
         Assert.IsTrue(returnedAdmin.AreEqual(expectedAdmin));
     }
@@ -144,9 +146,9 @@ public class AdminLogicTests
     {
         Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
-        Admin newAttributes = new Admin() { Password = "otherPassword", Name = "otherName" };
+        Admin newAttributes = new Admin() { Password = OtherPassword, Name = OtherName };
         adminService = new AdminLogic(adminRepo.Object);
-        Admin returnedAdmin = adminService.Update(1, newAttributes);
+        Admin returnedAdmin = adminService.Update(UserId, newAttributes);
         adminRepo.VerifyAll();
     }
 }
