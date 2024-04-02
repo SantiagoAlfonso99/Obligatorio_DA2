@@ -28,7 +28,7 @@ public class AdminLogicTests
     }
     
     [TestMethod]
-    public void ValidAdminCreation()
+    public void AdminCountShouldReturnTheExpectedLength()
     {
         adminRepo.Setup(repo => repo.Count()).Returns(1);
         adminService = new AdminLogic(adminRepo.Object);
@@ -97,6 +97,29 @@ public class AdminLogicTests
         Admin newAdmin = new Admin() { Email = EmailWithoutTextAtTheEnd, Id = UserId, Password = ValidPassword, Name = ValidName };
         adminRepo.Setup(repo => repo.Add(It.IsAny<Admin>()));
         Admin returnedAdmin = adminService.Create(newAdmin);
+        adminRepo.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetByIdShouldReturnsTheExpectedAdmin()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
+        adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.GetById(1);
+        adminRepo.VerifyAll();
+        Assert.IsTrue(newAdmin.AreEqual(returnedAdmin));
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidAdminException))]
+    public void GetByIdFunctionShouldThrowExceptionForNonExistentId()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.GetById(2);
         adminRepo.VerifyAll();
     }
 }

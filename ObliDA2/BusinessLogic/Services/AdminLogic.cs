@@ -1,4 +1,5 @@
-﻿using BusinessLogic.IRepository;
+﻿using BusinessLogic.Exceptions;
+using BusinessLogic.IRepository;
 using BusinessLogic.Models;
 namespace BusinessLogic.Services;
 
@@ -18,6 +19,10 @@ public class AdminLogic
 
     public Admin GetById(int id)
     {
+        if (!adminRepo.Exists(id))
+        {
+            throw new InvalidAdminException();
+        }
         return adminRepo.Get(id);
     }
     
