@@ -122,4 +122,31 @@ public class AdminLogicTests
         Admin returnedAdmin = adminService.GetById(2);
         adminRepo.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CorrectAttributeAssignmentForUpdatedAdmin()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        Admin newAttributes = new Admin() { Password = "otherPassword", Name = "otherName" };
+        Admin expectedAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = "otherPassword", Name = "otherName"};
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(true);
+        adminRepo.Setup(repo => repo.Get(It.IsAny<int>())).Returns(newAdmin);
+        adminRepo.Setup(repo => repo.Update(It.IsAny<Admin>()));
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.Update(1,newAttributes);
+        adminRepo.VerifyAll();
+        Assert.IsTrue(returnedAdmin.AreEqual(expectedAdmin));
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidAdminException))]
+    public void UpdateFunctionShouldThrowExceptionForNonExistentId()
+    {
+        Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName };
+        adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
+        Admin newAttributes = new Admin() { Password = "otherPassword", Name = "otherName" };
+        adminService = new AdminLogic(adminRepo.Object);
+        Admin returnedAdmin = adminService.Update(1, newAttributes);
+        adminRepo.VerifyAll();
+    }
 }

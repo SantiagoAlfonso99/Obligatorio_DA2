@@ -30,4 +30,17 @@ public class AdminLogic
     {
         return adminRepo.Count();
     }
+    
+    public Admin Update(int id, Admin updatedAdmin)
+    {
+        if (!adminRepo.Exists(id))
+        {
+            throw new InvalidAdminException();
+        }
+        Admin returnedAdmin = adminRepo.Get(id);
+        returnedAdmin.Name = updatedAdmin.Name;
+        returnedAdmin.Password = updatedAdmin.Password;
+        adminRepo.Update(returnedAdmin);
+        return returnedAdmin;
+    }
 }
