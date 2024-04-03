@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Models;
+﻿using Domain.Models;
 namespace BusinessLogic.IRepository;
 
 public interface IAdminRepository

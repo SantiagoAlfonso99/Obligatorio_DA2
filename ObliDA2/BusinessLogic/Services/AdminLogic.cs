@@ -1,6 +1,6 @@
-﻿using BusinessLogic.Exceptions;
+﻿using Domain.Exceptions;
 using BusinessLogic.IRepository;
-using BusinessLogic.Models;
+using Domain.Models;
 namespace BusinessLogic.Services;
 
 public class AdminLogic

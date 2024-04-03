@@ -118,3 +118,5 @@ C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\obj\Debug\net8.0\refint\Te
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\obj\Debug\net8.0\Tests.pdb
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\obj\Debug\net8.0\Tests.genruntimeconfig.cache
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\obj\Debug\net8.0\ref\Tests.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\bin\Debug\net8.0\Domain.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Tests\bin\Debug\net8.0\Domain.pdb

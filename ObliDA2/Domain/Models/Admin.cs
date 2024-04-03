@@ -1,5 +1,5 @@
-﻿using BusinessLogic.Exceptions;
-namespace BusinessLogic.Models;
+﻿using Domain.Exceptions;
+namespace Domain.Models;
 
 public class Admin : User
 {

@@ -1,6 +1,6 @@
 using System.Data.Common;
-using BusinessLogic.Exceptions;
-using BusinessLogic.Models;
+using Domain.Exceptions;
+using Domain.Models;
 using BusinessLogic.Services;
 using BusinessLogic.IRepository;
 using Moq;

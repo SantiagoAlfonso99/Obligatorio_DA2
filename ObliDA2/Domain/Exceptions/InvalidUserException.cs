@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Exceptions;
+﻿namespace Domain.Exceptions;
 
 public class InvalidUserException : Exception
 {

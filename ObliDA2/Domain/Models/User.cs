@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using BusinessLogic.Exceptions;
-namespace BusinessLogic.Models;
+using Domain.Exceptions;
+namespace Domain.Models;
 
 public abstract class User
 {
