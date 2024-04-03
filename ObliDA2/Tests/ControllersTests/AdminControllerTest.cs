@@ -47,4 +47,22 @@ public class AdminControllerTest
         
         Assert.AreEqual(newAdmin, returnedAdmin);
     }
+    
+    [TestMethod]
+    public void CreateOkTest()
+    {
+        Admin newAdmin = new Admin()
+            { Id = 1, Name = "pepe", LastName = "perez", Email = "pepe@gmail.com", Password = "pepe" };
+        Mock<IAdminLogic> adminLogicMock = new Mock<IAdminLogic>();
+        adminLogicMock.Setup(r => r.Create(newAdmin)).Returns(newAdmin);
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Create(newAdmin);
+        var okResult = result as OkObjectResult;
+        var returnedAdmin = okResult.Value as Admin;
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual(newAdmin, returnedAdmin);
+    }
 }

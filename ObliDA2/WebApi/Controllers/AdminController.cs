@@ -25,7 +25,13 @@ public class AdminController : ControllerBase
     public IActionResult Show(int id)
     {
         Admin admin = adminLogic.GetById(id);
-        if (admin != null) return Ok(admin);
-        return NotFound(new { Message = $"No se encontro el perro con id {id}" });
+        return Ok(admin);
+    }
+    
+    [HttpPost]
+    public IActionResult Create([FromBody] Admin newAdmin)
+    {
+        Admin createdAdmin = adminLogic.Create(newAdmin);
+        return Ok(newAdmin);
     }
 }

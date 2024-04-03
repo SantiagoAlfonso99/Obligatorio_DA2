@@ -5,4 +5,5 @@ public interface IAdminLogic
 {
     List<Admin> GetAll();
     Admin GetById(int id);
+    Admin Create(Admin admin);
 }
