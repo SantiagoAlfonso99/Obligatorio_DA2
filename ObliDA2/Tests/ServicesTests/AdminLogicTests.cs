@@ -4,7 +4,7 @@ using Domain.Models;
 using BusinessLogic.Services;
 using BusinessLogic.IRepository;
 using Moq;
-namespace Tests;
+namespace Tests.ServicesTests;
 
 [TestClass]
 public class AdminLogicTests

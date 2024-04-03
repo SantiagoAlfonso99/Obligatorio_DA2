@@ -114,6 +114,63 @@
         }
       }
     },
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
+        "projectName": "IBusinessLogic",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -138,6 +195,12 @@
             "projectReferences": {
               "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
                 "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+              },
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              },
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj"
               }
             }
           }
@@ -185,6 +248,79 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+        "projectName": "WebApi",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
