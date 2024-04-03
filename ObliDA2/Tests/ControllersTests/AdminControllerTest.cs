@@ -29,4 +29,22 @@ public class AdminControllerTest
             returnedAdmins
         );
     }
+    
+    [TestMethod]
+    public void ShowOkTest()
+    {
+        Admin newAdmin = new Admin()
+            { Id = 1, Name = "pepe", LastName = "perez", Email = "pepe@gmail.com", Password = "pepe" };
+        Mock<IAdminLogic> adminLogicMock = new Mock<IAdminLogic>();
+        adminLogicMock.Setup(r => r.GetById(1)).Returns(newAdmin);
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Show(1);
+        var okResult = result as OkObjectResult;
+        var returnedAdmin = okResult.Value as Admin;
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual(newAdmin, returnedAdmin);
+    }
 }

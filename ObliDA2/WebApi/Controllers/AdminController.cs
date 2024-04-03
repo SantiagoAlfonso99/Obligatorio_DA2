@@ -20,4 +20,12 @@ public class AdminController : ControllerBase
     {
         return Ok(adminLogic.GetAll());
     }
+    
+    [HttpGet("{id}")]
+    public IActionResult Show(int id)
+    {
+        Admin admin = adminLogic.GetById(id);
+        if (admin != null) return Ok(admin);
+        return NotFound(new { Message = $"No se encontro el perro con id {id}" });
+    }
 }
