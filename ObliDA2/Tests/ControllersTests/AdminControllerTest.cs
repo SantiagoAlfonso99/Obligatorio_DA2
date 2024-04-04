@@ -86,11 +86,11 @@ public class AdminControllerTest
     [TestMethod]
     public void UpdateOkTest()
     {
-        Admin newAttributes = new Admin() {Name = "OtherName", LastName = "otherLastName", Password = "otherPassword" };
+        AdminUpdateModel newAttributes = new AdminUpdateModel() {Name = ValidName, LastName = ValidLastName, Password = ValidPassword };
         adminLogicMock.Setup(r => r.Update(It.IsAny<int>() ,It.IsAny<Admin>())).Returns(newAdmin);
         AdminController adminController = new AdminController(adminLogicMock.Object);
         
-        var result = adminController.Update(1, newAttributes);
+        var result = adminController.Update(UserId, newAttributes);
         var okResult = result as OkObjectResult;
         var returnedAdmin = okResult.Value as AdminDetailModel;
         var adminExpected = new AdminDetailModel(newAdmin);
@@ -106,7 +106,7 @@ public class AdminControllerTest
         adminLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(true);
         AdminController adminController = new AdminController(adminLogicMock.Object);
         
-        var result = adminController.Delete(1);
+        var result = adminController.Delete(UserId);
         var noContentResult = result as NoContentResult;
         
         adminLogicMock.VerifyAll();

@@ -39,9 +39,9 @@ public class AdminController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] Admin newAttributes)
+    public IActionResult Update(int id, [FromBody] AdminUpdateModel newAttributes)
     {
-        Admin returnedAdmin = adminLogic.Update(newAttributes.Id, newAttributes);
+        Admin returnedAdmin = adminLogic.Update(id, newAttributes.ToEntity());
         return Ok(new AdminDetailModel(returnedAdmin));
     }
     
@@ -49,6 +49,10 @@ public class AdminController : ControllerBase
     public IActionResult Delete(int id)
     {
         bool success = adminLogic.Delete(id);
-        return NoContent();
+        if (success)
+        {
+            return NoContent();   
+        }
+        return NotFound(new { Message = "Error" });
     }
 }
