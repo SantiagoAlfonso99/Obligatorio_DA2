@@ -49,7 +49,7 @@ public class AdminLogic
     {
         if (!adminRepo.Exists(id))
         {
-            throw new InvalidAdminException();
+            return false;
         }
         Admin returnedAdmin = adminRepo.Get(id);
         adminRepo.Remove(returnedAdmin);

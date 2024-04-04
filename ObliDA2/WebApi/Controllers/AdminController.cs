@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Models;
+using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 namespace WebApi.Controllers;
@@ -27,22 +28,47 @@ public class AdminController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        Admin admin = adminLogic.GetById(id);
-        return Ok(new AdminDetailModel(admin));
+        try
+        {
+            Admin admin = adminLogic.GetById(id);
+            return Ok(new AdminDetailModel(admin));
+        }
+        catch (InvalidAdminException ex)
+        {
+            return BadRequest(new { Message = "The update action could not be completed because there is no administrator with that ID" });
+        }
     }
     
     [HttpPost]
     public IActionResult Create([FromBody] AdminCreateModel newAdmin)
     {
-        Admin createdAdmin = adminLogic.Create(newAdmin.ToEntity());
-        return Ok(new AdminDetailModel(createdAdmin));
+        try
+        {
+            Admin createdAdmin = adminLogic.Create(newAdmin.ToEntity());
+            return Ok(new AdminDetailModel(createdAdmin));
+        }
+        catch (InvalidUserException ex)
+        {
+            return BadRequest(new { Message = "All fields are required." });
+        }
     }
     
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] AdminUpdateModel newAttributes)
     {
-        Admin returnedAdmin = adminLogic.Update(id, newAttributes.ToEntity());
-        return Ok(new AdminDetailModel(returnedAdmin));
+        try
+        {
+            Admin returnedAdmin = adminLogic.Update(id, newAttributes.ToEntity());
+            return Ok(new AdminDetailModel(returnedAdmin));
+        }
+        catch (InvalidUserException ex)
+        {
+            return BadRequest(new { Message = "All fields are required." });
+        }
+        catch (InvalidAdminException ex)
+        {
+            return NotFound(new { Message = "The update action could not be completed because there is no administrator with that ID" });
+        }
     }
     
     [HttpDelete("{id}")]
@@ -53,6 +79,6 @@ public class AdminController : ControllerBase
         {
             return NoContent();   
         }
-        return NotFound(new { Message = "Error" });
+        return NotFound(new { Message = "The deletion action could not be completed because there is no administrator with that ID" });
     }
 }

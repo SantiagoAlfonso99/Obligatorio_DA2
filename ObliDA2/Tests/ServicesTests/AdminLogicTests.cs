@@ -168,18 +168,18 @@ public class AdminLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidAdminException))]
-    public void DeleteFunctionThrowsExceptionForNonExistentId()
+    public void DeleteFunctionThrowsFalseForNonExistentId()
     {
         Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = ValidLastName };
         adminRepo.Setup(repo => repo.Exists(It.IsAny<int>())).Returns(false);
         adminService = new AdminLogic(adminRepo.Object);
-        bool successfullyDelete = adminService.Delete(UserId);
+        bool success = adminService.Delete(UserId);
         adminRepo.VerifyAll();
+        Assert.IsFalse(success);
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidAdminException))]
+    [ExpectedException(typeof(InvalidUserException))]
     public void EmptyLastNameThrowsException()
     {
         Admin newAdmin = new Admin() { Email = ValidEmail, Id = UserId, Password = ValidPassword, Name = ValidName, LastName = "" };

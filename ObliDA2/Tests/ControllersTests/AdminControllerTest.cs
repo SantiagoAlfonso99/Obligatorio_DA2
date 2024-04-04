@@ -1,4 +1,5 @@
-﻿using IBusinessLogic;
+﻿using Domain.Exceptions;
+using IBusinessLogic;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
@@ -112,5 +113,82 @@ public class AdminControllerTest
         adminLogicMock.VerifyAll();
         
         Assert.IsNotNull(noContentResult);
+    }
+    
+    [TestMethod]
+    public void DeleteNotFoundTest()
+    {
+        adminLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(false);
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Delete(UserId);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        
+        adminLogicMock.VerifyAll();
+
+        Assert.AreEqual("The deletion action could not be completed because there is no administrator with that ID", message.GetValue(notFoundResult.Value));
+    }
+    
+    [TestMethod]
+    public void UpdateCatchInvalidAdminExceptionTest()
+    {
+        AdminUpdateModel newAttributes = new AdminUpdateModel() {Name = ValidName, LastName = ValidLastName, Password = ValidPassword };
+        adminLogicMock.Setup(r => r.Update(It.IsAny<int>() ,It.IsAny<Admin>())).Throws(new InvalidAdminException());
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Update(UserId, newAttributes);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual("The update action could not be completed because there is no administrator with that ID", message.GetValue(notFoundResult.Value));
+    }
+    
+    [TestMethod]
+    public void UpdateCatchInvalidUserExceptionTest()
+    {
+        AdminUpdateModel newAttributes = new AdminUpdateModel() {Name = ValidName, LastName = ValidLastName, Password = ValidPassword };
+        adminLogicMock.Setup(r => r.Update(It.IsAny<int>() ,It.IsAny<Admin>())).Throws(new InvalidUserException());
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Update(UserId, newAttributes);
+        var badResult = result as BadRequestObjectResult;
+        var message = badResult.Value.GetType().GetProperty("Message");
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual("All fields are required.", message.GetValue(badResult.Value));
+    }
+    
+    [TestMethod]
+    public void CreateFunctionCatchInvalidUserExceptionTest()
+    {
+        adminLogicMock.Setup(r => r.Create(It.IsAny<Admin>())).Throws(new InvalidUserException());
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Create(newAdminModel);
+        var badResult = result as BadRequestObjectResult;
+        var message = badResult.Value.GetType().GetProperty("Message");
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual("All fields are required.", message.GetValue(badResult.Value));
+    }
+    
+    [TestMethod]
+    public void ShowFunctionCatchInvalidAdminExceptionTest()
+    {
+        adminLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Throws(new InvalidAdminException());
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Show(1);
+        var badResult = result as BadRequestObjectResult;
+        var message = badResult.Value.GetType().GetProperty("Message");
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual("The update action could not be completed because there is no administrator with that ID", message.GetValue(badResult.Value));
     }
 }
