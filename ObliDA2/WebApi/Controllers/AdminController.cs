@@ -37,4 +37,18 @@ public class AdminController : ControllerBase
         Admin createdAdmin = adminLogic.Create(newAdmin.ToEntity());
         return Ok(new AdminDetailModel(createdAdmin));
     }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] Admin newAttributes)
+    {
+        Admin returnedAdmin = adminLogic.Update(newAttributes.Id, newAttributes);
+        return Ok(new AdminDetailModel(returnedAdmin));
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success = adminLogic.Delete(id);
+        return NoContent();
+    }
 }

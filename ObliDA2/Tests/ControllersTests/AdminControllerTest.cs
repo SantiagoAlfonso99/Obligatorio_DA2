@@ -82,4 +82,35 @@ public class AdminControllerTest
         
         Assert.AreEqual(adminExpected, returnedAdmin);
     }
+    
+    [TestMethod]
+    public void UpdateOkTest()
+    {
+        Admin newAttributes = new Admin() {Name = "OtherName", LastName = "otherLastName", Password = "otherPassword" };
+        adminLogicMock.Setup(r => r.Update(It.IsAny<int>() ,It.IsAny<Admin>())).Returns(newAdmin);
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Update(1, newAttributes);
+        var okResult = result as OkObjectResult;
+        var returnedAdmin = okResult.Value as AdminDetailModel;
+        var adminExpected = new AdminDetailModel(newAdmin);
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.AreEqual(adminExpected, returnedAdmin);
+    }
+    
+    [TestMethod]
+    public void DeleteOkTest()
+    {
+        adminLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(true);
+        AdminController adminController = new AdminController(adminLogicMock.Object);
+        
+        var result = adminController.Delete(1);
+        var noContentResult = result as NoContentResult;
+        
+        adminLogicMock.VerifyAll();
+        
+        Assert.IsNotNull(noContentResult);
+    }
 }
