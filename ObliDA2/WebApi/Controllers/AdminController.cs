@@ -21,8 +21,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        List<Admin> returnedList =  adminLogic.GetAll();
-        return Ok(returnedList.Select(admin => new AdminDetailModel(admin)).ToList());
+        return Ok(adminLogic.GetAll().Select(admin => new AdminDetailModel(admin)).ToList());
     }
     
     [HttpGet("{id}")]
@@ -30,12 +29,11 @@ public class AdminController : ControllerBase
     {
         try
         {
-            Admin admin = adminLogic.GetById(id);
-            return Ok(new AdminDetailModel(admin));
+            return Ok(new AdminDetailModel(adminLogic.GetById(id)));
         }
         catch (InvalidAdminException ex)
         {
-            return BadRequest(new { Message = "The update action could not be completed because there is no administrator with that ID" });
+            return BadRequest(new { Message = "The update action could not be completed because there is no admin with that ID" });
         }
     }
     
@@ -44,12 +42,12 @@ public class AdminController : ControllerBase
     {
         try
         {
-            Admin createdAdmin = adminLogic.Create(newAdmin.ToEntity());
+            var createdAdmin = adminLogic.Create(newAdmin.ToEntity());
             return Ok(new AdminDetailModel(createdAdmin));
         }
         catch (InvalidUserException ex)
         {
-            return BadRequest(new { Message = "All fields are required." });
+            return BadRequest(new { Message = "Please ensure that all fields are completed and that you provide an email address in the format x@x.com." });
         }
     }
     
@@ -58,7 +56,7 @@ public class AdminController : ControllerBase
     {
         try
         {
-            Admin returnedAdmin = adminLogic.Update(id, newAttributes.ToEntity());
+            var returnedAdmin = adminLogic.Update(id, newAttributes.ToEntity());
             return Ok(new AdminDetailModel(returnedAdmin));
         }
         catch (InvalidUserException ex)
@@ -67,7 +65,7 @@ public class AdminController : ControllerBase
         }
         catch (InvalidAdminException ex)
         {
-            return NotFound(new { Message = "The update action could not be completed because there is no administrator with that ID" });
+            return NotFound(new { Message = "The update action could not be completed because there is no admin with that ID" });
         }
     }
     
@@ -79,6 +77,6 @@ public class AdminController : ControllerBase
         {
             return NoContent();   
         }
-        return NotFound(new { Message = "The deletion action could not be completed because there is no administrator with that ID" });
+        return NotFound(new { Message = "The deletion action could not be completed because there is no admin with that ID" });
     }
 }
