@@ -27,14 +27,29 @@ public class InvitationController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-            return Ok(invitationLogic.GetById(id));
+        try
+        {
+            var invitation = invitationLogic.GetById(id);
+            return Ok(invitation);
+        }
+        catch (InvalidInvitationException ex)
+        {
+            return NotFound(new { Message = "The show action could not be completed because there is no invitation with that ID" });
+        }
     }
     
     [HttpPost]
     public IActionResult Create([FromBody] Invitation newInvitation)
     {
+        try
+        {
             var createdInvitation = invitationLogic.Create(newInvitation);
             return Ok(createdInvitation);
+        }
+        catch (InvalidInvitationException ex)
+        {
+            return BadRequest(new { Message = "Make sure not to insert null values and that there is no other invitation for the same recipient" });
+        }
     }
     
     [HttpDelete("{id}")]
@@ -51,7 +66,18 @@ public class InvitationController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult InvitationResponse(int id, [FromBody] string email, [FromBody] string newPassword, [FromBody] bool acceptInvitation)
     {
-        var invitation = invitationLogic.InvitationResponse(id, email, newPassword, acceptInvitation);
-        return Ok(invitation);
+        try
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(newPassword))
+            {
+                return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
+            }
+            var invitation = invitationLogic.InvitationResponse(id, email, newPassword, acceptInvitation);
+            return Ok(invitation);
+        }
+        catch (InvalidInvitationException ex)
+        {
+            return NotFound(new { Message = "Error, invitation not found." });
+        }
     }
 }
