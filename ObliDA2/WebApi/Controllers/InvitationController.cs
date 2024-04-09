@@ -47,4 +47,11 @@ public class InvitationController : ControllerBase
         }
         return NotFound(new { Message = "The deletion action could not be completed because there is no invitation with that ID" });
     }
+    
+    [HttpPut("{id}")]
+    public IActionResult InvitationResponse(int id, [FromBody] string email, [FromBody] string newPassword, [FromBody] bool acceptInvitation)
+    {
+        var invitation = invitationLogic.InvitationResponse(id, email, newPassword, acceptInvitation);
+        return Ok(invitation);
+    }
 }

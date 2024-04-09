@@ -106,4 +106,19 @@ public class InvitationControllerTest
 
         Assert.AreEqual(ExpectedMessage, message.GetValue(notFoundResult.Value));
     }
+    
+    [TestMethod]
+    public void UserAcceptInvitationOkTest()
+    {
+        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        
+        var result = controller.InvitationResponse(UserId, "pepe@gmail.com", "pepe", true);
+        var okResult = result as OkObjectResult;
+        Invitation returnedInvitation = okResult.Value as Invitation;
+        
+        invitationLogicMock.VerifyAll();
+
+        Assert.AreEqual(expectedInvitation, returnedInvitation);
+    }
 }
