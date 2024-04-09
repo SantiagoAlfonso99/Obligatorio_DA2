@@ -28,4 +28,22 @@ public class InvitationControllerTest
         );
     }
     
+    public void ShowOkTest()
+    {
+        Invitation expectedInvitation = new Invitation() { Id = 1 };
+        List <Invitation> invitations = new List<Invitation>() { expectedInvitation};
+        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
+        invitationLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Returns(expectedInvitation);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        
+        var result = controller.Show(1);
+        var okResult = result as OkObjectResult;
+        Invitation returnedInvitation = okResult.Value as Invitation;
+        
+        invitationLogicMock.VerifyAll();
+        Assert.AreEqual(
+            expectedInvitation,
+             returnedInvitation
+        );
+    }
 }

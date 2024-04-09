@@ -23,4 +23,10 @@ public class InvitationController : ControllerBase
     {
         return Ok(invitationLogic.GetAll());
     }
+    
+    [HttpGet("{id}")]
+    public IActionResult Show(int id)
+    {
+            return Ok(invitationLogic.GetById(id));
+    }
 }

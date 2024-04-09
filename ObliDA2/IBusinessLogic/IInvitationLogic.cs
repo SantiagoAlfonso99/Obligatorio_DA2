@@ -4,4 +4,5 @@ namespace IBusinessLogic;
 public interface IInvitationLogic
 {
     List<Invitation> GetAll();
+    Invitation GetById(int id);
 }
