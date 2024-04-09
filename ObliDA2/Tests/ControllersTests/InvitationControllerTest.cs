@@ -10,10 +10,26 @@ namespace Tests.ControllersTests;
 [TestClass]
 public class InvitationControllerTest
 {
+    private Invitation expectedInvitation;
+    private Mock<IInvitationLogic> invitationLogicMock;
+    private const int UserId = 1;
+    private const string PropertyName = "Message";
+    private const string ExpectedMessage =
+        "The deletion action could not be completed because there is no invitation with that ID";
+    private const bool ReturnsFalse = false;
+    private const bool ReturnsTrue = true;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        expectedInvitation = new Invitation(){Id = UserId};
+        invitationLogicMock = new Mock<IInvitationLogic>();
+    }
+    
+    [TestMethod]
     public void IndexOkTest()
     {
-        List <Invitation> invitations = new List<Invitation>() { new Invitation(){Id = 1}};
-        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
+        List <Invitation> invitations = new List<Invitation>() { expectedInvitation};
         invitationLogicMock.Setup(r => r.GetAll()).Returns(invitations);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
@@ -28,14 +44,13 @@ public class InvitationControllerTest
         );
     }
     
+    [TestMethod]
     public void ShowOkTest()
     {
-        Invitation expectedInvitation = new Invitation() { Id = 1 };
-        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
         invitationLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
-        var result = controller.Show(1);
+        var result = controller.Show(UserId);
         var okResult = result as OkObjectResult;
         Invitation returnedInvitation = okResult.Value as Invitation;
         
@@ -46,10 +61,9 @@ public class InvitationControllerTest
         );
     }
     
+    [TestMethod]
     public void CreateOkTest()
     {
-        Invitation expectedInvitation = new Invitation() { Id = 1 };
-        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
         invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
@@ -64,13 +78,13 @@ public class InvitationControllerTest
         );
     }
     
+    [TestMethod]
     public void DeleteOkTest()
     {
-        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
-        invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(true);
+        invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(ReturnsTrue);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
         
         invitationLogicMock.VerifyAll();
@@ -81,16 +95,15 @@ public class InvitationControllerTest
     [TestMethod]
     public void DeleteNotFoundTest()
     {
-        Mock<IInvitationLogic> invitationLogicMock = new Mock<IInvitationLogic>();
-        invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(false);
+        invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(ReturnsFalse);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
         
         invitationLogicMock.VerifyAll();
 
-        Assert.AreEqual("The deletion action could not be completed because there is no invitation with that ID", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(ExpectedMessage, message.GetValue(notFoundResult.Value));
     }
 }
