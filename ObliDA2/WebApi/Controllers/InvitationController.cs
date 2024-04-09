@@ -29,4 +29,22 @@ public class InvitationController : ControllerBase
     {
             return Ok(invitationLogic.GetById(id));
     }
+    
+    [HttpPost]
+    public IActionResult Create([FromBody] Invitation newInvitation)
+    {
+            var createdInvitation = invitationLogic.Create(newInvitation);
+            return Ok(createdInvitation);
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success = invitationLogic.Delete(id);
+        if (success)
+        {
+            return NoContent();   
+        }
+        return NotFound(new { Message = "The deletion action could not be completed because there is no invitation with that ID" });
+    }
 }
