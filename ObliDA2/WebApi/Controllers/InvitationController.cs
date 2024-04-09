@@ -4,6 +4,8 @@ using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
 using IBusinessLogic;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 
 namespace WebApi.Controllers;
 
@@ -21,7 +23,7 @@ public class InvitationController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(invitationLogic.GetAll());
+        return Ok(invitationLogic.GetAll().Select(invitation => new InvitationDetailModel(invitation)).ToList());
     }
     
     [HttpGet("{id}")]
@@ -30,7 +32,7 @@ public class InvitationController : ControllerBase
         try
         {
             var invitation = invitationLogic.GetById(id);
-            return Ok(invitation);
+            return Ok(new InvitationDetailModel(invitation));
         }
         catch (InvalidInvitationException ex)
         {
@@ -39,12 +41,12 @@ public class InvitationController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult Create([FromBody] Invitation newInvitation)
+    public IActionResult Create([FromBody] InvitationCreateModel newInvitation)
     {
         try
         {
-            var createdInvitation = invitationLogic.Create(newInvitation);
-            return Ok(createdInvitation);
+            var createdInvitation = invitationLogic.Create(newInvitation.ToEntity());
+            return Ok(new InvitationDetailModel(createdInvitation));
         }
         catch (InvalidInvitationException ex)
         {
@@ -64,16 +66,16 @@ public class InvitationController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public IActionResult InvitationResponse(int id, [FromBody] string email, [FromBody] string newPassword, [FromBody] bool acceptInvitation)
+    public IActionResult InvitationResponse(int id, [FromBody] InvitationResponse response)
     {
         try
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(newPassword))
+            if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Password))
             {
                 return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
             }
-            var invitation = invitationLogic.InvitationResponse(id, email, newPassword, acceptInvitation);
-            return Ok(invitation);
+            var invitation = invitationLogic.InvitationResponse(id, response.Email, response.Password, response.acceptInvitation);
+            return Ok(new InvitationDetailModel(invitation));
         }
         catch (InvalidInvitationException ex)
         {
