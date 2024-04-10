@@ -4,6 +4,10 @@ namespace Domain.Models;
 
 public class Invitation
 {
+    private const string AcceptedStatus = "Accepted";
+    private const string RejectedStatus = "Rejected";
+    private const string PendingStatus = "Pending";
+    
     private int id;
     private string recipientEmail;
     private string name;
@@ -83,7 +87,7 @@ public class Invitation
 
     private bool InvalidStatus(string statusIn)
     {
-        bool invalid = (statusIn != "Pending" && statusIn != "Accepted" && statusIn != "Rejected");
+        bool invalid = (statusIn != AcceptedStatus && statusIn != RejectedStatus && statusIn != PendingStatus);
         return invalid;
     }
 }

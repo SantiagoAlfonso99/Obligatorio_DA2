@@ -42,6 +42,18 @@ public class AdminLogicTests
     }
     
     [TestMethod]
+    public void GetAllAdmins()
+    {
+        List<Admin> expectedList = new List<Admin>() { new Admin() { Id = UserId } };
+        adminRepo.Setup(repo => repo.GetAll()).Returns(expectedList);
+        adminService = new AdminLogic(adminRepo.Object);
+        
+        List<Admin> returnedList = adminService.GetAll();
+        adminRepo.VerifyAll();
+        CollectionAssert.AreEqual(expectedList, returnedList);
+    }
+    
+    [TestMethod]
     [ExpectedException(typeof(InvalidUserException))]
     public void InValidAdminNameThrowsException()
     {

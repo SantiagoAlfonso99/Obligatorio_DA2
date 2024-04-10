@@ -1,9 +1,11 @@
 ﻿using Domain.Exceptions;
 using BusinessLogic.IRepository;
 using Domain.Models;
+using IBusinessLogic;
+
 namespace BusinessLogic.Services;
 
-public class AdminLogic
+public class AdminLogic : IAdminLogic
 {
     private IAdminRepository adminRepo;
 
@@ -11,6 +13,12 @@ public class AdminLogic
     {
         adminRepo = adminRepoIn;
     }
+
+    public List<Admin> GetAll()
+    {
+        return adminRepo.GetAll();
+    }
+    
     public Admin Create(Admin adminIn)
     {
         adminRepo.Add(adminIn);
