@@ -129,4 +129,19 @@ public class InvitationLogicTests
         repo.VerifyAll();
         Assert.AreEqual(returnedInvitation, expectedInvitation);
     }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationLogicException))]
+    public void CreateInvitationForAnExistentEmailThrowsException()
+    {
+        List<Invitation> invitations = new List<Invitation>() { new Invitation(){RecipientEmail = ValidEmail, DeadLine = DateTime.Now.AddDays(2), Status = "Pending"}}; 
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = ValidName, RecipientEmail = ValidEmail, Status = ValidStatus};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(invitations);
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation, expectedInvitation);
+    }
 }
