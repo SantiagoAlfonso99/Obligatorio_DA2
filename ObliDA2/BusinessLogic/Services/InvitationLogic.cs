@@ -28,7 +28,7 @@ public class InvitationLogic
     {
         List<Invitation> invitations = invitationRepo.GetAll();
         bool repeatedInvitation = invitations.Exists(invitation =>
-            invitation.Email == invitationData.Email && invitation.DeadLine > DateTime.Now
+            invitation.RecipientEmail == invitationData.RecipientEmail && invitation.DeadLine > DateTime.Now
             && invitation.Status != "Rejected");
         if (repeatedInvitation)
         {
@@ -36,7 +36,7 @@ public class InvitationLogic
         }
         Invitation newInvitation = new Invitation()
         {
-            DeadLine = invitationData.DeadLine, Email = invitationData.Email, CreatorId = invitationData.CreatorId,
+            DeadLine = invitationData.DeadLine, RecipientEmail = invitationData.RecipientEmail, CreatorId = invitationData.CreatorId,
             Name = invitationData.Name, Status = "Pending"
         };
         invitationRepo.Create(newInvitation);

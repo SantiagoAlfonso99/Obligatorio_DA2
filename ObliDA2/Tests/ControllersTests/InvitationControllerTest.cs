@@ -31,7 +31,7 @@ public class InvitationControllerTest
     [TestInitialize]
     public void Initialize()
     {
-        expectedInvitation = new Invitation(){Id = UserId, Name = Name, CreatorId = 2, DeadLine = DateTime.Now, Email = EmailResponse};
+        expectedInvitation = new Invitation(){Id = UserId, Name = Name, CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending"};
         invitationLogicMock = new Mock<IInvitationLogic>();
         response = new InvitationResponse()
             { Email = EmailResponse, acceptInvitation = true, Password = Password };
@@ -77,7 +77,7 @@ public class InvitationControllerTest
     [TestMethod]
     public void CreateOkTest()
     {
-        InvitationCreateModel newInvitation = new InvitationCreateModel() { CreatorId = 2};
+        InvitationCreateModel newInvitation = new InvitationCreateModel() { CreatorId = 2, DeadLine = DateTime.Now.AddDays(3), Email = "pep@gmail.com", Name = "pep"};
         invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         

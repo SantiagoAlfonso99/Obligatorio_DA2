@@ -39,8 +39,88 @@ public class InvitationLogicTests
     public void CreateInvitationOk()
     {
         Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
-        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", Email = "pepe@gmail.com"};
-        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", Email = "pepe@gmail.com", Status = "Pending"};
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com"};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation.Id, expectedInvitation.Id);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationException))]
+    public void CreateInvitationWithEmptyEmailThrowsException()
+    {
+        Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = ""};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation.Id, expectedInvitation.Id);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationException))]
+    public void CreateInvitationWithEmptyNameThrowsException()
+    {
+        Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "", RecipientEmail = "pepe@gmail.com"};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation.Id, expectedInvitation.Id);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationException))]
+    public void CreateInvitationWithEmptyStatusThrowsException()
+    {
+        Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = ""};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation.Id, expectedInvitation.Id);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationException))]
+    public void CreateInvitationWithInvalidStatusThrowsException()
+    {
+        Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "invalidStatus"};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
+        repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        Invitation returnedInvitation = service.Create(invitation);
+        repo.VerifyAll();
+        Assert.AreEqual(returnedInvitation.Id, expectedInvitation.Id);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationException))]
+    public void CreateInvitationWithInvalidDeadLineThrowsException()
+    {
+        Mock<IInvitationRepository> repo = new Mock<IInvitationRepository>();
+        Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(-2), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
+        Invitation expectedInvitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = "pepe", RecipientEmail = "pepe@gmail.com", Status = "Pending"};
         repo.Setup(invitationRepo => invitationRepo.GetAll()).Returns(new List<Invitation>());
         repo.Setup(invitationRepo => invitationRepo.Create(It.IsAny<Invitation>()));
         InvitationLogic service = new InvitationLogic(repo.Object);

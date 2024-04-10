@@ -12,7 +12,7 @@ public class InvitationCreateModel
     {
         return new Invitation()
         {
-            Email = this.Email,
+            RecipientEmail = this.Email,
             Name = this.Name,
             DeadLine = this.DeadLine,
             CreatorId = this.CreatorId
