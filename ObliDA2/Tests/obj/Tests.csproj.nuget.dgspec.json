@@ -28,6 +28,9 @@
             "projectReferences": {
               "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
                 "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
               }
             }
           }
