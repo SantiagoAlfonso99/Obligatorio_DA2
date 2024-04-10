@@ -7,4 +7,5 @@ public interface IInvitationRepository
     Invitation GetById(int id);
     void Create(Invitation newInvitation);
     void Delete(Invitation invitationToRemove);
+    void Update(Invitation newAttributes);
 }

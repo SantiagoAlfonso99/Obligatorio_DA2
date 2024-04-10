@@ -124,7 +124,7 @@ public class InvitationControllerTest
     [TestMethod]
     public void UserAcceptInvitationOkTest()
     {
-        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
+        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
         var result = controller.InvitationResponse(UserId, response);
@@ -139,7 +139,7 @@ public class InvitationControllerTest
     [TestMethod]
     public void UserAcceptInvitationThrowExceptionTest()
     {
-        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Throws(new InvalidInvitationException());
+        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Throws(new InvalidInvitationLogicException());
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
         var result = controller.InvitationResponse(UserId, response);
@@ -156,7 +156,7 @@ public class InvitationControllerTest
     {
         InvitationResponse response = new InvitationResponse()
             { Email = "", acceptInvitation = true, Password = "" };
-        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
+        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object);
         
         var result = controller.InvitationResponse(UserId, response);

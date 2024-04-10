@@ -74,10 +74,10 @@ public class InvitationController : ControllerBase
             {
                 return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
             }
-            var invitation = invitationLogic.InvitationResponse(id, response.Email, response.Password, response.acceptInvitation);
+            var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
             return Ok(new InvitationDetailModel(invitation));
         }
-        catch (InvalidInvitationException ex)
+        catch (InvalidInvitationLogicException ex)
         {
             return NotFound(new { Message = "Error, invitation not found." });
         }

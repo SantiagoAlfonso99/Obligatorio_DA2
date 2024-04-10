@@ -168,4 +168,54 @@ public class InvitationLogicTests
         repo.VerifyAll();
         Assert.AreEqual(false, success);
     }
+    
+    [TestMethod]
+    public void DeleteAcceptedInvitationReturnsFalse()
+    {
+        expectedInvitation.Status = "Accepted";
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        bool success = service.Delete(1);
+        repo.VerifyAll();
+        Assert.AreEqual(false, success);
+    }
+    
+    [TestMethod]
+    public void UserAcceptInvitationOk()
+    {
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
+        InvitationLogic service = new InvitationLogic(repo.Object);
+
+        expectedInvitation.Status = "Accepted";
+        Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  true);
+        repo.VerifyAll();
+        Assert.AreEqual(expectedInvitation, returnedInvitation);
+    }
+    
+    [TestMethod]
+    public void UserRejectInvitationOk()
+    {
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
+        InvitationLogic service = new InvitationLogic(repo.Object);
+
+        expectedInvitation.Status = "Rejected";
+        Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  false);
+        repo.VerifyAll();
+        Assert.AreEqual(expectedInvitation, returnedInvitation);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidInvitationLogicException))]
+    public void InvitationResponseWithInvalidEmailThrowsException()
+    {
+        Invitation nullInvitation = null;
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(nullInvitation);
+        InvitationLogic service = new InvitationLogic(repo.Object);
+
+        expectedInvitation.Status = "Rejected";
+        Invitation returnedInvitation = service.InvitationResponse(1, "",  false);
+        repo.VerifyAll();
+        Assert.AreEqual(expectedInvitation, returnedInvitation);
+    }
 }

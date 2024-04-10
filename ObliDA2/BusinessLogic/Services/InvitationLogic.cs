@@ -46,11 +46,30 @@ public class InvitationLogic
     public bool Delete(int id)
     {
         Invitation invitationToRemove = invitationRepo.GetById(id);
-        if (invitationToRemove == null)
+        if (invitationToRemove == null || invitationToRemove.Status == "Accepted")
         {
             return false;
         }
         invitationRepo.Delete(invitationToRemove);
         return true;
+    }
+
+    public Invitation InvitationResponse(int id, string email, bool answer)
+    {
+        Invitation invitationToUpdate = invitationRepo.GetById(id);
+        if (invitationToUpdate == null)
+        {
+            throw new InvalidInvitationLogicException();
+        }
+        if (answer && invitationToUpdate.RecipientEmail == email)
+        {
+            invitationToUpdate.Status = "Accepted";
+        }
+        else if(invitationToUpdate.RecipientEmail == email && !answer)
+        {
+            invitationToUpdate.Status = "Rejected";
+        }
+        invitationRepo.Update(invitationToUpdate);
+        return invitationToUpdate;
     }
 }

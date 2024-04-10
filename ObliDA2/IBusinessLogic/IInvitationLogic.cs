@@ -6,6 +6,6 @@ public interface IInvitationLogic
     List<Invitation> GetAll();
     Invitation GetById(int id);
     Invitation Create(Invitation invitation);
-    Invitation InvitationResponse(int id, string email, string password, bool acceptInvitation);
+    Invitation InvitationResponse(int id, string email, bool acceptInvitation);
     bool Delete(int id);
 }
