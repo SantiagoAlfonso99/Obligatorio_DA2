@@ -7,6 +7,7 @@ public class Invitation
     public string Name { get; set; }
     public DateTime DeadLine { get; set; }
     public int CreatorId { get; set; }
+    public string Status { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -16,9 +17,10 @@ public class Invitation
         }
         Invitation other = (Invitation)obj;
         return Id == other.Id
-            && Email == other.Email
-            && Name == other.Name
-            && DeadLine == other.DeadLine
-            && CreatorId == other.CreatorId;
+               && Email == other.Email
+               && Name == other.Name
+               && DeadLine == other.DeadLine
+               && CreatorId == other.CreatorId
+               && Status == other.Status;
     }
 }

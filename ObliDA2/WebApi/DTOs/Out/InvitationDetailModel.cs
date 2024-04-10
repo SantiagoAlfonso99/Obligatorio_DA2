@@ -18,6 +18,7 @@ public class InvitationDetailModel
     public DateTime DeadLine { get; set; }
     public int CreatorId { get; set; }
     
+    public bool Accepted { get; set; }
     public override bool Equals(object obj)
     {
         if (obj == null || GetType() != obj.GetType())
@@ -29,6 +30,7 @@ public class InvitationDetailModel
                && Email == other.Email
                && Name == other.Name
                && DeadLine == other.DeadLine
-               && CreatorId == other.CreatorId;
+               && CreatorId == other.CreatorId
+               && Accepted == other.Accepted;
     }
 }
