@@ -42,5 +42,15 @@ public class InvitationLogic
         invitationRepo.Create(newInvitation);
         return newInvitation;
     }
-    
+
+    public bool Delete(int id)
+    {
+        Invitation invitationToRemove = invitationRepo.GetById(id);
+        if (invitationToRemove == null)
+        {
+            return false;
+        }
+        invitationRepo.Delete(invitationToRemove);
+        return true;
+    }
 }

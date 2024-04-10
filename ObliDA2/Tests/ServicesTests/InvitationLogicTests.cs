@@ -144,4 +144,28 @@ public class InvitationLogicTests
         repo.VerifyAll();
         Assert.AreEqual(returnedInvitation, expectedInvitation);
     }
+    
+    [TestMethod]
+    public void DeleteInvitationOk()
+    {
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
+        repo.Setup(invitationRepo => invitationRepo.Delete(It.IsAny<Invitation>()));
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        bool success = service.Delete(1);
+        repo.VerifyAll();
+        Assert.AreEqual(true, success);
+    }
+    
+    [TestMethod]
+    public void DeleteNonExistentInvitationReturnsFalse()
+    {
+        Invitation nullInvite = null;
+        repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(nullInvite);
+        InvitationLogic service = new InvitationLogic(repo.Object);
+        
+        bool success = service.Delete(1);
+        repo.VerifyAll();
+        Assert.AreEqual(false, success);
+    }
 }
