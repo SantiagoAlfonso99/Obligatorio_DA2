@@ -31,14 +31,32 @@ public class CategoryController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(new CategoryDetailModel(categoryLogic.GetById(id)));
+        try
+        {
+            return Ok(new CategoryDetailModel(categoryLogic.GetById(id)));
+        }
+        catch (InvalidCategoryLogicException ex)
+        {
+            return NotFound(new { Message = "The show action could not be completed because there is no Category with that ID" }); 
+        }
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] CategoryCreateModel newCategory)
     {
-        CategoryDetailModel returnedCategory = new CategoryDetailModel(categoryLogic.Create(newCategory.ToEntity()));
-        return Ok(returnedCategory);
+        try
+        {
+            CategoryDetailModel returnedCategory = new CategoryDetailModel(categoryLogic.Create(newCategory.ToEntity()));
+            return Ok(returnedCategory);
+        }
+        catch (InvalidCategoryLogicException ex)
+        {
+            return NotFound(new { Message = "Unable to create category because a category with that name already exists." }); 
+        }
+        catch (InvalidCategoryException ex)
+        {
+            return BadRequest(new { Message = "Please make sure not to input null or empty data." }); 
+        }
     }
     
     [HttpDelete("{id}")]
