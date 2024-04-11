@@ -27,4 +27,48 @@ public class CategoryLogicTests
         repo.VerifyAll();
         Assert.AreEqual(expectedCategory, returnedCategory);
     }
+    
+    [TestMethod]
+    public void GetAllOk()
+    {
+        Mock<ICategoryRepository> repo = new Mock<ICategoryRepository>();
+        List<Category> consultedCategories = new List<Category>() { new Category(){Id = 1} };
+        repo.Setup(repository => repository.GetAll()).Returns(consultedCategories);
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        List<Category> returnedCategory = service.GetAll();
+        List<Category> expectedList = new List<Category>() { new Category(){Id = 1}};
+        
+        repo.VerifyAll();
+        CollectionAssert.AreEqual(expectedList, returnedCategory);
+    }
+    
+    [TestMethod]
+    public void CreateOk()
+    {
+        Mock<ICategoryRepository> repo = new Mock<ICategoryRepository>();
+        Category newCategory = new Category() { Id = 1 };
+        repo.Setup(repository => repository.Create(It.IsAny<Category>()));
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        Category returnedCategory = service.Create(newCategory);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(returnedCategory, newCategory);
+    }
+    
+    [TestMethod]
+    public void DeleteOk()
+    {
+        Mock<ICategoryRepository> repo = new Mock<ICategoryRepository>();
+        Category consultedCategory = new Category() { Id = 1 };
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(consultedCategory);
+        repo.Setup(repository => repository.Delete(It.IsAny<Category>()));
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        bool success = service.Delete(1);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(true, success);
+    }
 }
