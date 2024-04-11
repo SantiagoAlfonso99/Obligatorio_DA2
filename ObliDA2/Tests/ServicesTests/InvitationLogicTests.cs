@@ -15,6 +15,10 @@ public class InvitationLogicTests
     private const string ValidName = "pepe";
     private const string ValidEmail = "pepe@gmail.com";
     private const string ValidStatus = "Pending";
+    private const string AcceptedStatus = "Accepted";
+    private const string RejectedStatus = "Rejected";
+    private const bool TrueSuccess = true;
+    private const bool FalseSuccess = false;
     private Invitation expectedInvitation;
     
     [TestInitialize]
@@ -154,7 +158,7 @@ public class InvitationLogicTests
         
         bool success = service.Delete(1);
         repo.VerifyAll();
-        Assert.AreEqual(true, success);
+        Assert.AreEqual(TrueSuccess, success);
     }
     
     [TestMethod]
@@ -166,7 +170,7 @@ public class InvitationLogicTests
         
         bool success = service.Delete(1);
         repo.VerifyAll();
-        Assert.AreEqual(false, success);
+        Assert.AreEqual(FalseSuccess, success);
     }
     
     [TestMethod]
@@ -178,7 +182,7 @@ public class InvitationLogicTests
         
         bool success = service.Delete(1);
         repo.VerifyAll();
-        Assert.AreEqual(false, success);
+        Assert.AreEqual(FalseSuccess, success);
     }
     
     [TestMethod]
@@ -187,7 +191,7 @@ public class InvitationLogicTests
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
 
-        expectedInvitation.Status = "Accepted";
+        expectedInvitation.Status = AcceptedStatus;
         Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  true);
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
@@ -199,7 +203,7 @@ public class InvitationLogicTests
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
 
-        expectedInvitation.Status = "Rejected";
+        expectedInvitation.Status = RejectedStatus;
         Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  false);
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
@@ -213,7 +217,7 @@ public class InvitationLogicTests
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(nullInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
 
-        expectedInvitation.Status = "Rejected";
+        expectedInvitation.Status = RejectedStatus;
         Invitation returnedInvitation = service.InvitationResponse(1, "",  false);
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
