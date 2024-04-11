@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
 using Moq;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 
 namespace Tests.ControllersTests;
 
@@ -13,6 +15,7 @@ public class CategoryControllerTest
 {
     private Mock<ICategoryLogic> service;
     private Category expectedCategory;
+    private const int UserId = 1;
     
     [TestInitialize]
     public void Initialize()
@@ -24,31 +27,33 @@ public class CategoryControllerTest
     [TestMethod]
     public void IndexOk()
     {
-        List<Category> categories = new List<Category>() { new Category(){ Id = 1 } };
+        List<Category> categories = new List<Category>() { new Category(){ Id = UserId } };
         service.Setup(logic => logic.GetAll()).Returns(categories);
         CategoryController controller = new CategoryController(service.Object);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
-        List<Category> returnedCategories = okResult.Value as List<Category>;
-        List<Category> expectedList = new List<Category>() { new Category() { Id = 1 } };
+        List<CategoryDetailModel> returnedCategories = okResult.Value as List<CategoryDetailModel>;
+        List<Category> expectedList = new List<Category>() { new Category() { Id = UserId } };
+        List<CategoryDetailModel> expectedDetailModels =
+            expectedList.Select(category => new CategoryDetailModel(category)).ToList();
         
         service.VerifyAll();
-        CollectionAssert.AreEqual(expectedList, returnedCategories);
+        CollectionAssert.AreEqual(expectedDetailModels, returnedCategories);
     }
     
     [TestMethod]
     public void ShowOk()
     {
         Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
-        Category consultedCategory = new Category() { Id = 1 };
+        Category consultedCategory = new Category() { Id = UserId };
         service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(consultedCategory);
         CategoryController controller = new CategoryController(service.Object);
         
-        var result = controller.Show(1);
+        var result = controller.Show(UserId);
         var okResult = result as OkObjectResult;
-        Category returnedCategory = okResult.Value as Category;
-        Category expectedCategory = new Category() { Id = 1 };
+        CategoryDetailModel returnedCategory = okResult.Value as CategoryDetailModel;
+        CategoryDetailModel expectedCategory = new CategoryDetailModel(consultedCategory);
         
         service.VerifyAll();
         Assert.AreEqual(expectedCategory, returnedCategory);
@@ -58,14 +63,15 @@ public class CategoryControllerTest
     public void CreateOk()
     {
         Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
-        Category consultedCategory = new Category() { Id = 1 };
-        service.Setup(logic => logic.Create(It.IsAny<string>())).Returns(consultedCategory);
+        Category consultedCategory = new Category() { Id = UserId };
+        service.Setup(logic => logic.Create(It.IsAny<Category>())).Returns(consultedCategory);
         CategoryController controller = new CategoryController(service.Object);
-        
-        var result = controller.Create("name");
+        CategoryCreateModel newCategory = new CategoryCreateModel() { Name = "pepe" };
+            
+        var result = controller.Create(newCategory);
         var okResult = result as OkObjectResult;
-        Category returnedCategory = okResult.Value as Category;
-        Category expectedCategory = new Category() { Id = 1 };
+        CategoryDetailModel returnedCategory = okResult.Value as CategoryDetailModel;
+        CategoryDetailModel expectedCategory = new CategoryDetailModel(consultedCategory);
         
         service.VerifyAll();
         Assert.AreEqual(expectedCategory, returnedCategory);
@@ -78,7 +84,7 @@ public class CategoryControllerTest
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(true);
         CategoryController controller = new CategoryController(service.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
         
         service.VerifyAll();
@@ -93,7 +99,7 @@ public class CategoryControllerTest
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(false);
         CategoryController controller = new CategoryController(service.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;
         var message = notFoundResult.Value.GetType().GetProperty("Message");
         

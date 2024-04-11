@@ -5,6 +5,6 @@ public interface ICategoryLogic
 {
     List<Category> GetAll();
     Category GetById(int id);
-    Category Create(string name);
+    Category Create(Category newCategory);
     bool Delete(int id);
 }

@@ -3,6 +3,7 @@
 public class Category
 {
     public int Id { get; set; }
+    public string Name { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -11,6 +12,7 @@ public class Category
             return false;
         }
         Category other = (Category)obj;
-        return Id == other.Id;
+        return Id == other.Id
+               && Name == other.Name;
     }
 }

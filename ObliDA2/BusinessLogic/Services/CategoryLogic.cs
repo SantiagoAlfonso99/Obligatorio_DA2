@@ -1,10 +1,11 @@
 ﻿using Domain.Exceptions;
 using BusinessLogic.IRepository;
 using Domain.Models;
+using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public class CategoryLogic
+public class CategoryLogic : ICategoryLogic
 {
     public ICategoryRepository categoryRepo;
 

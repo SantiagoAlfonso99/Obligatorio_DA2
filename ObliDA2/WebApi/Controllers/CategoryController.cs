@@ -4,6 +4,9 @@ using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
 using IBusinessLogic;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
+
 
 namespace WebApi.Controllers;
 
@@ -22,19 +25,20 @@ public class CategoryController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(categoryLogic.GetAll());
+        return Ok(categoryLogic.GetAll().Select(category => new CategoryDetailModel(category)).ToList());
     }
 
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(categoryLogic.GetById(id));
+        return Ok(new CategoryDetailModel(categoryLogic.GetById(id)));
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] string name)
+    public IActionResult Create([FromBody] CategoryCreateModel newCategory)
     {
-        return Ok(categoryLogic.Create(name));
+        CategoryDetailModel returnedCategory = new CategoryDetailModel(categoryLogic.Create(newCategory.ToEntity()));
+        return Ok(returnedCategory);
     }
     
     [HttpDelete("{id}")]
