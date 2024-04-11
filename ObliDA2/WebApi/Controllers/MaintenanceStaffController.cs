@@ -22,4 +22,29 @@ public class MaintenanceStaffController : ControllerBase
     {
         return Ok(staffLogic.GetAll());
     }
+
+    [HttpGet("{id}")]
+    public IActionResult Show(int id)
+    {
+        return Ok(staffLogic.GetById(id));
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success = staffLogic.Delete(id);
+        if (success)
+        {
+            return NoContent();    
+        }
+        return NotFound();
+    }
+
+    [HttpPost]
+    public IActionResult Create(MaintenanceStaff newStaff)
+    {
+        MaintenanceStaff returnedStaff =  staffLogic.Create(newStaff);
+        return Ok(returnedStaff);
+    }
+    
 }
