@@ -1,9 +1,24 @@
-﻿namespace Domain.Models;
+﻿using Domain.Exceptions;
+
+namespace Domain.Models;
 
 public class Category
 {
+    private string name;
+    
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new InvalidCategoryException();
+            }
+            name = value;
+        }
+    }
     
     public override bool Equals(object obj)
     {

@@ -16,7 +16,12 @@ public class CategoryLogic : ICategoryLogic
     
     public Category GetById(int id)
     {
-        return categoryRepo.GetById(id);
+        Category returnedCategory = categoryRepo.GetById(id);
+        if (returnedCategory == null)
+        {
+            throw new InvalidCategoryLogicException();
+        }
+        return returnedCategory;
     }
     
     public List<Category> GetAll()
@@ -25,7 +30,13 @@ public class CategoryLogic : ICategoryLogic
     }
     
     public Category Create(Category newCategory)
-    { 
+    {
+        List<Category> categories = categoryRepo.GetAll();
+        bool success = categories.Exists(category => category.Name == newCategory.Name);
+        if (success)
+        {
+            throw new InvalidCategoryLogicException();
+        }
         categoryRepo.Create(newCategory);
         return newCategory;
     }

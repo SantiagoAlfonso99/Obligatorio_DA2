@@ -38,6 +38,36 @@ public class CategoryLogicTests
     }
     
     [TestMethod]
+    [ExpectedException(typeof(InvalidCategoryLogicException))]
+    public void GetByIdThrowsException()
+    {
+        Category nullCategory = null;
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullCategory);
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        Category returnedCategory = service.GetById(1);
+        Category expectedCategory = new Category() { Id = UserId };
+        
+        repo.VerifyAll();
+        Assert.AreEqual(expectedCategory, returnedCategory);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidCategoryException))]
+    public void CreateCategoryWithEmptyNameThrowsException()
+    {
+        Category newCategory = new Category() { Id = UserId, Name = "" };
+        repo.Setup(repository => repository.GetAll()).Returns(new List<Category>());
+        repo.Setup(repository => repository.Create(It.IsAny<Category>()));
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        Category returnedCategory = service.Create(newCategory);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(returnedCategory, newCategory);
+    }
+    
+    [TestMethod]
     public void GetAllOk()
     {
         List<Category> consultedCategories = new List<Category>() { consultedCategory };
@@ -54,7 +84,24 @@ public class CategoryLogicTests
     [TestMethod]
     public void CreateOk()
     {
-        Category newCategory = new Category() { Id = UserId };
+        Category newCategory = new Category() { Id = UserId, Name = "CategoryName" };
+        repo.Setup(repository => repository.GetAll()).Returns(new List<Category>());
+        repo.Setup(repository => repository.Create(It.IsAny<Category>()));
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        Category returnedCategory = service.Create(newCategory);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(returnedCategory, newCategory);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidCategoryLogicException))]
+    public void CreateCategoryWithRepeatedNameThrowsException()
+    {
+        Category newCategory = new Category() { Id = UserId, Name = "CategoryName" };
+        List<Category> consultedList = new List<Category>() {new Category() { Id = 5, Name = "CategoryName" } };
+        repo.Setup(repository => repository.GetAll()).Returns(consultedList);
         repo.Setup(repository => repository.Create(It.IsAny<Category>()));
         CategoryLogic service = new CategoryLogic(repo.Object);
 
