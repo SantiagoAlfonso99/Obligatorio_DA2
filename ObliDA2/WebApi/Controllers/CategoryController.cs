@@ -24,4 +24,23 @@ public class CategoryController : ControllerBase
     {
         return Ok(categoryLogic.GetAll());
     }
+
+    [HttpGet("{id}")]
+    public IActionResult Show(int id)
+    {
+        return Ok(categoryLogic.GetById(id));
+    }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] string name)
+    {
+        return Ok(categoryLogic.Create(name));
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success = categoryLogic.Delete(id);
+        return NoContent();;
+    }
 }
