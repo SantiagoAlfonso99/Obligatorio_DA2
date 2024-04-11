@@ -41,6 +41,10 @@ public class CategoryController : ControllerBase
     public IActionResult Delete(int id)
     {
         bool success = categoryLogic.Delete(id);
-        return NoContent();;
+        if (success)
+        {
+            return NoContent();
+        }
+        return NotFound(new { Message = "The deletion action could not be completed because there is no Category with that ID" });
     }
 }
