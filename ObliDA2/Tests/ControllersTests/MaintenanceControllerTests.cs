@@ -11,18 +11,30 @@ namespace Tests.ControllersTests;
 [TestClass]
 public class MaintenanceControllerTests
 {
+    private Mock<IMaintenanceLogic> service;
+    private const int UserId = 1;
+    private MaintenanceStaff newStaff;
+    private MaintenanceStaffController controller;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        
+        service = new Mock<IMaintenanceLogic>();
+        newStaff = new MaintenanceStaff() { Id = UserId };
+    }
+    
     [TestMethod]
     public void IndexOk()
     {
-        Mock<IMaintenanceLogic> service = new Mock<IMaintenanceLogic>();
-        List<MaintenanceStaff> staff = new List<MaintenanceStaff>() { new MaintenanceStaff() { Id = 1 } };
+        List<MaintenanceStaff> staff = new List<MaintenanceStaff>() { newStaff };
         service.Setup(logic => logic.GetAll()).Returns(staff);
-        MaintenanceStaffController controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
         List<MaintenanceStaff> returnedValue = okResult.Value as List<MaintenanceStaff>;
-        List<MaintenanceStaff> expectedList = new List<MaintenanceStaff>() { new MaintenanceStaff() { Id = 1 } };
+        List<MaintenanceStaff> expectedList = new List<MaintenanceStaff>() { new MaintenanceStaff() { Id = UserId } };
 
         service.VerifyAll();
         CollectionAssert.AreEqual(returnedValue, expectedList);
@@ -31,15 +43,13 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void ShowOk()
     {
-        Mock<IMaintenanceLogic> service = new Mock<IMaintenanceLogic>();
-        MaintenanceStaff newIndividual = new MaintenanceStaff() { Id = 1 };
-        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newIndividual);
-        MaintenanceStaffController controller = new MaintenanceStaffController(service.Object);
+        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newStaff);
+        controller = new MaintenanceStaffController(service.Object);
         
         var result = controller.Show(1);
         var okResult = result as OkObjectResult;
         MaintenanceStaff returnedValue = okResult.Value as MaintenanceStaff;
-        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = 1 };
+        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = UserId };
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);
@@ -48,11 +58,10 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void DeleteOk()
     {
-        Mock<IMaintenanceLogic> service = new Mock<IMaintenanceLogic>();
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(true);
-        MaintenanceStaffController controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
         
         service.VerifyAll();
@@ -63,15 +72,13 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void CreateOk()
     {
-        Mock<IMaintenanceLogic> service = new Mock<IMaintenanceLogic>();
-        MaintenanceStaff newIndividual = new MaintenanceStaff() { Id = 1 };
-        service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newIndividual);
-        MaintenanceStaffController controller = new MaintenanceStaffController(service.Object);
+        service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
+        controller = new MaintenanceStaffController(service.Object);
         
-        var result = controller.Create(newIndividual);
+        var result = controller.Create(newStaff);
         var okResult = result as OkObjectResult;
         MaintenanceStaff returnedValue = okResult.Value as MaintenanceStaff;
-        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = 1 };
+        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = UserId };
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);

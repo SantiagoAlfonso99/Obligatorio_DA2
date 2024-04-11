@@ -1,8 +1,8 @@
 ﻿namespace Domain.Models;
 
-public class MaintenanceStaff
+public class MaintenanceStaff : User
 {
-    public int Id { get; set; }
+    public string LastName { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -11,6 +11,10 @@ public class MaintenanceStaff
             return false;
         }
         MaintenanceStaff other = (MaintenanceStaff)obj;
-        return Id == other.Id;
+        return Id == other.Id
+               && LastName == other.LastName
+               && Name == other.Name
+               && Password == other.Password
+               && Email == other.Email;
     }
 }
