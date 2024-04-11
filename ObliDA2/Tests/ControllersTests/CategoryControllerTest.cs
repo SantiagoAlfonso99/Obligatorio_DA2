@@ -16,6 +16,14 @@ public class CategoryControllerTest
     private Mock<ICategoryLogic> service;
     private Category expectedCategory;
     private const int UserId = 1;
+    private const string PropertyName = "Message";
+    private const string CreateCategoryExceptionMess = "Please make sure not to input null or empty data.";
+    private const string CreateCategoryLogicExceptionMess =
+        "Unable to create category because a category with that name already exists.";
+    private const string DeleteNotFoundMes =
+        "The deletion action could not be completed because there is no Category with that ID";
+    private const string ShowNotFoundMes =
+        "The show action could not be completed because there is no Category with that ID";
     
     [TestInitialize]
     public void Initialize()
@@ -88,10 +96,10 @@ public class CategoryControllerTest
             
         var result = controller.Create(newCategory);
         var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
         
         service.VerifyAll();
-        Assert.AreEqual("Unable to create category because a category with that name already exists.", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(CreateCategoryLogicExceptionMess, message.GetValue(notFoundResult.Value));
     }
     
     [TestMethod]
@@ -105,10 +113,10 @@ public class CategoryControllerTest
             
         var result = controller.Create(newCategory);
         var badRequestResult = result as BadRequestObjectResult;
-        var message = badRequestResult.Value.GetType().GetProperty("Message");
+        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
         
         service.VerifyAll();
-        Assert.AreEqual("Please make sure not to input null or empty data.", message.GetValue(badRequestResult.Value));
+        Assert.AreEqual(CreateCategoryExceptionMess, message.GetValue(badRequestResult.Value));
     }
     
     [TestMethod]
@@ -135,11 +143,11 @@ public class CategoryControllerTest
         
         var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
         
         service.VerifyAll();
         
-        Assert.AreEqual("The deletion action could not be completed because there is no Category with that ID", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(DeleteNotFoundMes, message.GetValue(notFoundResult.Value));
     }
     
     [TestMethod]
@@ -152,10 +160,10 @@ public class CategoryControllerTest
         
         var result = controller.Show(UserId);
         var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty("Message");
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
         
         service.VerifyAll();
         
-        Assert.AreEqual("The show action could not be completed because there is no Category with that ID", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(ShowNotFoundMes, message.GetValue(notFoundResult.Value));
     }
 }

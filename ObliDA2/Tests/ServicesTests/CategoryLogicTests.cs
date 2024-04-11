@@ -16,6 +16,8 @@ public class CategoryLogicTests
     private Mock<ICategoryRepository> repo;
     private Category consultedCategory;
     private const int UserId = 1;
+    private const bool TrueSuccess = true;
+    private const bool FalseSuccess = false;
     
     [TestInitialize]
     public void Initialize()
@@ -121,6 +123,19 @@ public class CategoryLogicTests
         bool success = service.Delete(UserId);
         
         repo.VerifyAll();
-        Assert.AreEqual(true, success);
+        Assert.AreEqual(TrueSuccess, success);
+    }
+    
+    [TestMethod]
+    public void DeleteReturnsFalseForNonExistentCategory()
+    {
+        Category nullCategory = null;
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullCategory);
+        CategoryLogic service = new CategoryLogic(repo.Object);
+
+        bool success = service.Delete(UserId);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(FalseSuccess, success);
     }
 }
