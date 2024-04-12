@@ -11,16 +11,27 @@ namespace Tests.ServicesTests;
 [TestClass]
 public class MaintenanceLogicTests
 {
+    private Mock<IMaintenanceStaffRepository> repo;
+    private const int UserId = 1;
+    private MaintenanceStaff newStaff = new MaintenanceStaff() { Id = UserId };
+    private const bool TrueSuccess = true;
+    private const bool FalseSuccess = false;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        repo = new Mock<IMaintenanceStaffRepository>();
+    }
+    
     [TestMethod]
     public void GetAllOk()
     {
-        Mock<IMaintenanceStaffRepository> repo = new Mock<IMaintenanceStaffRepository>();
-        List<MaintenanceStaff> consultedList = new List<MaintenanceStaff>(){new MaintenanceStaff(){Id = 1}};
+        List<MaintenanceStaff> consultedList = new List<MaintenanceStaff>(){newStaff};
         repo.Setup(repository => repository.GetAll()).Returns(consultedList);
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
         List<MaintenanceStaff> returnedList = service.GetAll();
-        List<MaintenanceStaff> expectedList = new List<MaintenanceStaff>() { new MaintenanceStaff() { Id = 1 } };
+        List<MaintenanceStaff> expectedList = new List<MaintenanceStaff>() {newStaff };
         
         repo.VerifyAll();
         CollectionAssert.AreEqual(expectedList, returnedList);
@@ -29,13 +40,11 @@ public class MaintenanceLogicTests
     [TestMethod]
     public void GetByIdOk()
     {
-        Mock<IMaintenanceStaffRepository> repo = new Mock<IMaintenanceStaffRepository>();
-        MaintenanceStaff consultedIndividual = new MaintenanceStaff() { Id = 1 };
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(consultedIndividual);
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newStaff);
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
         MaintenanceStaff returnedStaff = service.GetById(1);
-        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = 1 };
+        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId };
         
         repo.VerifyAll();
         Assert.AreEqual(expectedStaff, returnedStaff);
@@ -44,13 +53,11 @@ public class MaintenanceLogicTests
     [TestMethod]
     public void CreateOk()
     {
-        Mock<IMaintenanceStaffRepository> repo = new Mock<IMaintenanceStaffRepository>();
-        MaintenanceStaff newStaff = new MaintenanceStaff() { Id = 1 };
         repo.Setup(repository => repository.Create(It.IsAny<MaintenanceStaff>()));
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
         MaintenanceStaff returnedStaff = service.Create(newStaff);
-        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = 1 };
+        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId };
         
         repo.VerifyAll();
         Assert.AreEqual(expectedStaff, returnedStaff);
@@ -59,29 +66,26 @@ public class MaintenanceLogicTests
     [TestMethod]
     public void DeleteOk()
     {
-        Mock<IMaintenanceStaffRepository> repo = new Mock<IMaintenanceStaffRepository>();
-        MaintenanceStaff staffToRemove = new MaintenanceStaff() { Id = 1 };
-       repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(staffToRemove);
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newStaff);
         repo.Setup(repository => repository.Delete(It.IsAny<MaintenanceStaff>()));
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
         repo.VerifyAll();
-        Assert.AreEqual(true, success);
+        Assert.AreEqual(TrueSuccess, success);
     }
     
     [TestMethod]
     public void DeleteReturnsFalseForNonExistentId()
     {
-        Mock<IMaintenanceStaffRepository> repo = new Mock<IMaintenanceStaffRepository>();
         MaintenanceStaff staffToRemove = null;
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(staffToRemove);
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
         repo.VerifyAll();
-        Assert.AreEqual(false, success);
+        Assert.AreEqual(FalseSuccess, success);
     }
 }

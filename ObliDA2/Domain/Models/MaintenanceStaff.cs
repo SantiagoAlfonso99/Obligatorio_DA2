@@ -3,6 +3,7 @@
 public class MaintenanceStaff : User
 {
     public string LastName { get; set; }
+    public Building AssociatedBuilding { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -15,6 +16,7 @@ public class MaintenanceStaff : User
                && LastName == other.LastName
                && Name == other.Name
                && Password == other.Password
-               && Email == other.Email;
+               && Email == other.Email
+               && AssociatedBuilding == other.AssociatedBuilding;
     }
 }

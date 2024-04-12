@@ -4,6 +4,8 @@ using Domain.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 using Moq;
 
 namespace Tests.ControllersTests;
@@ -21,7 +23,7 @@ public class MaintenanceControllerTests
     {
         
         service = new Mock<IMaintenanceLogic>();
-        newStaff = new MaintenanceStaff() { Id = UserId };
+        newStaff = new MaintenanceStaff() { Id = UserId, Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id =1}};
     }
     
     [TestMethod]
@@ -33,8 +35,8 @@ public class MaintenanceControllerTests
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
-        List<MaintenanceStaff> returnedValue = okResult.Value as List<MaintenanceStaff>;
-        List<MaintenanceStaff> expectedList = new List<MaintenanceStaff>() { new MaintenanceStaff() { Id = UserId } };
+        List<MaintenanceStaffDetailModel> returnedValue = okResult.Value as List<MaintenanceStaffDetailModel>;
+        List<MaintenanceStaffDetailModel> expectedList = new List<MaintenanceStaffDetailModel>(){new MaintenanceStaffDetailModel(newStaff)};
 
         service.VerifyAll();
         CollectionAssert.AreEqual(returnedValue, expectedList);
@@ -48,8 +50,8 @@ public class MaintenanceControllerTests
         
         var result = controller.Show(1);
         var okResult = result as OkObjectResult;
-        MaintenanceStaff returnedValue = okResult.Value as MaintenanceStaff;
-        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = UserId };
+        MaintenanceStaffDetailModel returnedValue = okResult.Value as MaintenanceStaffDetailModel;
+        MaintenanceStaffDetailModel expectedValue = new MaintenanceStaffDetailModel(newStaff);
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);
@@ -72,13 +74,14 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void CreateOk()
     {
+        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id =1}};
         service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
         controller = new MaintenanceStaffController(service.Object);
         
-        var result = controller.Create(newStaff);
+        var result = controller.Create(newStaffModel);
         var okResult = result as OkObjectResult;
-        MaintenanceStaff returnedValue = okResult.Value as MaintenanceStaff;
-        MaintenanceStaff expectedValue = new MaintenanceStaff() { Id = UserId };
+        MaintenanceStaffDetailModel returnedValue = okResult.Value as MaintenanceStaffDetailModel;
+        MaintenanceStaffDetailModel expectedValue = new MaintenanceStaffDetailModel(newStaff);
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);

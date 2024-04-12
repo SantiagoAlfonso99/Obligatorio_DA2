@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 
 namespace WebApi.Controllers;
 
@@ -20,13 +22,13 @@ public class MaintenanceStaffController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(staffLogic.GetAll());
+        return Ok(staffLogic.GetAll().Select(staff => new MaintenanceStaffDetailModel(staff)).ToList());
     }
 
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(staffLogic.GetById(id));
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
     }
 
     [HttpDelete("{id}")]
@@ -41,10 +43,9 @@ public class MaintenanceStaffController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(MaintenanceStaff newStaff)
+    public IActionResult Create(MaintenanceCreateModel newStaff)
     {
-        MaintenanceStaff returnedStaff =  staffLogic.Create(newStaff);
-        return Ok(returnedStaff);
+        MaintenanceStaff returnedStaff =  staffLogic.Create(newStaff.ToEntity());
+        return Ok(new MaintenanceStaffDetailModel(returnedStaff));
     }
-    
 }
