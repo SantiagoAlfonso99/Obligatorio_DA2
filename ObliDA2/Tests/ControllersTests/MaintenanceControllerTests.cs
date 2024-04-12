@@ -15,6 +15,10 @@ public class MaintenanceControllerTests
 {
     private Mock<IMaintenanceLogic> service;
     private const int UserId = 1;
+    private const string ShowNotFound = "No MaintenanceStaff was found with that ID.";
+    private const string DeleteNotFound = "There is no maintenance staff for that Id";
+    private const string InvalidInputsMessage = "Ensure not to input empty or null data.";
+    private const string InvalidEmailMessage = "There is already maintenance staff with that email, please enter another one.";
     private MaintenanceStaff newStaff;
     private MaintenanceStaffController controller;
     private const string PropertyName = "Message";
@@ -69,7 +73,7 @@ public class MaintenanceControllerTests
         var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
         
         service.VerifyAll();
-        Assert.AreEqual("No MaintenanceStaff was found with that ID.", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(ShowNotFound, message.GetValue(notFoundResult.Value));
     }
     
     [TestMethod]
@@ -98,7 +102,7 @@ public class MaintenanceControllerTests
         
         service.VerifyAll();
         
-        Assert.AreEqual("There is no maintenance staff for that Id", message.GetValue(notFoundResult.Value));
+        Assert.AreEqual(DeleteNotFound, message.GetValue(notFoundResult.Value));
     }
     
     [TestMethod]
@@ -128,7 +132,7 @@ public class MaintenanceControllerTests
         var badResult = result as BadRequestObjectResult;
         var message = badResult.Value.GetType().GetProperty(PropertyName);
         
-        Assert.AreEqual("Ensure not to input empty or null data.", message.GetValue(badResult.Value));
+        Assert.AreEqual(InvalidInputsMessage, message.GetValue(badResult.Value));
     }
     
     [TestMethod]
@@ -142,7 +146,7 @@ public class MaintenanceControllerTests
         var badResult = result as BadRequestObjectResult;
         var message = badResult.Value.GetType().GetProperty(PropertyName);
         
-        Assert.AreEqual("Ensure not to input empty or null data.", message.GetValue(badResult.Value));
+        Assert.AreEqual(InvalidInputsMessage, message.GetValue(badResult.Value));
     }
     
     [TestMethod]
@@ -156,6 +160,6 @@ public class MaintenanceControllerTests
         var badResult = result as BadRequestObjectResult;
         var message = badResult.Value.GetType().GetProperty(PropertyName);
         
-        Assert.AreEqual("There is already maintenance staff with that email, please enter another one.", message.GetValue(badResult.Value));
+        Assert.AreEqual(InvalidEmailMessage, message.GetValue(badResult.Value));
     }
 }
