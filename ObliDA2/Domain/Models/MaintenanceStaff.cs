@@ -1,8 +1,22 @@
-﻿namespace Domain.Models;
+﻿using Domain.Exceptions;
+
+namespace Domain.Models;
 
 public class MaintenanceStaff : User
 {
-    public string LastName { get; set; }
+    private string lastName;
+    public string LastName
+    {
+        get => lastName;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new InvalidUserException();
+            }
+            lastName = value;
+        }
+    }
     public Building AssociatedBuilding { get; set; }
     
     public override bool Equals(object obj)

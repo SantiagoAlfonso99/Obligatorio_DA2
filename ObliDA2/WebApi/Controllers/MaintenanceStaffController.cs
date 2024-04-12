@@ -28,7 +28,14 @@ public class MaintenanceStaffController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
+        try
+        {
+            return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
+        }
+        catch(InvalidStaffLogicException)
+        {
+            return NotFound(new { Message = "No MaintenanceStaff was found with that ID." });
+        }
     }
 
     [HttpDelete("{id}")]
@@ -39,13 +46,28 @@ public class MaintenanceStaffController : ControllerBase
         {
             return NoContent();    
         }
-        return NotFound();
+        return NotFound(new { Message = "There is no maintenance staff for that Id"});
     }
 
     [HttpPost]
     public IActionResult Create(MaintenanceCreateModel newStaff)
     {
-        MaintenanceStaff returnedStaff =  staffLogic.Create(newStaff.ToEntity());
-        return Ok(new MaintenanceStaffDetailModel(returnedStaff));
+        try
+        {
+            if (newStaff.AssociatedBuilding == null)
+            {
+                return BadRequest(new { Message = "Ensure not to input empty or null data." });     
+            }
+            MaintenanceStaff returnedStaff = staffLogic.Create(newStaff.ToEntity());
+            return Ok(new MaintenanceStaffDetailModel(returnedStaff));
+        }
+        catch (InvalidStaffLogicException)
+        {
+            return BadRequest(new { Message = "There is already maintenance staff with that email, please enter another one." });
+        }
+        catch (InvalidUserException)
+        {
+            return BadRequest(new { Message = "Ensure not to input empty or null data." });
+        }
     }
 }
