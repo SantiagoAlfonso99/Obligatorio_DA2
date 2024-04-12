@@ -18,6 +18,26 @@ public class MaintenanceStaffLogic
     {
         return staffRepo.GetAll();
     }
+
+    public MaintenanceStaff GetById(int id)
+    {
+        return staffRepo.GetById(id);
+    }
     
+    public MaintenanceStaff Create(MaintenanceStaff newStaff)
+    {
+        staffRepo.Create(newStaff);
+        return newStaff;
+    }
     
+    public bool Delete(int id)
+    {
+        MaintenanceStaff staffToRemove = staffRepo.GetById(id);
+        if (staffToRemove == null)
+        {
+            return false;
+        }
+        staffRepo.Delete(staffToRemove);
+        return true;
+    }
 }
