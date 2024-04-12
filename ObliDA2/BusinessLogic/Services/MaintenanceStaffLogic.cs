@@ -21,11 +21,22 @@ public class MaintenanceStaffLogic
 
     public MaintenanceStaff GetById(int id)
     {
-        return staffRepo.GetById(id);
+        MaintenanceStaff returnedStaff = staffRepo.GetById(id);
+        if (returnedStaff == null)
+        {
+            throw new InvalidStaffLogicException();
+        }
+        return returnedStaff;
     }
     
     public MaintenanceStaff Create(MaintenanceStaff newStaff)
     {
+        List<MaintenanceStaff> allStaff = staffRepo.GetAll();
+        bool success = allStaff.Exists(staff => staff.Email == newStaff.Email);
+        if (success)
+        {
+            throw new InvalidStaffLogicException();
+        }
         staffRepo.Create(newStaff);
         return newStaff;
     }

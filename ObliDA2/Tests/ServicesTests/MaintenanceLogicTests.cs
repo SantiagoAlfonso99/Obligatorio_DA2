@@ -13,7 +13,7 @@ public class MaintenanceLogicTests
 {
     private Mock<IMaintenanceStaffRepository> repo;
     private const int UserId = 1;
-    private MaintenanceStaff newStaff = new MaintenanceStaff() { Id = UserId };
+    private MaintenanceStaff newStaff = new MaintenanceStaff() { Id = UserId, Email = "pepe@gmail.com"};
     private const bool TrueSuccess = true;
     private const bool FalseSuccess = false;
     
@@ -44,7 +44,22 @@ public class MaintenanceLogicTests
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
         MaintenanceStaff returnedStaff = service.GetById(1);
-        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId };
+        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId, Email = "pepe@gmail.com"};
+        
+        repo.VerifyAll();
+        Assert.AreEqual(expectedStaff, returnedStaff);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidStaffLogicException))]
+    public void GetByIdThrowsStaffLogicException()
+    {
+        newStaff = null;
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newStaff);
+        MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
+
+        MaintenanceStaff returnedStaff = service.GetById(1);
+        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId, Email = "pepe@gmail.com"};
         
         repo.VerifyAll();
         Assert.AreEqual(expectedStaff, returnedStaff);
@@ -53,6 +68,24 @@ public class MaintenanceLogicTests
     [TestMethod]
     public void CreateOk()
     {
+        List<MaintenanceStaff> allStaff = new List<MaintenanceStaff>() { new MaintenanceStaff(){Email = "pepe2@gmail.com"}};
+        repo.Setup(repository => repository.GetAll()).Returns(allStaff);
+        repo.Setup(repository => repository.Create(It.IsAny<MaintenanceStaff>()));
+        MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
+
+        MaintenanceStaff returnedStaff = service.Create(newStaff);
+        MaintenanceStaff expectedStaff = new MaintenanceStaff() { Id = UserId, Email = "pepe@gmail.com"};
+        
+        repo.VerifyAll();
+        Assert.AreEqual(expectedStaff, returnedStaff);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(InvalidStaffLogicException))]
+    public void CreateThrowsStaffLogicExceptionOk()
+    {
+        List<MaintenanceStaff> allStaff = new List<MaintenanceStaff>() { new MaintenanceStaff(){Email = "pepe@gmail.com"}};
+        repo.Setup(repository => repository.GetAll()).Returns(allStaff);
         repo.Setup(repository => repository.Create(It.IsAny<MaintenanceStaff>()));
         MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
 
