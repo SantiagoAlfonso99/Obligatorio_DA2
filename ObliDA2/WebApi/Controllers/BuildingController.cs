@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 using Microsoft.Extensions.FileProviders;
 
 namespace WebApi.Controllers;
@@ -21,25 +23,25 @@ public class BuildingController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(buildingLogic.GetAll());
+        return Ok(buildingLogic.GetAll().Select(building => new BuildingDetailModel(building)).ToList());
     }
     
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(buildingLogic.GetById(id));
+        return Ok(new BuildingDetailModel(buildingLogic.GetById(id)));
     }
     
     [HttpPost]
-    public IActionResult Create(Building newBuilding)
+    public IActionResult Create([FromBody] BuildingCreateModel newBuilding)
     {
-        return Ok(buildingLogic.Create(newBuilding));
+        return Ok(new BuildingDetailModel(buildingLogic.Create(newBuilding.ToEntity())));
     }
     
-    [HttpDelete]
-    public IActionResult Delete([FromBody] Building buildingToRemove)
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
     {
-        bool success = buildingLogic.Delete(buildingToRemove);
+        bool success = buildingLogic.Delete(id);
         if (success)
         {
             return NoContent();
@@ -48,8 +50,8 @@ public class BuildingController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] Building newAttributes)
+    public IActionResult Update(int id, [FromBody] BuildingUpdateModel newAttributes)
     {
-        return Ok(buildingLogic.Update(id, newAttributes));
+        return Ok(new BuildingDetailModel(buildingLogic.Update(id, newAttributes.ToEntity())));
     }
 }

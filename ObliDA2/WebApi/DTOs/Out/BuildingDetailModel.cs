@@ -1,7 +1,19 @@
-﻿namespace Domain.Models;
+﻿using Domain.Models;
 
-public class Building
+namespace WebApi.DTOs.Out;
+
+public class BuildingDetailModel
 {
+    public BuildingDetailModel(Building buildingIn)
+    {
+        Id = buildingIn.Id;
+        Name = buildingIn.Name;
+        Address = buildingIn.Address;
+        Location = buildingIn.Location;
+        ConstructionCompany = buildingIn.ConstructionCompany;
+        CommonExpenses = buildingIn.CommonExpenses;
+    }
+    
     public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
@@ -15,7 +27,7 @@ public class Building
         {
             return false;
         }
-        Building other = (Building)obj;
+        BuildingDetailModel other = (BuildingDetailModel)obj;
         return Id == other.Id
                && Name == other.Name
                && Address == other.Address
