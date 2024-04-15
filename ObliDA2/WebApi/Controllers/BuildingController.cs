@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
+using Microsoft.Extensions.FileProviders;
 
 namespace WebApi.Controllers;
 
@@ -27,5 +28,28 @@ public class BuildingController : ControllerBase
     public IActionResult Show(int id)
     {
         return Ok(buildingLogic.GetById(id));
+    }
+    
+    [HttpPost]
+    public IActionResult Create(Building newBuilding)
+    {
+        return Ok(buildingLogic.Create(newBuilding));
+    }
+    
+    [HttpDelete]
+    public IActionResult Delete([FromBody] Building buildingToRemove)
+    {
+        bool success = buildingLogic.Delete(buildingToRemove);
+        if (success)
+        {
+            return NoContent();
+        }
+        return NotFound();
+    }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] Building newAttributes)
+    {
+        return Ok(buildingLogic.Update(id, newAttributes));
     }
 }
