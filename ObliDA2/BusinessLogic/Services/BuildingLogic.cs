@@ -28,4 +28,28 @@ public class BuildingLogic
         buildingRepo.Create(newBuilding);
         return newBuilding;
     }
+    
+    public bool Delete(int id)
+    {
+        Building returnedBuilding = buildingRepo.GetById(id);
+        if (returnedBuilding == null)
+        {
+            return false;
+        }
+        buildingRepo.Delete(returnedBuilding);
+        return true;
+    }
+    
+    public Building Update(int id,Building newAttributes)
+    {
+        Building returnedBuilding = buildingRepo.GetById(id);
+        if (returnedBuilding == null)
+        {
+            throw new ArgumentException();
+        }
+        returnedBuilding.CommonExpenses = newAttributes.CommonExpenses;
+        returnedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
+        buildingRepo.Update(returnedBuilding);
+        return returnedBuilding;
+    }
 }
