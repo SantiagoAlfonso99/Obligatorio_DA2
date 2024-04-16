@@ -9,7 +9,8 @@ public class BuildingDetailModel
         Id = buildingIn.Id;
         Name = buildingIn.Name;
         Address = buildingIn.Address;
-        Location = buildingIn.Location;
+        Latitude = buildingIn.Latitude;
+        Longitude = buildingIn.Longitude;
         ConstructionCompany = buildingIn.ConstructionCompany;
         CommonExpenses = buildingIn.CommonExpenses;
     }
@@ -17,7 +18,8 @@ public class BuildingDetailModel
     public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
-    public string Location { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     public string ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
     
@@ -31,7 +33,8 @@ public class BuildingDetailModel
         return Id == other.Id
                && Name == other.Name
                && Address == other.Address
-               && Location == other.Location
+               && Longitude.Equals(other.Longitude)
+               && Latitude.Equals(other.Latitude)
                && ConstructionCompany == other.ConstructionCompany
                && CommonExpenses == other.CommonExpenses;
     }

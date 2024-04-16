@@ -14,15 +14,18 @@ public class BuildingLogicTests
     private Building newBuilding;
     private BuildingLogic service;
     private Building expectedBuilding;
+    private const int UserId = 1;
+    private const bool DeleteFailed = false;
+    private const bool DeleteSuccessfully = true;
     
     [TestInitialize]
     public void Initialize()
     {
         repo = new Mock<IBuildingRepository>();
         newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Location = "Location", ConstructionCompany = "Company"};
+            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
         expectedBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Location = "Location", ConstructionCompany = "Company"};
+            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
 
     }
     
@@ -45,7 +48,7 @@ public class BuildingLogicTests
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
         service = new BuildingLogic(repo.Object);
 
-        Building returnedBuilding = service.GetById(1);
+        Building returnedBuilding = service.GetById(UserId);
         
         Assert.AreEqual(returnedBuilding, expectedBuilding);
     }
@@ -68,9 +71,9 @@ public class BuildingLogicTests
         repo.Setup(repository => repository.Delete(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
 
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
-        Assert.AreEqual(true, success);
+        Assert.AreEqual(DeleteSuccessfully, success);
     }
     
     [TestMethod]
@@ -81,9 +84,9 @@ public class BuildingLogicTests
         repo.Setup(repository => repository.Delete(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
 
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
-        Assert.AreEqual( false, success);
+        Assert.AreEqual( DeleteFailed, success);
     }
     
     [TestMethod]
@@ -94,7 +97,7 @@ public class BuildingLogicTests
         service = new BuildingLogic(repo.Object);
         Building newAttributes = new Building() { CommonExpenses = 500, ConstructionCompany = "NewCompany" };
         
-        Building returnedBuilding = service.Update(1, newAttributes);
+        Building returnedBuilding = service.Update(UserId, newAttributes);
         expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         expectedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
         Assert.AreEqual( returnedBuilding, expectedBuilding);

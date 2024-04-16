@@ -4,7 +4,7 @@ using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public class BuildingLogic
+public class BuildingLogic : IBuildingLogic
 {
     private IBuildingRepository buildingRepo;
 

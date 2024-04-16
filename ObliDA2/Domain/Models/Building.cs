@@ -1,11 +1,13 @@
-﻿namespace Domain.Models;
+﻿
+namespace Domain.Models;
 
 public class Building
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
-    public string Location { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
     public string ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
     
@@ -19,7 +21,8 @@ public class Building
         return Id == other.Id
                && Name == other.Name
                && Address == other.Address
-               && Location == other.Location
+               && Latitude.Equals(other.Latitude)
+               && Longitude.Equals(other.Longitude)
                && ConstructionCompany == other.ConstructionCompany
                && CommonExpenses == other.CommonExpenses;
     }
