@@ -7,6 +7,9 @@ public class Building
     private string name;
     private string address;
     private string constructionCompany;
+    private int commonExpenses;
+
+    private const int MinValueExpenses = 0;
     
     public int Id { get; set; }
     public string Name
@@ -47,7 +50,19 @@ public class Building
             constructionCompany = value;
         }
     }
-    public int CommonExpenses { get; set; }
+    
+    public int CommonExpenses
+    {
+        get => commonExpenses;
+        set
+        {
+            if (value < MinValueExpenses)
+            {
+                throw new ArgumentException();
+            }
+            commonExpenses = value;
+        }
+    }
     
     public override bool Equals(object obj)
     {

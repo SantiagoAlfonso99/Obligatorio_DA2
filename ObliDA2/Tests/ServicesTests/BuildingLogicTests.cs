@@ -14,6 +14,7 @@ public class BuildingLogicTests
     private Building newBuilding;
     private BuildingLogic service;
     private Building expectedBuilding;
+    private List<Building> buildings;
     private const int UserId = 1;
     private const bool DeleteFailed = false;
     private const bool DeleteSuccessfully = true;
@@ -26,7 +27,7 @@ public class BuildingLogicTests
             Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
         expectedBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
             Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
-
+        buildings = new List<Building>() { expectedBuilding };
     }
     
     [TestMethod]
@@ -139,7 +140,6 @@ public class BuildingLogicTests
     [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateNameShouldThrowException()
     {
-        List<Building> buildings = new List<Building>() { expectedBuilding };
         repo.Setup(repository => repository.Create(It.IsAny<Building>()));
         repo.Setup(repository => repository.GetAll()).Returns(buildings);
         service = new BuildingLogic(repo.Object);
@@ -155,7 +155,6 @@ public class BuildingLogicTests
     [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateAddressShouldThrowException()
     {
-        List<Building> buildings = new List<Building>() { expectedBuilding };
         repo.Setup(repository => repository.Create(It.IsAny<Building>()));
         repo.Setup(repository => repository.GetAll()).Returns(buildings);
         service = new BuildingLogic(repo.Object);
@@ -171,7 +170,6 @@ public class BuildingLogicTests
     [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateLocationShouldThrowException()
     {
-        List<Building> buildings = new List<Building>() { expectedBuilding };
         repo.Setup(repository => repository.Create(It.IsAny<Building>()));
         repo.Setup(repository => repository.GetAll()).Returns(buildings);
         service = new BuildingLogic(repo.Object);
@@ -187,23 +185,31 @@ public class BuildingLogicTests
     [ExpectedException(typeof(EmptyOrNullException))]
     public void CreatingBuildingWithEmptyNameThrowException()
     {
-        Building building = new Building() { Name = "" };
-        Building returnedBuilding = service.Create(building);
+        newBuilding.Name = "";
+        Building returnedBuilding = service.Create(newBuilding);
     }
     
     [TestMethod]
     [ExpectedException(typeof(EmptyOrNullException))]
     public void CreatingBuildingWithEmptyAddressThrowException()
     {
-        Building building = new Building() { Address = "" };
-        Building returnedBuilding = service.Create(building);
+        newBuilding.Address = "";
+        Building returnedBuilding = service.Create(newBuilding);
     }
     
     [TestMethod]
     [ExpectedException(typeof(EmptyOrNullException))]
     public void CreatingBuildingWithEmptyCompanyThrowException()
     {
-        Building building = new Building() { ConstructionCompany = "" };
-        Building returnedBuilding = service.Create(building);
+        newBuilding.ConstructionCompany = "";
+        Building returnedBuilding = service.Create(newBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreatingBuildingWithNegativeCommonExpensesThrowException()
+    {
+        newBuilding.CommonExpenses = -5;
+        Building returnedBuilding = service.Create(newBuilding);
     }
 }

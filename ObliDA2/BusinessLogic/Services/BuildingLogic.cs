@@ -55,11 +55,7 @@ public class BuildingLogic : IBuildingLogic
     
     public Building Update(int id,Building newAttributes)
     {
-        Building returnedBuilding = buildingRepo.GetById(id);
-        if (returnedBuilding == null)
-        {
-            throw new NotFoundException();
-        }
+        Building returnedBuilding = this.GetById(id);
         returnedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         returnedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
         buildingRepo.Update(returnedBuilding);
