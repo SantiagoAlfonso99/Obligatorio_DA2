@@ -56,6 +56,7 @@ public class BuildingLogicTests
     [TestMethod]
     public void CreateOk()
     {
+        repo.Setup(repository => repository.GetAll()).Returns(new List<Building>());
         repo.Setup(repository => repository.Create(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
         
@@ -100,7 +101,55 @@ public class BuildingLogicTests
         Building returnedBuilding = service.Update(UserId, newAttributes);
         expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         expectedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
+        
         Assert.AreEqual( returnedBuilding, expectedBuilding);
     }
     
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreatingBuildingWithDuplicateNameShouldThrowException()
+    {
+        List<Building> buildings = new List<Building>() { expectedBuilding };
+        repo.Setup(repository => repository.Create(It.IsAny<Building>()));
+        repo.Setup(repository => repository.GetAll()).Returns(buildings);
+        service = new BuildingLogic(repo.Object);
+        newBuilding.Latitude = 50.001;
+        newBuilding.Address = "otherAddress";
+        
+        Building returnedBuilding = service.Create(newBuilding);
+        
+        Assert.AreEqual(returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreatingBuildingWithDuplicateAddressShouldThrowException()
+    {
+        List<Building> buildings = new List<Building>() { expectedBuilding };
+        repo.Setup(repository => repository.Create(It.IsAny<Building>()));
+        repo.Setup(repository => repository.GetAll()).Returns(buildings);
+        service = new BuildingLogic(repo.Object);
+        newBuilding.Latitude = 50.001;
+        newBuilding.Name = "otherName";
+        
+        Building returnedBuilding = service.Create(newBuilding);
+        
+        Assert.AreEqual(returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void CreatingBuildingWithDuplicateLocationShouldThrowException()
+    {
+        List<Building> buildings = new List<Building>() { expectedBuilding };
+        repo.Setup(repository => repository.Create(It.IsAny<Building>()));
+        repo.Setup(repository => repository.GetAll()).Returns(buildings);
+        service = new BuildingLogic(repo.Object);
+        newBuilding.Address = "otherAddress";
+        newBuilding.Name = "otherName";
+        
+        Building returnedBuilding = service.Create(newBuilding);
+        
+        Assert.AreEqual(returnedBuilding, expectedBuilding);
+    }
 }

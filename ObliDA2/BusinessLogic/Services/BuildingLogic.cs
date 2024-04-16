@@ -24,7 +24,14 @@ public class BuildingLogic : IBuildingLogic
     }
     
     public Building Create(Building newBuilding)
-    { 
+    {
+        List<Building> buildings = buildingRepo.GetAll();
+        bool InvalidInputs = buildings.Exists(building => (building.Name == newBuilding.Name || building.Address == newBuilding.Address
+            || (building.Longitude == newBuilding.Longitude && building.Latitude == newBuilding.Latitude)));
+        if (InvalidInputs)
+        {
+            throw new ArgumentException();
+        }
         buildingRepo.Create(newBuilding);
         return newBuilding;
     }
