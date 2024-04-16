@@ -17,4 +17,15 @@ public class BuildingLogic
     {
         return buildingRepo.GetAll();
     }
+
+    public Building GetById(int id)
+    {
+        return buildingRepo.GetById(id);
+    }
+    
+    public Building Create(Building newBuilding)
+    { 
+        buildingRepo.Create(newBuilding);
+        return newBuilding;
+    }
 }

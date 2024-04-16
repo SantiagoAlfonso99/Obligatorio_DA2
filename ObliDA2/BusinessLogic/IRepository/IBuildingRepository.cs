@@ -5,4 +5,6 @@ namespace BusinessLogic.IRepository;
 public interface IBuildingRepository
 {
     List<Building> GetAll();
+    Building GetById(int id);
+    void Create(Building newBuilding);
 }
