@@ -21,7 +21,12 @@ public class BuildingLogic : IBuildingLogic
 
     public Building GetById(int id)
     {
-        return buildingRepo.GetById(id);
+        Building returnedBuilding =  buildingRepo.GetById(id);
+        if (returnedBuilding == null)
+        {
+            throw new NotFoundException();
+        }
+        return returnedBuilding;
     }
     
     public Building Create(Building newBuilding)
@@ -53,7 +58,7 @@ public class BuildingLogic : IBuildingLogic
         Building returnedBuilding = buildingRepo.GetById(id);
         if (returnedBuilding == null)
         {
-            throw new ArgumentException();
+            throw new NotFoundException();
         }
         returnedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         returnedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;

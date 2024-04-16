@@ -54,6 +54,19 @@ public class BuildingLogicTests
     }
     
     [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetByIdThrowsException()
+    {
+        newBuilding = null;
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
+        service = new BuildingLogic(repo.Object);
+
+        Building returnedBuilding = service.GetById(UserId);
+        
+        Assert.AreEqual(returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
     public void CreateOk()
     {
         repo.Setup(repository => repository.GetAll()).Returns(new List<Building>());
@@ -93,6 +106,23 @@ public class BuildingLogicTests
     [TestMethod]
     public void UpdateOk()
     {
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
+        repo.Setup(repository => repository.Update(It.IsAny<Building>()));
+        service = new BuildingLogic(repo.Object);
+        Building newAttributes = new Building() { CommonExpenses = 500, ConstructionCompany = "NewCompany" };
+        
+        Building returnedBuilding = service.Update(UserId, newAttributes);
+        expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
+        expectedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
+        
+        Assert.AreEqual( returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void UpdateNonExistentElementThrowsException()
+    {
+        newBuilding = null;
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
         repo.Setup(repository => repository.Update(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
