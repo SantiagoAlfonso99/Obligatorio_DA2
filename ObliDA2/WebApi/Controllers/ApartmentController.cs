@@ -23,4 +23,27 @@ public class ApartmentController : ControllerBase
     {
         return Ok(apartmentLogic.GetAll());
     }
+
+    [HttpGet("{id}")]
+    public IActionResult Show(int id)
+    {
+        return Ok(apartmentLogic.GetById(id));
+    }
+    
+    [HttpPost]
+    public IActionResult Create(Apartment newApartment)
+    {
+        return Ok(apartmentLogic.Create(newApartment));
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success =apartmentLogic.Delete(id);
+        if (success)
+        {
+            return NoContent();
+        }
+        return NotFound();
+    }
 }
