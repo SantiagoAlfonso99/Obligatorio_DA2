@@ -106,7 +106,7 @@ public class BuildingLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
+    [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateNameShouldThrowException()
     {
         List<Building> buildings = new List<Building>() { expectedBuilding };
@@ -122,7 +122,7 @@ public class BuildingLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
+    [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateAddressShouldThrowException()
     {
         List<Building> buildings = new List<Building>() { expectedBuilding };
@@ -138,7 +138,7 @@ public class BuildingLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
+    [ExpectedException(typeof(DuplicateEntryException))]
     public void CreatingBuildingWithDuplicateLocationShouldThrowException()
     {
         List<Building> buildings = new List<Building>() { expectedBuilding };
@@ -151,5 +151,29 @@ public class BuildingLogicTests
         Building returnedBuilding = service.Create(newBuilding);
         
         Assert.AreEqual(returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(EmptyOrNullException))]
+    public void CreatingBuildingWithEmptyNameThrowException()
+    {
+        Building building = new Building() { Name = "" };
+        Building returnedBuilding = service.Create(building);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(EmptyOrNullException))]
+    public void CreatingBuildingWithEmptyAddressThrowException()
+    {
+        Building building = new Building() { Address = "" };
+        Building returnedBuilding = service.Create(building);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(EmptyOrNullException))]
+    public void CreatingBuildingWithEmptyCompanyThrowException()
+    {
+        Building building = new Building() { ConstructionCompany = "" };
+        Building returnedBuilding = service.Create(building);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IRepository;
+using Domain.Exceptions;
 using Domain.Models;
 using IBusinessLogic;
 
@@ -30,7 +31,7 @@ public class BuildingLogic : IBuildingLogic
             || (building.Longitude == newBuilding.Longitude && building.Latitude == newBuilding.Latitude)));
         if (InvalidInputs)
         {
-            throw new ArgumentException();
+            throw new DuplicateEntryException();
         }
         buildingRepo.Create(newBuilding);
         return newBuilding;

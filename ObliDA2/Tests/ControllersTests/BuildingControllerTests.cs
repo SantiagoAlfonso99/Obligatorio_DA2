@@ -63,7 +63,8 @@ public class BuildingControllerTests
         service.Setup(logic => logic.Create(It.IsAny<Building>())).Returns(newBuilding);
         BuildingController controller = new BuildingController(service.Object);
         
-        var result = controller.Create(new BuildingCreateModel(){Name = "Building"});
+        var result = controller.Create(new BuildingCreateModel(){Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
+            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"});
         var okResult = result as OkObjectResult;
         BuildingDetailModel returnedBuilding = okResult.Value as BuildingDetailModel;
         BuildingDetailModel expectedModelDetail = new BuildingDetailModel(newBuilding);
