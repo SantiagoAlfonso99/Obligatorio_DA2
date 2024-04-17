@@ -1,20 +1,21 @@
 using Domain.Models;
-
 namespace WebApi.DTOs.Out;
+
 public class ManagerDetailModel
 {
-    public int Id { get; set; }
-    public string Description { get; set; }
-    public string Department { get; set; }
-    public string Category { get; set; }
-    public string Status { get; set; }
-
-    public ManagerDetailModel(Request request)
+    public ManagerDetailModel(Manager managerIn)
     {
-        Id = request.Id;
-        Description = request.Description;
-        Department = request.Department;
-        Category = request.Category;
-        Status = request.Status.ToString();
+        Id = managerIn.Id;
+        Name = managerIn.Name;
+        LastName = managerIn.LastName;
+        Password = managerIn.Password;
+        Email = managerIn.Email;
     }
+
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+
 }

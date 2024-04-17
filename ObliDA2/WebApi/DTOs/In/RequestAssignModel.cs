@@ -1,6 +1,6 @@
 namespace WebApi.DTOs.In;
 
-public class ManagerAssignModel
+public class RequestAssignModel
 {
     public int RequestId { get; set; }
     public int MaintenanceId { get; set; }

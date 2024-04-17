@@ -14,6 +14,13 @@ public class ManagerLogic
         requestRepo = requestRepoIn;
     }
 
+    public Manager Create(Manager manager)
+    {
+        ValidateManager(manager);
+        managerRepo.Add(manager);
+        return manager;
+    }
+    
     public IEnumerable<Request> ViewRequests(string category = null)
     {
         if (string.IsNullOrEmpty(category))
@@ -46,5 +53,14 @@ public class ManagerLogic
         };
         requestRepo.Add(newRequest);
         return newRequest;
+    }
+    
+    private void ValidateManager(Manager manager)
+    {
+        if (string.IsNullOrWhiteSpace(manager.Name) || string.IsNullOrWhiteSpace(manager.Password))
+        {
+            throw new Exception("Validation failed. All fields must be filled.");
+        }
+        // Additional validation can be added here
     }
 }
