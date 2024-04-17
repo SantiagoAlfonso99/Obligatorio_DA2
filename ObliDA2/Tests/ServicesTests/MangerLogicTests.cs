@@ -32,8 +32,8 @@ public class ManagerLogicTests
    
         var requests = new List<Request>
         {
-            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
-            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+            new Request { Description = "Luz Rota", Department = "A", Category = "Electricista" },
+            new Request { Description = "Goterat", Department = "B", Category = "Fontanero" }
         };
         mockRequestRepo.Setup(repo => repo.GetAll()).Returns(requests);
 
@@ -50,8 +50,8 @@ public class ManagerLogicTests
    
         var requests = new List<Request>
         {
-            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
-            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+            new Request { Description = "Luz Rota", Department = "A", Category = "Electricista" },
+            new Request { Description = "Gotera", Department = "B", Category = "Fontanero" }
         };
         mockRequestRepo.Setup(repo => repo.FilterByCategory("Fontanero")).Returns(requests.Where(r => r.Category == "Fontanero"));
 
@@ -97,7 +97,7 @@ public class ManagerLogicTests
     {
    
         var description = "New issue";
-        var department = "IT";
+        var department = "A";
         var category = "Vecino molesto";
 
    
