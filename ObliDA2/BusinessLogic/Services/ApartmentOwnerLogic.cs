@@ -5,7 +5,7 @@ using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public class ApartmentOwnerLogic
+public class ApartmentOwnerLogic : IApartmentOwnerLogic
 {
     private IApartmentOwnerRepository ownerRepository;
 
@@ -50,10 +50,6 @@ public class ApartmentOwnerLogic
     public ApartmentOwner Update(int id, ApartmentOwner newAttributes)
     {
         ApartmentOwner returnedOwner = ownerRepository.GetById(id);
-        if (returnedOwner == null)
-        {
-            throw new NotFoundException();
-        }
         List<ApartmentOwner> owners = ownerRepository.GetAll();
         bool success = owners.Exists(owner => (owner.Email == newAttributes.Email && owner.Id != returnedOwner.Id));
         if (success)

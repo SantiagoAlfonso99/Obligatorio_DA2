@@ -23,8 +23,9 @@ public class ApartmentOwnerControllerTests
     public void Initialize()
     {
         service = new Mock<IApartmentOwnerLogic>();
-        newApartmentOwner = new ApartmentOwner() { Id = UserId };
-        expectedModel = new ApartmentOwnerDetailModel(newApartmentOwner);
+        newApartmentOwner = new ApartmentOwner() { Id = 1, Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"};
+        ApartmentOwner otherOwner = new ApartmentOwner() { Id = 1, Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"};
+        expectedModel = new ApartmentOwnerDetailModel(otherOwner);
     }
     
     [TestMethod]
@@ -33,23 +34,21 @@ public class ApartmentOwnerControllerTests
         service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newApartmentOwner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Show(1);
+        var result = controller.Show(UserId);
         var okResult = result as OkObjectResult;
-        ApartmentOwner returnedOwner = okResult.Value as ApartmentOwner;
-        ApartmentOwner expected = new ApartmentOwner() { Id = UserId };
+        ApartmentOwnerDetailModel returnedOwner = okResult.Value as ApartmentOwnerDetailModel;
         
         service.VerifyAll();
-        Assert.AreEqual(returnedOwner, expected);
+        Assert.AreEqual(expectedModel, returnedOwner);
     }
     
     [TestMethod]
     public void CreateOk()
     {
-        ApartmentOwner owner = new ApartmentOwner() { Id = UserId };
-        service.Setup(logic => logic.Create(It.IsAny<ApartmentOwner>())).Returns(owner);
+        service.Setup(logic => logic.Create(It.IsAny<ApartmentOwner>())).Returns(newApartmentOwner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Create(new ApartmentOwnerCreateModel(){Name = "pepe"});
+        var result = controller.Create(new ApartmentOwnerCreateModel(){Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"});
         var okResult = result as OkObjectResult;
         ApartmentOwnerDetailModel returnedOwner = okResult.Value as ApartmentOwnerDetailModel;
         
@@ -60,11 +59,11 @@ public class ApartmentOwnerControllerTests
     [TestMethod]
     public void UpdateOk()
     {
-        ApartmentOwner owner = new ApartmentOwner() { Id = UserId };
+        ApartmentOwner owner = new ApartmentOwner() { Id = 1, Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"};
         service.Setup(logic => logic.Update(It.IsAny<int>(), It.IsAny<ApartmentOwner>())).Returns(owner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Update(1, new ApartmentOwnerCreateModel(){Name = "pepe"});
+        var result = controller.Update(UserId, new ApartmentOwnerCreateModel(){Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"});
         var okResult = result as OkObjectResult;
         ApartmentOwnerDetailModel returnedOwner = okResult.Value as ApartmentOwnerDetailModel;
         

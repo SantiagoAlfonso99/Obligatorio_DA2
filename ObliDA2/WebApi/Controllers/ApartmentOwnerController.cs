@@ -22,7 +22,7 @@ public class ApartmentOwnerController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        return Ok(ownerLogic.GetById(id));
+        return Ok(new ApartmentOwnerDetailModel(ownerLogic.GetById(id)));
     }
     
     [HttpPost]
