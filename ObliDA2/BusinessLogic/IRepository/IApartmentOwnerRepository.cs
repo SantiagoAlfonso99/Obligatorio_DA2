@@ -8,4 +8,5 @@ public interface IApartmentOwnerRepository
     ApartmentOwner GetById(int id);
     void Delete(ApartmentOwner owner);
     void Update(ApartmentOwner owner);
+    List<ApartmentOwner> GetAll();
 }

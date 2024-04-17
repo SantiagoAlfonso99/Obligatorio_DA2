@@ -16,6 +16,12 @@ public class ApartmentOwnerLogic
     
     public ApartmentOwner Create(ApartmentOwner newOwner)
     {
+        List<ApartmentOwner> owners = ownerRepository.GetAll();
+        bool success = owners.Exists(owner => owner.Email == newOwner.Email);
+        if (success)
+        {
+            throw new DuplicateEntryException();
+        }
         ownerRepository.Create(newOwner);
         return newOwner;
     } 
@@ -47,6 +53,12 @@ public class ApartmentOwnerLogic
         if (returnedOwner == null)
         {
             throw new NotFoundException();
+        }
+        List<ApartmentOwner> owners = ownerRepository.GetAll();
+        bool success = owners.Exists(owner => (owner.Email == newAttributes.Email && owner.Id != returnedOwner.Id));
+        if (success)
+        {
+            throw new DuplicateEntryException();
         }
         returnedOwner.Name = newAttributes.Name;
         returnedOwner.LastName = newAttributes.LastName;
