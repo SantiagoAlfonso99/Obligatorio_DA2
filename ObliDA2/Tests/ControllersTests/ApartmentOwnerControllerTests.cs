@@ -11,6 +11,8 @@ namespace Tests.ControllersTests;
 [TestClass]
 public class ApartmentOwnerControllerTests
 {
+    private const int UserId = 1;
+    
     [TestMethod]
     public void CreateOk()
     {
