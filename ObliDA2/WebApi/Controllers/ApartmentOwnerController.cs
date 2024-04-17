@@ -22,4 +22,27 @@ public class ApartmentOwnerController : ControllerBase
     {
         return Ok(ownerLogic.GetById(id));
     }
+    
+    [HttpPost]
+    public IActionResult Create(ApartmentOwner owner)
+    {
+        return Ok(ownerLogic.Create(owner));
+    }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, ApartmentOwner owner)
+    {
+        return Ok(ownerLogic.Update(id, owner));
+    }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        bool success = ownerLogic.Delete(id);
+        if (success)
+        {
+            return NoContent();
+        }
+        return NotFound(new { Message = "The deletion action could not be completed because there is no apartment owner with that ID" });
+    }
 }
