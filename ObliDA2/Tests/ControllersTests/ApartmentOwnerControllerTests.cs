@@ -12,19 +12,31 @@ namespace Tests.ControllersTests;
 public class ApartmentOwnerControllerTests
 {
     private const int UserId = 1;
+    private Mock<IApartmentOwnerLogic> service;
+    private ApartmentOwner newApartmentOwner;
+    private ApartmentOwnerDetailModel expectedModel;
+    private const string PropertyName = "Message";
+    private const string NotFoundMessage =
+        "The deletion action could not be completed because there is no apartment owner with that ID";
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        service = new Mock<IApartmentOwnerLogic>();
+        newApartmentOwner = new ApartmentOwner() { Id = UserId };
+        expectedModel = new ApartmentOwnerDetailModel(newApartmentOwner);
+    }
     
     [TestMethod]
     public void GetByIdOk()
     {
-        Mock<IApartmentOwnerLogic> service = new Mock<IApartmentOwnerLogic>();
-        ApartmentOwner owner = new ApartmentOwner() { Id = 1 };
-        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(owner);
+        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newApartmentOwner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
         var result = controller.Show(1);
         var okResult = result as OkObjectResult;
         ApartmentOwner returnedOwner = okResult.Value as ApartmentOwner;
-        ApartmentOwner expected = new ApartmentOwner() { Id = 1 };
+        ApartmentOwner expected = new ApartmentOwner() { Id = UserId };
         
         service.VerifyAll();
         Assert.AreEqual(returnedOwner, expected);
@@ -33,49 +45,58 @@ public class ApartmentOwnerControllerTests
     [TestMethod]
     public void CreateOk()
     {
-        Mock<IApartmentOwnerLogic> service = new Mock<IApartmentOwnerLogic>();
-        ApartmentOwner owner = new ApartmentOwner() { Id = 1 };
+        ApartmentOwner owner = new ApartmentOwner() { Id = UserId };
         service.Setup(logic => logic.Create(It.IsAny<ApartmentOwner>())).Returns(owner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Create(new ApartmentOwner(){Id = 1});
+        var result = controller.Create(new ApartmentOwnerCreateModel(){Name = "pepe"});
         var okResult = result as OkObjectResult;
-        ApartmentOwner returnedOwner = okResult.Value as ApartmentOwner;
-        ApartmentOwner expected = new ApartmentOwner() { Id = 1 };
+        ApartmentOwnerDetailModel returnedOwner = okResult.Value as ApartmentOwnerDetailModel;
         
         service.VerifyAll();
-        Assert.AreEqual(returnedOwner, expected);
+        Assert.AreEqual(returnedOwner, expectedModel);
     }
     
     [TestMethod]
     public void UpdateOk()
     {
-        Mock<IApartmentOwnerLogic> service = new Mock<IApartmentOwnerLogic>();
-        ApartmentOwner owner = new ApartmentOwner() { Id = 1 };
+        ApartmentOwner owner = new ApartmentOwner() { Id = UserId };
         service.Setup(logic => logic.Update(It.IsAny<int>(), It.IsAny<ApartmentOwner>())).Returns(owner);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Update(1, new ApartmentOwner(){Id = 1});
+        var result = controller.Update(1, new ApartmentOwnerCreateModel(){Name = "pepe"});
         var okResult = result as OkObjectResult;
-        ApartmentOwner returnedOwner = okResult.Value as ApartmentOwner;
-        ApartmentOwner expected = new ApartmentOwner() { Id = 1 };
+        ApartmentOwnerDetailModel returnedOwner = okResult.Value as ApartmentOwnerDetailModel;
         
         service.VerifyAll();
-        Assert.AreEqual(returnedOwner, expected);
+        Assert.AreEqual(returnedOwner, expectedModel);
     }
     
     [TestMethod]
     public void DeleteOk()
     {
-        Mock<IApartmentOwnerLogic> service = new Mock<IApartmentOwnerLogic>();
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(true);
         ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
         
-        var result = controller.Delete(1);
+        var result = controller.Delete(UserId);
         var okResult = result as OkObjectResult;
         var noContentResult = result as NoContentResult;
 
         service.VerifyAll();
         Assert.IsNotNull(noContentResult);
+    }
+    
+    [TestMethod]
+    public void DeleteReturnNotFoundOk()
+    {
+        service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(false);
+        ApartmentOwnerController controller = new ApartmentOwnerController(service.Object);
+        
+        var result = controller.Delete(UserId);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
+        
+        service.VerifyAll();
+        Assert.AreEqual(NotFoundMessage, message.GetValue(notFoundResult.Value));
     }
 }

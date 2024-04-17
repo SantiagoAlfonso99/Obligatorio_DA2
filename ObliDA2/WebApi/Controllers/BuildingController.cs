@@ -46,7 +46,7 @@ public class BuildingController : ControllerBase
         {
             return NoContent();
         }
-        return NotFound();
+        return NotFound(new { Message = "The deletion action could not be completed because there is no Building with that ID" });
     }
     
     [HttpPut("{id}")]

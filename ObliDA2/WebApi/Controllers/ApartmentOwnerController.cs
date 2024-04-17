@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Models;
 using Domain.Exceptions;
+using WebApi.DTOs.In;
+using WebApi.DTOs.Out;
 
 namespace WebApi.Controllers;
 
@@ -24,15 +26,15 @@ public class ApartmentOwnerController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult Create(ApartmentOwner owner)
+    public IActionResult Create(ApartmentOwnerCreateModel owner)
     {
-        return Ok(ownerLogic.Create(owner));
+        return Ok(new ApartmentOwnerDetailModel(ownerLogic.Create(owner.ToEntity())));
     }
     
     [HttpPut("{id}")]
-    public IActionResult Update(int id, ApartmentOwner owner)
+    public IActionResult Update(int id, ApartmentOwnerCreateModel newAttributes)
     {
-        return Ok(ownerLogic.Update(id, owner));
+        return Ok(new ApartmentOwnerDetailModel(ownerLogic.Update(id, newAttributes.ToEntity())));
     }
     
     [HttpDelete("{id}")]

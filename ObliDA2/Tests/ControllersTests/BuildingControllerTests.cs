@@ -17,6 +17,10 @@ public class BuildingControllerTests
     private Building newBuilding;
     private Building expectedModel;
     private const int UserId = 1;
+    private const string PropertyName = "Message";
+    private const string NotFoundMessage =
+        "The deletion action could not be completed because there is no Building with that ID";
+    
         
     [TestInitialize]
     public void Initialize()
@@ -100,5 +104,19 @@ public class BuildingControllerTests
         
         service.VerifyAll();
         Assert.AreEqual(expectedModelDetail, returnedBuilding);
+    }
+    
+    [TestMethod]
+    public void DeleteReturnsFalse()
+    {
+        service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(false);
+        BuildingController controller = new BuildingController(service.Object);
+        
+        var result = controller.Delete(UserId);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
+        
+        service.VerifyAll();
+        Assert.AreEqual(NotFoundMessage, message.GetValue(notFoundResult.Value));
     }
 }
