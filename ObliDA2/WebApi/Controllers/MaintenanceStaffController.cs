@@ -30,14 +30,7 @@ public class MaintenanceStaffController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        try
-        {
-            return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
-        }
-        catch(InvalidStaffLogicException)
-        {
-            return NotFound(new { Message = "No MaintenanceStaff was found with that ID." });
-        }
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
     }
 
     [HttpDelete("{id}")]
@@ -54,20 +47,9 @@ public class MaintenanceStaffController : ControllerBase
     [HttpPost]
     public IActionResult Create(MaintenanceCreateModel newStaff)
     {
-        try
-        {
-            var newStaffModel = newStaff.ToEntity();
-            newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
-            MaintenanceStaff returnedStaff = staffLogic.Create(newStaffModel);
-            return Ok(new MaintenanceStaffDetailModel(returnedStaff));
-        }
-        catch (InvalidStaffLogicException)
-        {
-            return BadRequest(new { Message = "There is already maintenance staff with that email, please enter another one." });
-        }
-        catch (InvalidUserException)
-        {
-            return BadRequest(new { Message = "Ensure not to input empty or null data." });
-        }
+        var newStaffModel = newStaff.ToEntity();
+        newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
+        MaintenanceStaff returnedStaff = staffLogic.Create(newStaffModel);
+        return Ok(new MaintenanceStaffDetailModel(returnedStaff));
     }
 }

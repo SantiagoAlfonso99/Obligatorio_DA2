@@ -16,10 +16,7 @@ public class MaintenanceControllerTests
     private Mock<IMaintenanceLogic> service;
     private Mock<IBuildingLogic> buildingService;
     private const int UserId = 1;
-    private const string ShowNotFound = "No MaintenanceStaff was found with that ID.";
     private const string DeleteNotFound = "There is no maintenance staff for that Id";
-    private const string InvalidInputsMessage = "Ensure not to input empty or null data.";
-    private const string InvalidEmailMessage = "There is already maintenance staff with that email, please enter another one.";
     private MaintenanceStaff newStaff;
     private MaintenanceStaffController controller;
     private const string PropertyName = "Message";
@@ -61,20 +58,6 @@ public class MaintenanceControllerTests
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);
-    }
-    
-    [TestMethod]
-    public void ShowCatchInvalidLogicException()
-    {
-        service.Setup(logic => logic.GetById(It.IsAny<int>())).Throws(new InvalidStaffLogicException());
-        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
-        
-        var result = controller.Show(1);
-        var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
-        
-        service.VerifyAll();
-        Assert.AreEqual(ShowNotFound, message.GetValue(notFoundResult.Value));
     }
     
     [TestMethod]
@@ -120,33 +103,5 @@ public class MaintenanceControllerTests
         
         service.VerifyAll();
         Assert.AreEqual(returnedValue, expectedValue);
-    }
-    
-    [TestMethod]
-    public void CreateBadRequestForEmptyUserAttributes()
-    {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuildingId = 1};
-        service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
-        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
-        
-        var result = controller.Create(newStaffModel);
-        var badResult = result as BadRequestObjectResult;
-        var message = badResult.Value.GetType().GetProperty(PropertyName);
-        
-        Assert.AreEqual(InvalidInputsMessage, message.GetValue(badResult.Value));
-    }
-    
-    [TestMethod]
-    public void CreateCatchInvalidStaffLogicException()
-    {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "pep", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuildingId = 1};
-        service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Throws(new InvalidStaffLogicException());
-        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
-        
-        var result = controller.Create(newStaffModel);
-        var badResult = result as BadRequestObjectResult;
-        var message = badResult.Value.GetType().GetProperty(PropertyName);
-        
-        Assert.AreEqual(InvalidEmailMessage, message.GetValue(badResult.Value));
     }
 }
