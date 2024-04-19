@@ -24,9 +24,9 @@ public class BuildingLogicTests
     {
         repo = new Mock<IBuildingRepository>();
         newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
+            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company", BuildingManager = new Manager(){Id = 1}};
         expectedBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company"};
+            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company", BuildingManager = new Manager(){Id = 1}};
         buildings = new List<Building>() { expectedBuilding };
     }
     

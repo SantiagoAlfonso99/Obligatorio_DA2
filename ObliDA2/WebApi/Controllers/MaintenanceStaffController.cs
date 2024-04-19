@@ -13,10 +13,12 @@ namespace WebApi.Controllers;
 public class MaintenanceStaffController : ControllerBase
 {
     private IMaintenanceLogic staffLogic;
+    private IBuildingLogic buildingLogic;
 
-    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn)
+    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn, IBuildingLogic buildingLogicIn)
     {
         staffLogic = staffLogicIn;
+        buildingLogic = buildingLogicIn;
     }
     
     [HttpGet]
@@ -54,11 +56,9 @@ public class MaintenanceStaffController : ControllerBase
     {
         try
         {
-            if (newStaff.AssociatedBuilding == null)
-            {
-                return BadRequest(new { Message = "Ensure not to input empty or null data." });     
-            }
-            MaintenanceStaff returnedStaff = staffLogic.Create(newStaff.ToEntity());
+            var newStaffModel = newStaff.ToEntity();
+            newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
+            MaintenanceStaff returnedStaff = staffLogic.Create(newStaffModel);
             return Ok(new MaintenanceStaffDetailModel(returnedStaff));
         }
         catch (InvalidStaffLogicException)

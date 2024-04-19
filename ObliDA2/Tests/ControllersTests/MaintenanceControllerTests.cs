@@ -14,6 +14,7 @@ namespace Tests.ControllersTests;
 public class MaintenanceControllerTests
 {
     private Mock<IMaintenanceLogic> service;
+    private Mock<IBuildingLogic> buildingService;
     private const int UserId = 1;
     private const string ShowNotFound = "No MaintenanceStaff was found with that ID.";
     private const string DeleteNotFound = "There is no maintenance staff for that Id";
@@ -26,7 +27,7 @@ public class MaintenanceControllerTests
     [TestInitialize]
     public void Initialize()
     {
-        
+        buildingService = new Mock<IBuildingLogic>();
         service = new Mock<IMaintenanceLogic>();
         newStaff = new MaintenanceStaff() { Id = UserId, Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id =1}};
     }
@@ -36,7 +37,7 @@ public class MaintenanceControllerTests
     {
         List<MaintenanceStaff> staff = new List<MaintenanceStaff>() { newStaff };
         service.Setup(logic => logic.GetAll()).Returns(staff);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
@@ -51,7 +52,7 @@ public class MaintenanceControllerTests
     public void ShowOk()
     {
         service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newStaff);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Show(1);
         var okResult = result as OkObjectResult;
@@ -66,7 +67,7 @@ public class MaintenanceControllerTests
     public void ShowCatchInvalidLogicException()
     {
         service.Setup(logic => logic.GetById(It.IsAny<int>())).Throws(new InvalidStaffLogicException());
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Show(1);
         var notFoundResult = result as NotFoundObjectResult;
@@ -80,7 +81,7 @@ public class MaintenanceControllerTests
     public void DeleteOk()
     {
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(true);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
@@ -94,7 +95,7 @@ public class MaintenanceControllerTests
     public void DeleteReturnsFalse()
     {
         service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(false);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;
@@ -108,9 +109,9 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void CreateOk()
     {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id =1}};
+        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuildingId = 1};
         service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Create(newStaffModel);
         var okResult = result as OkObjectResult;
@@ -122,25 +123,11 @@ public class MaintenanceControllerTests
     }
     
     [TestMethod]
-    public void CreateBadRequestForEmptyBuilding()
-    {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = null};
-        service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
-        controller = new MaintenanceStaffController(service.Object);
-        
-        var result = controller.Create(newStaffModel);
-        var badResult = result as BadRequestObjectResult;
-        var message = badResult.Value.GetType().GetProperty(PropertyName);
-        
-        Assert.AreEqual(InvalidInputsMessage, message.GetValue(badResult.Value));
-    }
-    
-    [TestMethod]
     public void CreateBadRequestForEmptyUserAttributes()
     {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id = 1}};
+        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuildingId = 1};
         service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Create(newStaffModel);
         var badResult = result as BadRequestObjectResult;
@@ -152,9 +139,9 @@ public class MaintenanceControllerTests
     [TestMethod]
     public void CreateCatchInvalidStaffLogicException()
     {
-        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "pep", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id = 1}};
+        MaintenanceCreateModel newStaffModel = new MaintenanceCreateModel() { Name = "pepe", LastName = "pep", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuildingId = 1};
         service.Setup(logic => logic.Create(It.IsAny<MaintenanceStaff>())).Throws(new InvalidStaffLogicException());
-        controller = new MaintenanceStaffController(service.Object);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object);
         
         var result = controller.Create(newStaffModel);
         var badResult = result as BadRequestObjectResult;

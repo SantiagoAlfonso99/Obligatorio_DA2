@@ -50,7 +50,6 @@ public class Building
             constructionCompany = value;
         }
     }
-    
     public int CommonExpenses
     {
         get => commonExpenses;
@@ -63,6 +62,7 @@ public class Building
             commonExpenses = value;
         }
     }
+    public Manager BuildingManager { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -72,11 +72,12 @@ public class Building
         }
         Building other = (Building)obj;
         return Id == other.Id
-               && Name == other.Name
-               && Address == other.Address
-               && Latitude.Equals(other.Latitude)
-               && Longitude.Equals(other.Longitude)
-               && ConstructionCompany == other.ConstructionCompany
-               && CommonExpenses == other.CommonExpenses;
+            && Name == other.Name
+            && Address == other.Address
+            && Latitude.Equals(other.Latitude)
+            && Longitude.Equals(other.Longitude)
+            && ConstructionCompany == other.ConstructionCompany
+            && CommonExpenses == other.CommonExpenses
+            && BuildingManager.Equals(other.BuildingManager);
     }
 }
