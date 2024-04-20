@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
-using Domain.Models;
-using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 
@@ -49,7 +47,6 @@ public class MaintenanceStaffController : ControllerBase
     {
         var newStaffModel = newStaff.ToEntity();
         newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
-        MaintenanceStaff returnedStaff = staffLogic.Create(newStaffModel);
-        return Ok(new MaintenanceStaffDetailModel(returnedStaff));
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.Create(newStaffModel)));
     }
 }

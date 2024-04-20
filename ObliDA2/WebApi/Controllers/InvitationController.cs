@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
-using Domain.Models;
-using Domain.Exceptions;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
@@ -29,29 +27,15 @@ public class InvitationController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        try
-        {
-            var invitation = invitationLogic.GetById(id);
-            return Ok(new InvitationDetailModel(invitation));
-        }
-        catch (InvalidInvitationException ex)
-        {
-            return NotFound(new { Message = "The show action could not be completed because there is no invitation with that ID" });
-        }
+        var invitation = invitationLogic.GetById(id); 
+        return Ok(new InvitationDetailModel(invitation));
     }
     
     [HttpPost]
     public IActionResult Create([FromBody] InvitationCreateModel newInvitation)
     {
-        try
-        {
-            var createdInvitation = invitationLogic.Create(newInvitation.ToEntity());
-            return Ok(new InvitationDetailModel(createdInvitation));
-        }
-        catch (InvalidInvitationException ex)
-        {
-            return BadRequest(new { Message = "Make sure not to insert null values and that there is no other invitation for the same recipient" });
-        }
+        var createdInvitation = invitationLogic.Create(newInvitation.ToEntity());
+        return Ok(new InvitationDetailModel(createdInvitation));
     }
     
     [HttpDelete("{id}")]
@@ -68,18 +52,11 @@ public class InvitationController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult InvitationResponse(int id, [FromBody] InvitationResponse response)
     {
-        try
+        if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Password))
         {
-            if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Password))
-            {
-                return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
-            }
-            var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
-            return Ok(new InvitationDetailModel(invitation));
+            return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
         }
-        catch (InvalidInvitationLogicException ex)
-        {
-            return NotFound(new { Message = "Error, invitation not found." });
-        }
+        var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
+        return Ok(new InvitationDetailModel(invitation));
     }
 }

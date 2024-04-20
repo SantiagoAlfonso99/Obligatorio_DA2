@@ -9,8 +9,8 @@ public class ApartmentCreateModel
     public int NumberOfBedrooms { get; set; }
     public int NumberOfBathrooms { get; set; }
     public bool Terrace { get; set; }
-    public ApartmentOwner Owner { get; set; }
-    public Building Building { get; set; }
+    public int OwnerId { get; set; }
+    public int BuildingId { get; set; }
 
     public Apartment ToEntity()
     {
@@ -20,9 +20,7 @@ public class ApartmentCreateModel
             Number = this.Number,
             NumberOfBathrooms = this.NumberOfBathrooms,
             NumberOfBedrooms = this.NumberOfBedrooms,
-            Terrace = this.Terrace,
-            Owner = this.Owner,
-            Building = this.Building
+            Terrace = this.Terrace
         };
     }
 }

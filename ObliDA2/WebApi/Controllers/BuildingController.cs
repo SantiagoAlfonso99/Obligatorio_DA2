@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
-using Domain.Models;
-using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using Microsoft.Extensions.FileProviders;
