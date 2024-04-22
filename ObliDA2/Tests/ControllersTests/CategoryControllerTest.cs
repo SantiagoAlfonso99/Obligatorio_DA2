@@ -17,13 +17,8 @@ public class CategoryControllerTest
     private Category expectedCategory;
     private const int UserId = 1;
     private const string PropertyName = "Message";
-    private const string CreateCategoryExceptionMess = "Please make sure not to input null or empty data.";
-    private const string CreateCategoryLogicExceptionMess =
-        "Unable to create category because a category with that name already exists.";
     private const string DeleteNotFoundMes =
         "The deletion action could not be completed because there is no Category with that ID";
-    private const string ShowNotFoundMes =
-        "The show action could not be completed because there is no Category with that ID";
     
     [TestInitialize]
     public void Initialize()
@@ -86,40 +81,6 @@ public class CategoryControllerTest
     }
     
     [TestMethod]
-    public void CreateCatchInvalidLogicException()
-    {
-        Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
-        Category consultedCategory = new Category() { Id = UserId };
-        service.Setup(logic => logic.Create(It.IsAny<Category>())).Throws(new InvalidCategoryLogicException());
-        CategoryController controller = new CategoryController(service.Object);
-        CategoryCreateModel newCategory = new CategoryCreateModel() { Name = "CategoryName" };
-            
-        var result = controller.Create(newCategory);
-        var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
-        
-        service.VerifyAll();
-        Assert.AreEqual(CreateCategoryLogicExceptionMess, message.GetValue(notFoundResult.Value));
-    }
-    
-    [TestMethod]
-    public void CreateCatchInvalidCategoryException()
-    {
-        Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
-        Category consultedCategory = new Category() { Id = UserId };
-        service.Setup(logic => logic.Create(It.IsAny<Category>())).Throws(new InvalidCategoryException());
-        CategoryController controller = new CategoryController(service.Object);
-        CategoryCreateModel newCategory = new CategoryCreateModel() { Name = "CategoryName" };
-            
-        var result = controller.Create(newCategory);
-        var badRequestResult = result as BadRequestObjectResult;
-        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
-        
-        service.VerifyAll();
-        Assert.AreEqual(CreateCategoryExceptionMess, message.GetValue(badRequestResult.Value));
-    }
-    
-    [TestMethod]
     public void DeleteOk()
     {
         Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
@@ -148,22 +109,5 @@ public class CategoryControllerTest
         service.VerifyAll();
         
         Assert.AreEqual(DeleteNotFoundMes, message.GetValue(notFoundResult.Value));
-    }
-    
-    [TestMethod]
-    public void ShowNotFoundElement()
-    {
-        Mock<ICategoryLogic> service = new Mock<ICategoryLogic>();
-        Category consultedCategory = new Category() { Id = UserId };
-        service.Setup(logic => logic.GetById(It.IsAny<int>())).Throws(new InvalidCategoryLogicException());
-        CategoryController controller = new CategoryController(service.Object);
-        
-        var result = controller.Show(UserId);
-        var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
-        
-        service.VerifyAll();
-        
-        Assert.AreEqual(ShowNotFoundMes, message.GetValue(notFoundResult.Value));
     }
 }

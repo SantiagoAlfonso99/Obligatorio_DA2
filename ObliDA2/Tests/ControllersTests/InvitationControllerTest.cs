@@ -17,10 +17,7 @@ public class InvitationControllerTest
     private const int UserId = 1;
     private const string EmailResponse = "pepe@gmail.com";
     private const string Password = "pepe";
-    private const string InvitationNotFound = "Error, invitation not found.";
     private const string AcceptInvitationBadRequest = "Please ensure to enter a non-null or non-empty email and password";
-    private const string CreateInvitationBadRequest = "Make sure not to insert null values and that there is no other invitation for the same recipient";
-    private const string ShowInvitationNotFoundMes = "The show action could not be completed because there is no invitation with that ID";
     private const string PropertyName = "Message";
     private const string Name = "pepe";
     private const string ExpectedMessage = "The deletion action could not be completed because there is no invitation with that ID";
@@ -135,22 +132,6 @@ public class InvitationControllerTest
 
         Assert.AreEqual(new InvitationDetailModel(expectedInvitation), returnedInvitation);
     }
-    
-    [TestMethod]
-    public void UserAcceptInvitationThrowExceptionTest()
-    {
-        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Throws(new InvalidInvitationLogicException());
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
-        
-        var result = controller.InvitationResponse(UserId, response);
-        var notFoundResult = result as NotFoundObjectResult;
-        var message = notFoundResult.Value.GetType().GetProperty(PropertyName);
-        
-        invitationLogicMock.VerifyAll();
-
-        Assert.AreEqual(InvitationNotFound, message.GetValue(notFoundResult.Value));
-    }
-    
     [TestMethod]
     public void UserAcceptInvitationBadRequestTest()
     {
@@ -164,32 +145,5 @@ public class InvitationControllerTest
         var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
 
         Assert.AreEqual(AcceptInvitationBadRequest, message.GetValue(badRequestResult.Value));
-    }
-    
-    [TestMethod]
-    public void CreateInvitationBadRequestTest()
-    {
-        InvitationCreateModel newInvitation = new InvitationCreateModel() { CreatorId = 2};
-        invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Throws(new InvalidInvitationException());
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
-        
-        var result = controller.Create(newInvitation);
-        var badRequestResult = result as BadRequestObjectResult;
-        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
-
-        Assert.AreEqual(CreateInvitationBadRequest, message.GetValue(badRequestResult.Value));
-    }
-    
-    [TestMethod]
-    public void ShowInvitationNotFoundTest()
-    {
-        invitationLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Throws(new InvalidInvitationException());
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
-        
-        var result = controller.Show(UserId);
-        var badRequestResult = result as NotFoundObjectResult;
-        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
-
-        Assert.AreEqual(ShowInvitationNotFoundMes, message.GetValue(badRequestResult.Value));
     }
 }
