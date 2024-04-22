@@ -11,56 +11,76 @@ namespace Tests.ServicesTests;
 [TestClass]
 public class ApartmentLogicTests
 {
+    private Mock<IApartmentRepository> repo;
+    private Apartment newApartment;
+    private Apartment expectedApartment;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        newApartment = new Apartment()
+        {
+            Id =1, NumberOfBathrooms = 3, NumberOfBedrooms = 4,
+            Floor = 3, Building = new Building(){Id = 1}, Owner = new ApartmentOwner(){Id = 1}, Terrace = true
+            , Number = 67
+        };
+        expectedApartment = new Apartment()
+        {
+            Id =1, NumberOfBathrooms = 3, NumberOfBedrooms = 4,
+            Floor = 3, Building = new Building(){Id = 1}, Owner = new ApartmentOwner(){Id = 1}, Terrace = true
+            , Number = 67
+        };
+        repo = new Mock<IApartmentRepository>();
+    }
+    
     [TestMethod]
     public void CreateOk()
     {
-        Mock<IApartmentRepository> repo = new Mock<IApartmentRepository>();
         repo.Setup(repository => repository.Create(It.IsAny<Apartment>()));
         ApartmentLogic service = new ApartmentLogic(repo.Object);
-
         
-        Apartment returnedApartment = service.Create(new Apartment(){Id = 1});
-        Apartment expectedApartment = new Apartment() { Id = 1 };
+        Apartment returnedApartment = service.Create(newApartment);
+        
+        repo.VerifyAll();
         Assert.AreEqual(expectedApartment, returnedApartment);
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Mock<IApartmentRepository> repo = new Mock<IApartmentRepository>();
-        List<Apartment> consultedElements = new List<Apartment>(){new Apartment(){Id = 1}};
+        List<Apartment> consultedElements = new List<Apartment>(){newApartment};
         repo.Setup(repository => repository.GetAll()).Returns(consultedElements);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
-
+        List<Apartment> expectedApartments = new List<Apartment>(){expectedApartment};
         
         List<Apartment> returnedModels = service.GetAll();
-        List<Apartment> expectedApartments = new List<Apartment>(){new Apartment(){Id = 1}};
+        
+        repo.VerifyAll();
         CollectionAssert.AreEqual(expectedApartments, returnedModels);
     }
     
     [TestMethod]
     public void GetByIdOk()
     {
-        Mock<IApartmentRepository> repo = new Mock<IApartmentRepository>();
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(new Apartment(){Id = 1});
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newApartment);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
-
         
         Apartment returnedModels = service.GetById(1);
-        Apartment expectedApartment = new Apartment(){Id = 1};
+        
+        repo.VerifyAll();
         Assert.AreEqual(expectedApartment, returnedModels);
     }
     
     [TestMethod]
     public void DeleteReturnsTrue()
     {
-        Mock<IApartmentRepository> repo = new Mock<IApartmentRepository>();
         repo.Setup(repository => repository.Delete(It.IsAny<Apartment>()));
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(new Apartment(){Id =1});
         ApartmentLogic service = new ApartmentLogic(repo.Object);
-
         
         bool success = service.Delete(1);
+        
+        repo.VerifyAll();
         Assert.AreEqual(success, true);
     }
     
@@ -68,13 +88,13 @@ public class ApartmentLogicTests
     public void DeleteReturnsFalse()
     {
         Apartment nullApartment = null;
-        Mock<IApartmentRepository> repo = new Mock<IApartmentRepository>();
         repo.Setup(repository => repository.Delete(It.IsAny<Apartment>()));
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullApartment);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
-
         
         bool success = service.Delete(1);
+        
+        repo.VerifyAll();
         Assert.AreEqual(success, false);
     }
 };
