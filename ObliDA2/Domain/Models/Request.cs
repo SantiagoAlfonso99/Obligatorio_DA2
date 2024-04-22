@@ -9,6 +9,7 @@ public class Request
     public DateTime service_start { get; set; }
     public DateTime service_end { get; set; }
     public int? AssignedToMaintenanceId { get; set; } 
+    public int BuildingAssociatedId { get; set; }
 }
 
 public enum RequestStatus

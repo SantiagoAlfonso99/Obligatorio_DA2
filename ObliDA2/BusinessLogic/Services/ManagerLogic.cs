@@ -47,4 +47,9 @@ public class ManagerLogic
         requestRepo.Add(newRequest);
         return newRequest;
     }
+    
+    public IEnumerable<Request> GetAllRequest()
+    {
+        return requestRepo.GetAll();
+    }
 }
