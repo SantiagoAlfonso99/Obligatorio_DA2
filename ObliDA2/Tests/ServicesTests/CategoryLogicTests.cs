@@ -40,7 +40,7 @@ public class CategoryLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidCategoryLogicException))]
+    [ExpectedException(typeof(NotFoundException))]
     public void GetByIdThrowsException()
     {
         Category nullCategory = null;
@@ -55,7 +55,7 @@ public class CategoryLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidCategoryException))]
+    [ExpectedException(typeof(EmptyOrNullException))]
     public void CreateCategoryWithEmptyNameThrowsException()
     {
         Category newCategory = new Category() { Id = UserId, Name = "" };
@@ -98,7 +98,7 @@ public class CategoryLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidCategoryLogicException))]
+    [ExpectedException(typeof(DuplicateEntryException))]
     public void CreateCategoryWithRepeatedNameThrowsException()
     {
         Category newCategory = new Category() { Id = UserId, Name = "CategoryName" };

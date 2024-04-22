@@ -11,7 +11,7 @@ public class Admin : User
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidUserException();
+                throw new EmptyOrNullException();
             }
             lastName = value;
         }

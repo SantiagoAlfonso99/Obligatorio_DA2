@@ -23,7 +23,7 @@ public class Invitation
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidInvitationException();
+                throw new EmptyOrNullException();
             }
             recipientEmail = value;
         }
@@ -36,7 +36,7 @@ public class Invitation
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidInvitationException();
+                throw new EmptyOrNullException();
             }
             name = value;
         }
@@ -49,7 +49,7 @@ public class Invitation
         {
             if (value < DateTime.Now)
             {
-                throw new InvalidInvitationException();
+                throw new ArgumentException();
             }
             deadLine = value;
         }
@@ -64,7 +64,7 @@ public class Invitation
         {
             if (string.IsNullOrEmpty(value) || InvalidStatus(value))
             {
-                throw new InvalidInvitationException();
+                throw new ArgumentException();
             }
             status = value;
         }

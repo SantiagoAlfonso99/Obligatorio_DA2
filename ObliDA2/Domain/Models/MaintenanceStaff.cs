@@ -12,7 +12,7 @@ public class MaintenanceStaff : User
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidUserException();
+                throw new EmptyOrNullException();
             }
             lastName = value;
         }

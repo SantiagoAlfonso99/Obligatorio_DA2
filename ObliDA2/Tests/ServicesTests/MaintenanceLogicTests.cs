@@ -52,7 +52,7 @@ public class MaintenanceLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidStaffLogicException))]
+    [ExpectedException(typeof(NotFoundException))]
     public void GetByIdThrowsStaffLogicException()
     {
         newStaff = null;
@@ -82,7 +82,7 @@ public class MaintenanceLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidStaffLogicException))]
+    [ExpectedException(typeof(NotFoundException))]
     public void CreateThrowsStaffLogicExceptionOk()
     {
         List<MaintenanceStaff> allStaff = new List<MaintenanceStaff>() { new MaintenanceStaff(){Email = ValidEmail}};
