@@ -1,44 +1,10 @@
 ﻿using System.Numerics;
 using Domain.Models;
+using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public struct RequestsPerBuildingReport
-{
-    public string BuildingName { get; set; }
-    public int OpenRequests { get; set; }
-    public int AttendingRequests { get; set; }
-    public int ClosedRequests { get; set; }
-    
-    public override bool Equals(object obj)
-    {
-        var other = (RequestsPerBuildingReport)obj;
-        return BuildingName == other.BuildingName &&
-               OpenRequests == other.OpenRequests &&
-               AttendingRequests == other.AttendingRequests &&
-               ClosedRequests == other.ClosedRequests;
-    }
-}
-
-public struct RequestsPerMaintenanceStaffReport
-{
-    public string MaintenanceWorker { get; set; }
-    public int OpenRequests { get; set; }
-    public int AttendingRequests { get; set; }
-    public int ClosedRequests { get; set; }
-    public double AverageClosingTime { get; set; }
-
-    public override bool Equals(object obj)
-    {
-        var other = (RequestsPerMaintenanceStaffReport)obj;
-        return MaintenanceWorker == other.MaintenanceWorker &&
-               OpenRequests == other.OpenRequests &&
-               AttendingRequests == other.AttendingRequests &&
-               ClosedRequests == other.ClosedRequests;
-    }
-}
-
-public class ReportLogic
+public class ReportLogic : IReportLogic
 {
     private const int MinValue = 0;
     private const int Incrementer = 1;
