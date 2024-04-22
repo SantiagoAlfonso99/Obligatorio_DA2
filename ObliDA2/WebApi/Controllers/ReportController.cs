@@ -10,12 +10,5 @@ namespace WebApi.Controllers;
 public class ReportController: ControllerBase
 {
     private readonly IManagerLogic managerLogic;
-    //private readonly IReportLogic reportLogic;
     
-    
-    /*[HttpGet]
-    public IActionResult GetRequestsPerBuilding([FromBody] string buildingName)
-    {
-        
-    }*/
 }
