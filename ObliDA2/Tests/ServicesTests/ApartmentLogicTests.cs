@@ -14,6 +14,9 @@ public class ApartmentLogicTests
     private Mock<IApartmentRepository> repo;
     private Apartment newApartment;
     private Apartment expectedApartment;
+    private const bool DeleteSuccess = true;
+    private const bool Unsuccessfully  = false;
+    private const int UserId = 1;
     
     [TestInitialize]
     public void Initialize()
@@ -68,7 +71,7 @@ public class ApartmentLogicTests
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newApartment);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        Apartment returnedModels = service.GetById(1);
+        Apartment returnedModels = service.GetById(UserId);
         
         repo.VerifyAll();
         Assert.AreEqual(expectedApartment, returnedModels);
@@ -82,7 +85,7 @@ public class ApartmentLogicTests
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newApartment);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        Apartment returnedModels = service.GetById(1);
+        Apartment returnedModels = service.GetById(UserId);
         
         repo.VerifyAll();
         Assert.AreEqual(expectedApartment, returnedModels);
@@ -95,10 +98,10 @@ public class ApartmentLogicTests
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(new Apartment(){Id =1});
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
         repo.VerifyAll();
-        Assert.AreEqual(success, true);
+        Assert.AreEqual(success, DeleteSuccess);
     }
     
     [TestMethod]
@@ -108,10 +111,10 @@ public class ApartmentLogicTests
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullApartment);
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        bool success = service.Delete(1);
+        bool success = service.Delete(UserId);
         
         repo.VerifyAll();
-        Assert.AreEqual(success, false);
+        Assert.AreEqual(success, Unsuccessfully);
     }
     
     [TestMethod]

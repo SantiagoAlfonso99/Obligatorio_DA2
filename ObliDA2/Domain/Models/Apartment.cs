@@ -2,6 +2,8 @@
 
 public class Apartment
 {
+    private const int MinValue = 0;
+    
     private int numberOfBedrooms;
     private int numberOfBathrooms;
     
@@ -15,7 +17,7 @@ public class Apartment
         get => numberOfBedrooms;
         set
         {
-            if (value < 0)
+            if (value < MinValue)
             {
                 throw new ArgumentException();
             }
@@ -28,7 +30,7 @@ public class Apartment
         get => numberOfBathrooms;
         set
         {
-            if (value < 0)
+            if (value < MinValue)
             {
                 throw new ArgumentException();
             }
