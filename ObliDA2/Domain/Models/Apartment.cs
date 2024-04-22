@@ -2,11 +2,40 @@
 
 public class Apartment
 {
+    private int numberOfBedrooms;
+    private int numberOfBathrooms;
+    
     public int Id { get; set; }
     public int Floor { get; set; }
     public int Number { get; set; }
-    public int NumberOfBedrooms { get; set; }
-    public int NumberOfBathrooms { get; set; }
+    
+    
+    public int NumberOfBedrooms
+    {
+        get => numberOfBedrooms;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException();
+            }
+            numberOfBedrooms = value;
+        }
+    }
+    
+    public int NumberOfBathrooms
+    {
+        get => numberOfBathrooms;
+        set
+        {
+            if (value < 0)
+            {
+                throw new ArgumentException();
+            }
+            numberOfBathrooms = value;
+        }
+    }
+    
     public bool Terrace { get; set; }
     public ApartmentOwner Owner { get; set; } 
     public Building Building { get; set; }
@@ -24,7 +53,7 @@ public class Apartment
                && NumberOfBedrooms == other.NumberOfBedrooms
                && NumberOfBathrooms == other.NumberOfBathrooms
                && Terrace == other.Terrace
-               && Owner == other.Owner
-               && Building == other.Building;
+               && Owner.Equals(other.Owner)
+               && Building.Equals(other.Building);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.IRepository;
+using Domain.Exceptions;
 using Domain.Models;
 using IBusinessLogic;
 
@@ -26,7 +27,12 @@ public class ApartmentLogic
 
     public Apartment GetById(int id)
     {
-        return apartmentRepo.GetById(id);
+        Apartment returnedApartment = apartmentRepo.GetById(id);
+        if (returnedApartment == null)
+        {
+            throw new NotFoundException();
+        }
+        return returnedApartment;
     }
     
     public bool Delete(int id)
