@@ -3,7 +3,7 @@ public class Request
 {
     public int Id { get; set; }
     public string Description { get; set; }
-    public string Department { get; set; }
+    public Apartment Department { get; set; }
     public string Category { get; set; }
     public RequestStatus Status { get; set; }
     public DateTime Service_start { get; set; }

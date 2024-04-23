@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
+using WebApi.Filters;
 
 
 namespace WebApi.Controllers;
@@ -10,6 +11,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/categories")]
+[AdminAuthorization]
 public class CategoryController : ControllerBase
 {
     private ICategoryLogic categoryLogic;

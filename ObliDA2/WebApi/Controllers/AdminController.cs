@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
+using WebApi.Filters;
+
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/admins")]
+[AdminAuthorization]
 public class AdminController : ControllerBase
 {
     private readonly IAdminLogic adminLogic;

@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/ApartmentOwners")]
+[ManagerAuthorization]
 public class ApartmentOwnerController : ControllerBase
 {
     private IApartmentOwnerLogic ownerLogic;

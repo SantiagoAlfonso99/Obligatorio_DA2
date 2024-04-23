@@ -4,11 +4,13 @@ using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using Microsoft.Extensions.FileProviders;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/building")]
+[ManagerAuthorization]
 public class BuildingController : ControllerBase
 {
     private IBuildingLogic buildingLogic;

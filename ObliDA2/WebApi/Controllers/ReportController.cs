@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Exceptions;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/reports")]
+[ManagerAuthorization]
 public class ReportController: ControllerBase
 {
     private readonly IReportLogic reportLogic;

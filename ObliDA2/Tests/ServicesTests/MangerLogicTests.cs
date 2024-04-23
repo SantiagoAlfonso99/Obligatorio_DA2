@@ -29,11 +29,18 @@ public class ManagerLogicTests
     [TestMethod]
     public void ViewRequests_WithNullCategory_ShouldReturnAllRequests()
     {
-   
+        var apartmentA = new Apartment { Id = 1, Floor = 3, Number = 101, NumberOfBedrooms = 2, NumberOfBathrooms = 1, Terrace = true, Owner = new ApartmentOwner { Name = "John Doe" }, Building = new Building { Name = "Building A" }};
+        var apartmentB = new Apartment { Id = 2, Floor = 2, Number = 102, NumberOfBedrooms = 3, NumberOfBathrooms = 2, Terrace = false, Owner = new ApartmentOwner { Name = "Jane Smith" }, Building = new Building { Name = "Building B" }};
+            
         var requests = new List<Request>
         {
+<<<<<<< Updated upstream
             new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
             new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+=======
+            new Request { Description = "Luz Rota", Department = apartmentA, Category = "Electricista" },
+            new Request { Description = "Gotera", Department = apartmentB, Category = "Fontanero" }
+>>>>>>> Stashed changes
         };
         mockRequestRepo.Setup(repo => repo.GetAll()).Returns(requests);
 
@@ -47,11 +54,18 @@ public class ManagerLogicTests
     [TestMethod]
     public void ViewRequests_WithCategory_ShouldFilterRequests()
     {
-   
+        var apartmentA = new Apartment { Id = 1, Floor = 3, Number = 101, NumberOfBedrooms = 2, NumberOfBathrooms = 1, Terrace = true, Owner = new ApartmentOwner { Name = "John Doe" }, Building = new Building { Name = "Building A" }};
+        var apartmentB = new Apartment { Id = 2, Floor = 2, Number = 102, NumberOfBedrooms = 3, NumberOfBathrooms = 2, Terrace = false, Owner = new ApartmentOwner { Name = "Jane Smith" }, Building = new Building { Name = "Building B" }};
+            
         var requests = new List<Request>
         {
+<<<<<<< Updated upstream
             new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
             new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+=======
+            new Request { Description = "Luz Rota", Department = apartmentA, Category = "Electricista" },
+            new Request { Description = "Gotera", Department = apartmentB, Category = "Fontanero" }
+>>>>>>> Stashed changes
         };
         mockRequestRepo.Setup(repo => repo.FilterByCategory("Fontanero")).Returns(requests.Where(r => r.Category == "Fontanero"));
 
@@ -97,7 +111,11 @@ public class ManagerLogicTests
     {
    
         var description = "New issue";
+<<<<<<< Updated upstream
         var department = "IT";
+=======
+        var department = new Apartment { Id = 1, Floor = 3, Number = 101, NumberOfBedrooms = 2, NumberOfBathrooms = 1, Terrace = true, Owner = new ApartmentOwner { Name = "John Doe" }, Building = new Building { Name = "Building A" }};
+>>>>>>> Stashed changes
         var category = "Vecino molesto";
 
    

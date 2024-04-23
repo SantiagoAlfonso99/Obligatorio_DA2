@@ -9,7 +9,8 @@ public abstract class User
     private string name;
     private string password;
     private string email;
-    
+    public virtual string Role { get; set; }
+
     public int Id { get; set; }
     
     public string Name

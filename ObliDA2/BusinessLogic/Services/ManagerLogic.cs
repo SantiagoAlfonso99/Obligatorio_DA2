@@ -14,6 +14,12 @@ public class ManagerLogic
         requestRepo = requestRepoIn;
     }
 
+    public Manager Create(Manager manager)
+    {
+        managerRepo.Add(manager);
+        return manager;
+    }
+    
     public IEnumerable<Request> ViewRequests(string category = null)
     {
         if (string.IsNullOrEmpty(category))
@@ -35,7 +41,7 @@ public class ManagerLogic
         return true;
     }
 
-    public Request CreateRequest(string description, string department, string category)
+    public Request CreateRequest(string description, Apartment department, string category)
     {
         var newRequest = new Request()
         {

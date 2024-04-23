@@ -5,11 +5,13 @@ using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using System.Linq;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/manager")]
+[ManagerAuthorization]
 public class ManagerController : ControllerBase
 {
     private readonly IManagerLogic _managerLogic;
@@ -19,6 +21,20 @@ public class ManagerController : ControllerBase
         _managerLogic = managerLogic;
     }
 
+    [HttpPost]
+    public IActionResult Create([FromBody] ManagerCreateModel newRequest)
+    {
+        try
+        {
+            var createdManager = _managerLogic.Create(newRequest.ToEntity());
+            return Ok(new ManagerDetailModel(createdManager));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = "Validation failed. Please ensure all fields are correctly filled." });
+        }
+    }
+    
     [HttpGet("requests")]
     public IActionResult GetRequests(string category)
     {

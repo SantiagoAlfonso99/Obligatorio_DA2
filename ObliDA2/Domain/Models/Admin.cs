@@ -3,6 +3,8 @@ namespace Domain.Models;
 
 public class Admin : User
 {
+    public override string Role => "admin";
+
     private string lastName;
     public string LastName
     {

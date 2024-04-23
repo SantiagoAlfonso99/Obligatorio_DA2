@@ -4,6 +4,8 @@ namespace Domain.Models;
 
 public class MaintenanceStaff : User
 {
+    public override string Role => "maintenance";
+
     private string lastName;
     public string LastName
     {
