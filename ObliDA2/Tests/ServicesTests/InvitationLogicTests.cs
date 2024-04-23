@@ -65,7 +65,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationException))]
+    [ExpectedException(typeof(EmptyOrNullException))]
     public void CreateInvitationWithEmptyEmailThrowsException()
     {
         Invitation invitation = new Invitation() {CreatorId = CreatorId, DeadLine = DateTime.Now.AddDays(4), Name = ValidName, RecipientEmail = ""};
@@ -79,7 +79,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationException))]
+    [ExpectedException(typeof(EmptyOrNullException))]
     public void CreateInvitationWithEmptyNameThrowsException()
     {
         Invitation invitation = new Invitation() {CreatorId = CreatorId, DeadLine = DateTime.Now.AddDays(4), Name = "", RecipientEmail = ValidEmail};
@@ -93,7 +93,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void CreateInvitationWithEmptyStatusThrowsException()
     {
         Invitation invitation = new Invitation() {CreatorId = CreatorId, DeadLine = DateTime.Now.AddDays(4), Name = ValidName, RecipientEmail = ValidEmail, Status = ""};
@@ -107,7 +107,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void CreateInvitationWithInvalidStatusThrowsException()
     {
         Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), Name = ValidName, RecipientEmail = ValidEmail, Status = "invalidStatus"};
@@ -121,7 +121,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationException))]
+    [ExpectedException(typeof(ArgumentException))]
     public void CreateInvitationWithInvalidDeadLineThrowsException()
     {
         Invitation invitation = new Invitation() {CreatorId = 2, DeadLine = DateTime.Now.AddDays(-2), Name = ValidName, RecipientEmail = ValidEmail, Status = ValidStatus};
@@ -135,7 +135,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationLogicException))]
+    [ExpectedException(typeof(DuplicateEntryException))]
     public void CreateInvitationForAnExistentEmailThrowsException()
     {
         List<Invitation> invitations = new List<Invitation>() { new Invitation(){RecipientEmail = ValidEmail, DeadLine = DateTime.Now.AddDays(2), Status = "Pending"}}; 
@@ -210,7 +210,7 @@ public class InvitationLogicTests
     }
     
     [TestMethod]
-    [ExpectedException(typeof(InvalidInvitationLogicException))]
+    [ExpectedException(typeof(NotFoundException))]
     public void InvitationResponseWithInvalidEmailThrowsException()
     {
         Invitation nullInvitation = null;

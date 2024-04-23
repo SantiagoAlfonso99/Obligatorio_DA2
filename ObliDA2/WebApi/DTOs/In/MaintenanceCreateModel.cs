@@ -8,7 +8,7 @@ public class MaintenanceCreateModel
     public string LastName { get; set; }
     public string Password { get; set; }
     public string Email { get; set; }
-    public Building AssociatedBuilding { get; set; }
+    public int AssociatedBuildingId { get; set; }
     
     public MaintenanceStaff ToEntity()
     {
@@ -18,7 +18,6 @@ public class MaintenanceCreateModel
             LastName = this.LastName,
             Password = this.Password,
             Email = this.Email,
-            AssociatedBuilding = this.AssociatedBuilding
         };
     }
     

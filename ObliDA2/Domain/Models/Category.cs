@@ -14,7 +14,7 @@ public class Category
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidCategoryException();
+                throw new EmptyOrNullException();
             }
             name = value;
         }

@@ -27,25 +27,17 @@ public class AdminLogic : IAdminLogic
 
     public Admin GetById(int id)
     {
-        if (!adminRepo.Exists(id))
+        Admin returnedAdmin = adminRepo.Get(id);
+        if (returnedAdmin == null)
         {
-            throw new InvalidAdminException();
+            throw new NotFoundException();
         }
-        return adminRepo.Get(id);
-    }
-    
-    public int Count()
-    {
-        return adminRepo.Count();
+        return returnedAdmin;
     }
     
     public Admin Update(int id, Admin updatedAdmin)
     {
-        if (!adminRepo.Exists(id))
-        {
-            throw new InvalidAdminException();
-        }
-        Admin returnedAdmin = adminRepo.Get(id);
+        Admin returnedAdmin = this.GetById(id);
         returnedAdmin.Name = updatedAdmin.Name;
         returnedAdmin.Password = updatedAdmin.Password;
         returnedAdmin.LastName = updatedAdmin.LastName;
@@ -55,11 +47,11 @@ public class AdminLogic : IAdminLogic
     
     public bool Delete(int id)
     {
-        if (!adminRepo.Exists(id))
+        Admin returnedAdmin = adminRepo.Get(id);
+        if (returnedAdmin == null)
         {
             return false;
         }
-        Admin returnedAdmin = adminRepo.Get(id);
         adminRepo.Remove(returnedAdmin);
         return true;
     }

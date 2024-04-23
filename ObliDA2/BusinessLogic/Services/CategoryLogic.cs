@@ -19,7 +19,7 @@ public class CategoryLogic : ICategoryLogic
         Category returnedCategory = categoryRepo.GetById(id);
         if (returnedCategory == null)
         {
-            throw new InvalidCategoryLogicException();
+            throw new NotFoundException();
         }
         return returnedCategory;
     }
@@ -35,7 +35,7 @@ public class CategoryLogic : ICategoryLogic
         bool success = categories.Exists(category => category.Name == newCategory.Name);
         if (success)
         {
-            throw new InvalidCategoryLogicException();
+            throw new DuplicateEntryException();
         }
         categoryRepo.Create(newCategory);
         return newCategory;

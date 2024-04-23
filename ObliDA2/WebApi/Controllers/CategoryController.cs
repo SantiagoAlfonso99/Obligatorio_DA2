@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
-using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 
@@ -29,32 +28,14 @@ public class CategoryController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        try
-        {
-            return Ok(new CategoryDetailModel(categoryLogic.GetById(id)));
-        }
-        catch (InvalidCategoryLogicException ex)
-        {
-            return NotFound(new { Message = "The show action could not be completed because there is no Category with that ID" }); 
-        }
+        return Ok(new CategoryDetailModel(categoryLogic.GetById(id)));
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] CategoryCreateModel newCategory)
     {
-        try
-        {
-            CategoryDetailModel returnedCategory = new CategoryDetailModel(categoryLogic.Create(newCategory.ToEntity()));
-            return Ok(returnedCategory);
-        }
-        catch (InvalidCategoryLogicException ex)
-        {
-            return NotFound(new { Message = "Unable to create category because a category with that name already exists." }); 
-        }
-        catch (InvalidCategoryException ex)
-        {
-            return BadRequest(new { Message = "Please make sure not to input null or empty data." }); 
-        }
+        CategoryDetailModel returnedCategory = new CategoryDetailModel(categoryLogic.Create(newCategory.ToEntity()));
+        return Ok(returnedCategory);
     }
     
     [HttpDelete("{id}")]

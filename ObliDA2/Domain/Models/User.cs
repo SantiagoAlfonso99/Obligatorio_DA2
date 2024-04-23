@@ -19,7 +19,7 @@ public abstract class User
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidUserException();
+                throw new EmptyOrNullException();
             }
             name = value;
         }
@@ -32,7 +32,7 @@ public abstract class User
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new InvalidUserException();
+                throw new EmptyOrNullException();
             }
             password = value;
         }
@@ -45,7 +45,7 @@ public abstract class User
         {
             if (!IsEmailValid(value))
             {
-                throw new InvalidUserException();
+                throw new ArgumentException();
             } 
             email = value;
         }

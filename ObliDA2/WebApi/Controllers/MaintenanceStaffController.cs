@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
-using Domain.Models;
-using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 
@@ -13,10 +11,12 @@ namespace WebApi.Controllers;
 public class MaintenanceStaffController : ControllerBase
 {
     private IMaintenanceLogic staffLogic;
+    private IBuildingLogic buildingLogic;
 
-    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn)
+    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn, IBuildingLogic buildingLogicIn)
     {
         staffLogic = staffLogicIn;
+        buildingLogic = buildingLogicIn;
     }
     
     [HttpGet]
@@ -28,14 +28,7 @@ public class MaintenanceStaffController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        try
-        {
-            return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
-        }
-        catch(InvalidStaffLogicException)
-        {
-            return NotFound(new { Message = "No MaintenanceStaff was found with that ID." });
-        }
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.GetById(id)));
     }
 
     [HttpDelete("{id}")]
@@ -52,22 +45,8 @@ public class MaintenanceStaffController : ControllerBase
     [HttpPost]
     public IActionResult Create(MaintenanceCreateModel newStaff)
     {
-        try
-        {
-            if (newStaff.AssociatedBuilding == null)
-            {
-                return BadRequest(new { Message = "Ensure not to input empty or null data." });     
-            }
-            MaintenanceStaff returnedStaff = staffLogic.Create(newStaff.ToEntity());
-            return Ok(new MaintenanceStaffDetailModel(returnedStaff));
-        }
-        catch (InvalidStaffLogicException)
-        {
-            return BadRequest(new { Message = "There is already maintenance staff with that email, please enter another one." });
-        }
-        catch (InvalidUserException)
-        {
-            return BadRequest(new { Message = "Ensure not to input empty or null data." });
-        }
+        var newStaffModel = newStaff.ToEntity();
+        newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.Create(newStaffModel)));
     }
 }

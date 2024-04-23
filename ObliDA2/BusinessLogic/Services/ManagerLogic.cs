@@ -55,12 +55,8 @@ public class ManagerLogic
         return newRequest;
     }
     
-    private void ValidateManager(Manager manager)
+    public IEnumerable<Request> GetAllRequest()
     {
-        if (string.IsNullOrWhiteSpace(manager.Name) || string.IsNullOrWhiteSpace(manager.Password))
-        {
-            throw new Exception("Validation failed. All fields must be filled.");
-        }
-        // Additional validation can be added here
+        return requestRepo.GetAll();
     }
 }

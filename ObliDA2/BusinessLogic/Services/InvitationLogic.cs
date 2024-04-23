@@ -36,7 +36,7 @@ public class InvitationLogic : IInvitationLogic
             && invitation.Status != RejectedStatus);
         if (repeatedInvitation)
         {
-            throw new InvalidInvitationLogicException();
+            throw new DuplicateEntryException();
         }
         Invitation newInvitation = new Invitation()
         {
@@ -63,7 +63,7 @@ public class InvitationLogic : IInvitationLogic
         Invitation invitationToUpdate = invitationRepo.GetById(id);
         if (invitationToUpdate == null)
         {
-            throw new InvalidInvitationLogicException();
+            throw new NotFoundException();
         }
         if (answer && invitationToUpdate.RecipientEmail == email)
         {

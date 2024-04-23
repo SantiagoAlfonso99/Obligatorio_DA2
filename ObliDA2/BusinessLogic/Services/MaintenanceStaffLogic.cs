@@ -24,7 +24,7 @@ public class MaintenanceStaffLogic
         MaintenanceStaff returnedStaff = staffRepo.GetById(id);
         if (returnedStaff == null)
         {
-            throw new InvalidStaffLogicException();
+            throw new NotFoundException();
         }
         return returnedStaff;
     }
@@ -35,7 +35,7 @@ public class MaintenanceStaffLogic
         bool success = allStaff.Exists(staff => staff.Email == newStaff.Email);
         if (success)
         {
-            throw new InvalidStaffLogicException();
+            throw new NotFoundException();
         }
         staffRepo.Create(newStaff);
         return newStaff;
