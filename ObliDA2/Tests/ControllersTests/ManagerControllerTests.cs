@@ -63,7 +63,7 @@ public class ManagerControllerTests
     {
         mockManagerLogic.Setup(x => x.AssignRequestToMaintenance(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
-        var result = controller.AssignRequest(new RequestAssignModel { RequestId = 1, MaintenanceId = 2 }) as OkObjectResult;
+        var result = controller.AssignRequest(new ManagerAssignModel { RequestId = 1, MaintenanceId = 2 }) as OkObjectResult;
 
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);

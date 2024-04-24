@@ -39,17 +39,17 @@ public class ManagerController : ControllerBase
     public IActionResult GetRequests(string category)
     {
         var requests = _managerLogic.ViewRequests(category);
-        var response = requests.Select(r => new ManagerDetailModel(r)).ToList();
+        var response = requests.Select(r => new RequestDetailModel(r)).ToList();
         return Ok(response);
     }
 
     [HttpPost("requests")]
-    public IActionResult CreateRequest([FromBody] ManagerCreateModel requestDto)
+    public IActionResult CreateRequest([FromBody] RequestCreateModel requestDto)
     {
         try
         {
             var request = _managerLogic.CreateRequest(requestDto.Description, requestDto.Department, requestDto.Category);
-            var response = new ManagerDetailModel(request);
+            var response = new RequestDetailModel(request);
             return CreatedAtAction(nameof(GetRequests), new { id = request.Id }, response);
         }
         catch (InvalidRequestException ex)
