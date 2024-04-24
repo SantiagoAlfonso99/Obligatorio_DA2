@@ -29,7 +29,6 @@ public class ManagerControllerTests
         mockManagerLogic.Setup(x => x.Create(It.IsAny<Manager>())).Returns(newManager);
 
         var result = controller.Create(new ManagerCreateModel { Name = "Juan", Email = "juan.doe@example.com" }) as OkObjectResult;
-
         Assert.IsNotNull(result);
         Assert.AreEqual(200, result.StatusCode);
         var response = result.Value as ManagerDetailModel;

@@ -1,6 +1,6 @@
 using Domain.Models;
-
 namespace WebApi.DTOs.Out;
+
 public class ManagerDetailModel
 {
     public int Id { get; set; }
@@ -15,4 +15,5 @@ public class ManagerDetailModel
         Password = managerIn.Password;
         Email = managerIn.Email;
     }
+
 }

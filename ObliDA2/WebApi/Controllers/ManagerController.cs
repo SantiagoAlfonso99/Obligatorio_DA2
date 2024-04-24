@@ -59,7 +59,7 @@ public class ManagerController : ControllerBase
     }
 
     [HttpPost("assign")]
-    public IActionResult AssignRequest([FromBody] ManagerAssignModel assignRequestDto)
+    public IActionResult AssignRequest([FromBody] RequestAssignModel assignRequestDto)
     {
         try
         {
