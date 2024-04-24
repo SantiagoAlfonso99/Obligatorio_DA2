@@ -17,6 +17,8 @@ public class AppContext : DbContext
     public virtual DbSet<Apartment>? Apartments { get; set; }
     public virtual DbSet<ApartmentOwner>? Owners { get; set; }
     public virtual DbSet<Category>? Categories { get; set; }
+    public virtual DbSet<Request>? Requests { get; set; }
+    public virtual DbSet<Invitation>? Invitations { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
