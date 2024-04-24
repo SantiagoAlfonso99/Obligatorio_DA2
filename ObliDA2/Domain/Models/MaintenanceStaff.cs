@@ -4,7 +4,7 @@ namespace Domain.Models;
 
 public class MaintenanceStaff : User
 {
-    private string lastName;
+    public string lastName;
     public string LastName
     {
         get => lastName;
@@ -17,7 +17,7 @@ public class MaintenanceStaff : User
             lastName = value;
         }
     }
-    public Building AssociatedBuilding { get; set; }
+    public virtual Building AssociatedBuilding { get; set; }
     
     public override bool Equals(object obj)
     {

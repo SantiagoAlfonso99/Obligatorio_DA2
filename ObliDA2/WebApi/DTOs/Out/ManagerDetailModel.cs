@@ -14,7 +14,7 @@ public class ManagerDetailModel
         Id = request.Id;
         Description = request.Description;
         Department = request.Department;
-        Category = request.Category;
+        Category = request.Category.Name;
         Status = request.Status.ToString();
     }
 }

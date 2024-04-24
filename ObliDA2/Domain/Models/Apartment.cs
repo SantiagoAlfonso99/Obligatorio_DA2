@@ -4,8 +4,8 @@ public class Apartment
 {
     private const int MinValue = 0;
     
-    private int numberOfBedrooms;
-    private int numberOfBathrooms;
+    public int numberOfBedrooms;
+    public int numberOfBathrooms;
     
     public int Id { get; set; }
     public int Floor { get; set; }
@@ -39,8 +39,8 @@ public class Apartment
     }
     
     public bool Terrace { get; set; }
-    public ApartmentOwner Owner { get; set; } 
-    public Building Building { get; set; }
+    public virtual ApartmentOwner Owner { get; set; } 
+    public virtual Building Building { get; set; }
         
     public override bool Equals(object obj)
     {

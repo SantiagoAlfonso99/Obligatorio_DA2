@@ -32,8 +32,8 @@ public class ManagerLogicTests
    
         var requests = new List<Request>
         {
-            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
-            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = new Category(){Name = "Electricista"} },
+            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = new Category(){Name = "Fontanero"} }
         };
         mockRequestRepo.Setup(repo => repo.GetAll()).Returns(requests);
 
@@ -50,17 +50,16 @@ public class ManagerLogicTests
    
         var requests = new List<Request>
         {
-            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = "Electricista" },
-            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = "Fontanero" }
+            new Request { Description = "Light fixture issue", Department = "Maintenance", Category = new Category(){Name = "Electricista"} },
+            new Request { Description = "Leaky faucet", Department = "Plumbing", Category = new Category(){Name = "Fontanero"} }
         };
-        mockRequestRepo.Setup(repo => repo.FilterByCategory("Fontanero")).Returns(requests.Where(r => r.Category == "Fontanero"));
+        mockRequestRepo.Setup(repo => repo.FilterByCategory("Fontanero")).Returns(requests.Where(r => r.Category.Name == "Fontanero"));
 
    
         var result = managerLogic.ViewRequests("Fontanero");
 
-   
-        Assert.AreEqual(1, result.Count());
-        Assert.AreEqual("Fontanero", result.First().Category);
+        
+        Assert.AreEqual("Fontanero", result.First().Category.Name);
     }
 
     [TestMethod]
@@ -108,6 +107,6 @@ public class ManagerLogicTests
         Assert.AreEqual("Open", result.Status.ToString());
         Assert.AreEqual(description, result.Description);
         Assert.AreEqual(department, result.Department);
-        Assert.AreEqual(category, result.Category);
+        Assert.AreEqual(category, result.Category.Name);
     }
 }

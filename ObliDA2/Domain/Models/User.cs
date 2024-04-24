@@ -6,9 +6,9 @@ public abstract class User
 {
     private const string RegexMatch = @"^[a-zA-Z0-9]+@[a-zA-Z]+\.com$";
     
-    private string name;
-    private string password;
-    private string email;
+    public string name;
+    public string password;
+    public string email;
     
     public int Id { get; set; }
     

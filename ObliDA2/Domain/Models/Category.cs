@@ -4,7 +4,7 @@ namespace Domain.Models;
 
 public class Category
 {
-    private string name;
+    public string name;
     
     public int Id { get; set; }
     public string Name

@@ -4,10 +4,10 @@ namespace Domain.Models;
 
 public class Building
 {
-    private string name;
-    private string address;
-    private string constructionCompany;
-    private int commonExpenses;
+    public string name;
+    public string address;
+    public string constructionCompany;
+    public int commonExpenses;
 
     private const int MinValueExpenses = 0;
     
@@ -62,7 +62,8 @@ public class Building
             commonExpenses = value;
         }
     }
-    public Manager BuildingManager { get; set; }
+    public virtual Manager BuildingManager { get; set; }
+    public virtual ICollection<Request> Requests { get; set; }
     
     public override bool Equals(object obj)
     {

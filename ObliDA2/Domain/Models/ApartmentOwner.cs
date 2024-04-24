@@ -7,9 +7,9 @@ public class ApartmentOwner
 {
     private const string RegexMatch = @"^[a-zA-Z0-9]+@[a-zA-Z]+\.com$";
     
-    private string name;
-    private string lastName;
-    private string email;
+    public string name;
+    public string lastName;
+    public string email;
     
     public int Id { get; set; }
     public string Name

@@ -8,12 +8,12 @@ public class Invitation
     private const string RejectedStatus = "Rejected";
     private const string PendingStatus = "Pending";
     
-    private int id;
-    private string recipientEmail;
-    private string name;
-    private string status;
-    private int creatorId;
-    private DateTime deadLine;
+    public int id;
+    public string recipientEmail;
+    public string name;
+    public string status;
+    public int creatorId;
+    public DateTime deadLine;
     
     public int Id { get; set; }
     public string RecipientEmail

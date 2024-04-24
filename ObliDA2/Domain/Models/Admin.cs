@@ -3,7 +3,7 @@ namespace Domain.Models;
 
 public class Admin : User
 {
-    private string lastName;
+    public string lastName;
     public string LastName
     {
         get => lastName;
