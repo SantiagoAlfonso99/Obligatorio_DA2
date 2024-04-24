@@ -41,7 +41,7 @@ public class ManagerLogic
         {
             Description = description,
             Department = department,
-            Category = new Category(){Name = "Category"},
+            Category = new Category(){Name = category},
             Status = RequestStatus.Open
         };
         requestRepo.Add(newRequest);
