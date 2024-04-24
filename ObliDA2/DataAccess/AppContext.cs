@@ -10,10 +10,17 @@ public class AppContext : DbContext
     public AppContext() { }
     public AppContext(DbContextOptions options) : base(options) { }
     
-
+    public virtual DbSet<Admin>? Admins { get; set; }
+    public virtual DbSet<Manager>? Managers { get; set; }
+    public virtual DbSet<MaintenanceStaff>? MaintenancePersonnel { get; set; }
+    public virtual DbSet<Building>? Buildings { get; set; }
+    
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<Admin>().ToTable("Admin");
+        modelBuilder.Entity<Manager>().ToTable("Manager");
+        modelBuilder.Entity<MaintenanceStaff>().ToTable("MaintenancePersonnel");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
