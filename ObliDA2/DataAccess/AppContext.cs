@@ -14,7 +14,9 @@ public class AppContext : DbContext
     public virtual DbSet<Manager>? Managers { get; set; }
     public virtual DbSet<MaintenanceStaff>? MaintenancePersonnel { get; set; }
     public virtual DbSet<Building>? Buildings { get; set; }
-    
+    public virtual DbSet<Apartment>? Apartments { get; set; }
+    public virtual DbSet<ApartmentOwner>? Owners { get; set; }
+    public virtual DbSet<Category>? Categories { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
