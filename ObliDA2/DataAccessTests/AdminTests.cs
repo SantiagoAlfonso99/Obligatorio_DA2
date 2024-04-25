@@ -77,7 +77,7 @@ public class AdminTests
         _context.SaveChanges();
         List<Admin> returnedAdmins = adminRepository.GetAll();
         
-        Assert.AreEqual(UserId, returnedAdmins.Count);
+        Assert.AreEqual(1, returnedAdmins.Count);
     }
     
     [TestMethod]

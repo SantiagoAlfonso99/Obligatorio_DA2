@@ -87,8 +87,6 @@ public class ManagerLogicTests
 
    
         managerLogic.AssignRequestToMaintenance(1, 1);
-
-   
     }
 
     [TestMethod]
