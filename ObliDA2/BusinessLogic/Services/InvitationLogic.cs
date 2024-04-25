@@ -40,7 +40,7 @@ public class InvitationLogic : IInvitationLogic
         }
         Invitation newInvitation = new Invitation()
         {
-            DeadLine = invitationData.DeadLine, RecipientEmail = invitationData.RecipientEmail, CreatorId = invitationData.CreatorId,
+            DeadLine = invitationData.DeadLine, RecipientEmail = invitationData.RecipientEmail,
             Name = invitationData.Name, Status = PendingStatus
         };
         invitationRepo.Create(newInvitation);

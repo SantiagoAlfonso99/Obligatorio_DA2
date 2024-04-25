@@ -28,7 +28,7 @@ public class InvitationControllerTest
     [TestInitialize]
     public void Initialize()
     {
-        expectedInvitation = new Invitation(){Id = UserId, Name = Name, CreatorId = 2, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending"};
+        expectedInvitation = new Invitation(){Id = UserId, Name = Name, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending"};
         invitationLogicMock = new Mock<IInvitationLogic>();
         response = new InvitationResponse()
             { Email = EmailResponse, acceptInvitation = true, Password = Password };

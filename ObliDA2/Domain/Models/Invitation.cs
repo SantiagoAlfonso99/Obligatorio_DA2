@@ -55,8 +55,6 @@ public class Invitation
         }
     }
     
-    public int CreatorId { get; set; }
-    
     public string Status
     {
         get => status;
@@ -81,7 +79,6 @@ public class Invitation
                && RecipientEmail == other.RecipientEmail
                && Name == other.Name
                && DeadLine == other.DeadLine
-               && CreatorId == other.CreatorId
                && Status == other.Status;
     }
 

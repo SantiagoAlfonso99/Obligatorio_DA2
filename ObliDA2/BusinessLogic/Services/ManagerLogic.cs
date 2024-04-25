@@ -25,7 +25,8 @@ public class ManagerLogic
 
     public bool AssignRequestToMaintenance(int requestId, int maintenanceId)
     {
-        if (!requestRepo.Exists(requestId) || !managerRepo.Exists(maintenanceId))
+        Request returnedRequest = requestRepo.Get(requestId);
+        if (returnedRequest == null || !managerRepo.Exists(maintenanceId) || returnedRequest.Status != RequestStatus.Open )
         {
             throw new InvalidRequestException();
         }
@@ -35,7 +36,7 @@ public class ManagerLogic
         return true;
     }
 
-    public Request CreateRequest(string description, string department, string category)
+    public Request CreateRequest(string description, Apartment department, string category)
     {
         var newRequest = new Request()
         {

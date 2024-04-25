@@ -63,7 +63,6 @@ public class Building
         }
     }
     public virtual Manager BuildingManager { get; set; }
-    public virtual ICollection<Request> Requests { get; set; }
     
     public override bool Equals(object obj)
     {

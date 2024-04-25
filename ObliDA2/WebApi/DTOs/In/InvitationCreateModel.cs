@@ -14,8 +14,7 @@ public class InvitationCreateModel
         {
             RecipientEmail = this.Email,
             Name = this.Name,
-            DeadLine = this.DeadLine,
-            CreatorId = this.CreatorId
+            DeadLine = this.DeadLine
         };
     }
 }
