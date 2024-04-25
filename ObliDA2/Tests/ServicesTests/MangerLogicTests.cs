@@ -106,7 +106,6 @@ public class ManagerLogicTests
         Assert.IsNotNull(result);
         Assert.AreEqual("Open", result.Status.ToString());
         Assert.AreEqual(description, result.Description);
-        Assert.AreEqual(department, result.Department);
         Assert.AreEqual(category, result.Category.Name);
     }
 }

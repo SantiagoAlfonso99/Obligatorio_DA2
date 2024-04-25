@@ -13,6 +13,8 @@ public class MaintenanceStaffTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private MaintenanceStaffRepository staffRepository;
+    private MaintenanceStaff newWorker;
+    private Building buildingAssociated;
     
     [TestInitialize]
     public void Initialize()
@@ -28,21 +30,21 @@ public class MaintenanceStaffTests
         _context.Database.EnsureCreated();
 
         staffRepository = new MaintenanceStaffRepository(_context);
+        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+        newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
     }
     
     [TestMethod]
     public void CreateAndGetAllOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
         staffRepository.Create(newWorker);
         _context.SaveChanges();
-        
-        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
             { new MaintenanceStaff() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated } };
+        
+        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedStaff, returnedStaff);
     }
@@ -50,36 +52,29 @@ public class MaintenanceStaffTests
     [TestMethod]
     public void GetOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
         staffRepository.Create(newWorker);
         _context.SaveChanges();
+        newWorker.Id = 1;
         
         MaintenanceStaff returnedStaff = staffRepository.GetById(1);
-        newWorker.Id = 1;
+        
         Assert.AreEqual(newWorker, returnedStaff);
     }
     
     [TestMethod]
     public void DeleteOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
         MaintenanceStaff otherWorker = new MaintenanceStaff{ Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated};
         staffRepository.Create(newWorker);
         _context.SaveChanges();
         staffRepository.Create(otherWorker);
         staffRepository.Delete(newWorker);
         _context.SaveChanges();
-        
-        
-        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
             { new MaintenanceStaff() { Id = 2, Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated } };
+
+        
+        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedStaff, returnedStaff);
     }

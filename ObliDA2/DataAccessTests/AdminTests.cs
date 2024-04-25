@@ -13,6 +13,8 @@ public class AdminTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private AdminRepository adminRepository;
+    private Admin newAdmin;
+    private const int UserId = 1;
     
     [TestInitialize]
     public void Setup()
@@ -28,17 +30,17 @@ public class AdminTests
         _context.Database.EnsureCreated();
 
         adminRepository = new AdminRepository(_context);
+        newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Admin newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
         Admin otherAdmin = new Admin() { Name = "pepe2", LastName = "suarez", Password = "password", Email = "pepe2@gmail.com"};
         adminRepository.Add(newAdmin);
         adminRepository.Add(otherAdmin);
         _context.SaveChanges();
-        newAdmin.Id = 1;
+        newAdmin.Id = UserId;
         otherAdmin.Id = 2;
         
         List<Admin> returnedAdmins = adminRepository.GetAll();
@@ -53,13 +55,12 @@ public class AdminTests
     [TestMethod]
     public void CreateOk()
     {
-        Admin newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
         adminRepository.Add(newAdmin);
         _context.SaveChanges();
         
         List<Admin> returnedAdmins = adminRepository.GetAll();
         List<Admin> expectedAdmins = new List<Admin>()
-            { new Admin() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com" } };
+            { new Admin() { Id = UserId, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com" } };
         
         Assert.IsTrue(expectedAdmins[0].AreEqual(returnedAdmins[0]));
     }
@@ -67,7 +68,6 @@ public class AdminTests
     [TestMethod]
     public void DeleteOk()
     {
-        Admin newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
         adminRepository.Add(newAdmin);
         Admin otherAdmin = new Admin() { Name = "pepe2", LastName = "suarez", Password = "password", Email = "pepe2@gmail.com"};
         adminRepository.Add(otherAdmin);
@@ -77,17 +77,16 @@ public class AdminTests
         _context.SaveChanges();
         List<Admin> returnedAdmins = adminRepository.GetAll();
         
-        Assert.AreEqual(1, returnedAdmins.Count);
+        Assert.AreEqual(UserId, returnedAdmins.Count);
     }
     
     [TestMethod]
     public void GetOk()
     {
-        Admin newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
         adminRepository.Add(newAdmin);
         _context.SaveChanges();
         
-        Admin returnedAdmin = adminRepository.Get(1);
+        Admin returnedAdmin = adminRepository.Get(UserId);
         
         Assert.IsTrue(returnedAdmin.AreEqual(newAdmin));
     }
@@ -95,7 +94,6 @@ public class AdminTests
     [TestMethod]
     public void UpdateOk()
     {
-        Admin newAdmin = new Admin() { Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com"};
         adminRepository.Add(newAdmin);
         _context.SaveChanges();
         newAdmin.LastName = "perez";
@@ -103,7 +101,7 @@ public class AdminTests
         
         adminRepository.Update(newAdmin);
         _context.SaveChanges();
-        Admin returnedAdmin = adminRepository.Get(1);
+        Admin returnedAdmin = adminRepository.Get(UserId);
         
         Assert.IsTrue(returnedAdmin.AreEqual(newAdmin));
     }
