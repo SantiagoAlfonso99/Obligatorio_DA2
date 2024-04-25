@@ -17,6 +17,7 @@ public class ApartmentOwnerRepository : IApartmentOwnerRepository
     public void Create(ApartmentOwner owner)
     {
         Context.Owners.Add(owner);
+        Context.SaveChanges();
     }
     
     public List<ApartmentOwner> GetAll()
@@ -32,11 +33,13 @@ public class ApartmentOwnerRepository : IApartmentOwnerRepository
     public void Delete(ApartmentOwner owner)
     {
         Context.Set<ApartmentOwner>().Remove(owner);
+        Context.SaveChanges();
     }
     
     public void Update(ApartmentOwner owner)
     {
         Context.Entry(owner).State = EntityState.Modified;
+        Context.SaveChanges();
     }
     
 }

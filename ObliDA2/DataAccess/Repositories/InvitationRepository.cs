@@ -17,6 +17,7 @@ public class InvitationRepository : IInvitationRepository
     public void Create(Invitation invitation)
     {
         Context.Invitations.Add(invitation);
+        Context.SaveChanges();
     }
     
     public List<Invitation> GetAll()
@@ -32,10 +33,12 @@ public class InvitationRepository : IInvitationRepository
     public void Delete(Invitation invitation)
     {
         Context.Set<Invitation>().Remove(invitation);
+        Context.SaveChanges();
     }
     
     public void Update(Invitation invitation)
     {
         Context.Entry(invitation).State = EntityState.Modified;
+        Context.SaveChanges();
     }
 }

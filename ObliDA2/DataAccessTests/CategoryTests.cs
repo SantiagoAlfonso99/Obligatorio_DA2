@@ -13,6 +13,7 @@ public class CategoryTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private CategoryRepository categoryRepository;
+    private Category newCategory;
     
     [TestInitialize]
     public void Initialize()
@@ -28,18 +29,18 @@ public class CategoryTests
         _context.Database.EnsureCreated();
         
         categoryRepository = new CategoryRepository(_context);
+        newCategory = new Category() { Name = "Vecino Molesto" };
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Category newCategory = new Category() { Name = "Vecino Molesto" };
         _context.Categories.Add(newCategory);
         _context.SaveChanges();
-        
-        List<Category> returnedCategories = categoryRepository.GetAll();
         List<Category> expectedCategories = new List<Category>()
             { new Category() { Id = 1, Name = "Vecino Molesto"} };
+        
+        List<Category> returnedCategories = categoryRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedCategories, returnedCategories);
     }
@@ -47,7 +48,6 @@ public class CategoryTests
     [TestMethod]
     public void GetByIdOk()
     {
-        Category newCategory = new Category() { Name = "Vecino Molesto" };
         _context.Categories.Add(newCategory);
         _context.SaveChanges();
         newCategory.Id = 1;
@@ -60,13 +60,14 @@ public class CategoryTests
     [TestMethod]
     public void CreateOk()
     {
-        Category newCategory = new Category() { Name = "Vecino Molesto" };
         categoryRepository.Create(newCategory);
         _context.SaveChanges();
+        newCategory.Id = 1;
+        List<Category> expectedCategories = new List<Category>()
+            { newCategory };
+        
         
         List<Category> returnedCategories = categoryRepository.GetAll();
-        List<Category> expectedCategories = new List<Category>()
-            { new Category() { Id = 1, Name = "Vecino Molesto"} };
         
         CollectionAssert.AreEqual(expectedCategories, returnedCategories);
     }
@@ -74,10 +75,7 @@ public class CategoryTests
     [TestMethod]
     public void DeleteOk()
     {
-        Category newCategory = new Category() { Name = "Vecino Molesto" };
         Category otherCategory = new Category() { Name = "Electricista" };
-        List<Category> expectedCategories = new List<Category>()
-            { new Category() { Id = 2, Name = "Electricista"} };
         
         categoryRepository.Create(newCategory);
         _context.SaveChanges();
@@ -85,6 +83,9 @@ public class CategoryTests
         categoryRepository.Create(otherCategory);
         categoryRepository.Delete(newCategory);
         _context.SaveChanges();
+        otherCategory.Id = 2;
+        List<Category> expectedCategories = new List<Category>()
+            { otherCategory };
         
         
         List<Category> returnedCategories = categoryRepository.GetAll();

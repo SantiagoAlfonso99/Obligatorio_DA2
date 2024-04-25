@@ -13,6 +13,8 @@ public class InvitationTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private InvitationRepository invitationRepository;
+    private Invitation newInvitation;
+    private const int InvitationId = 1;
     
     [TestInitialize]
     public void Initialize()
@@ -28,15 +30,15 @@ public class InvitationTests
         _context.Database.EnsureCreated();
         
         invitationRepository = new InvitationRepository(_context);
+        newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Invitation newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
         _context.Invitations.Add(newInvitation);
         _context.SaveChanges();
-        newInvitation.Id = 1;
+        newInvitation.Id = InvitationId;
         
         List<Invitation> returnedInvitations = invitationRepository.GetAll();
         List<Invitation> expectedInvitations = new List<Invitation>()
@@ -48,12 +50,11 @@ public class InvitationTests
     [TestMethod]
     public void GetOk()
     {
-        Invitation newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
         _context.Invitations.Add(newInvitation);
         _context.SaveChanges();
-        newInvitation.Id = 1;
+        newInvitation.Id = InvitationId;
         
-        Invitation returnedInvitation = invitationRepository.GetById(1);
+        Invitation returnedInvitation = invitationRepository.GetById(InvitationId);
         
         Assert.AreEqual(newInvitation, returnedInvitation);
     }
@@ -61,12 +62,11 @@ public class InvitationTests
     [TestMethod]
     public void CreateOk()
     {
-        Invitation newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
         invitationRepository.Create(newInvitation);
         _context.SaveChanges();
-        newInvitation.Id = 1;
+        newInvitation.Id = InvitationId;
         
-        Invitation returnedInvitation = invitationRepository.GetById(1);
+        Invitation returnedInvitation = invitationRepository.GetById(InvitationId);
         
         Assert.AreEqual(newInvitation, returnedInvitation);
     }
@@ -74,7 +74,6 @@ public class InvitationTests
     [TestMethod]
     public void DeleteOk()
     {
-        Invitation newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
         Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com"};
         invitationRepository.Create(newInvitation);
         _context.SaveChanges();
@@ -94,18 +93,17 @@ public class InvitationTests
     [TestMethod]
     public void UpdateOk()
     {
-        Invitation newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
         Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com"};
         invitationRepository.Create(newInvitation);
         _context.SaveChanges();
         invitationRepository.Create(otherInvitation);
-        newInvitation.Id = 1;
+        newInvitation.Id = InvitationId;
         newInvitation.Status = "Accepted";
         newInvitation.Name = "santiago";
         
         invitationRepository.Update(newInvitation);
         _context.SaveChanges();
-        Invitation returnedInvitation = invitationRepository.GetById(1);
+        Invitation returnedInvitation = invitationRepository.GetById(InvitationId);
         
         Assert.AreEqual(newInvitation, returnedInvitation);
     }

@@ -17,6 +17,7 @@ public class AdminRepository : IAdminRepository
     public void Add(Admin admin)
     {
         Context.Admins.Add(admin);
+        Context.SaveChanges();
     }
     
     public List<Admin> GetAll()
@@ -32,10 +33,12 @@ public class AdminRepository : IAdminRepository
     public void Remove(Admin admin)
     {
         Context.Set<Admin>().Remove(admin);
+        Context.SaveChanges();
     }
     
     public void Update(Admin admin)
     {
         Context.Entry(admin).State = EntityState.Modified;
+        Context.SaveChanges();
     }
 }

@@ -18,6 +18,7 @@ public class CategoryRepository : ICategoryRepository
     public void Create(Category category)
     {
         Context.Categories.Add(category);
+        Context.SaveChanges();
     }
     
     public List<Category> GetAll()
@@ -33,5 +34,6 @@ public class CategoryRepository : ICategoryRepository
     public void Delete(Category category)
     {
         Context.Set<Category>().Remove(category);
+        Context.SaveChanges();
     }
 }

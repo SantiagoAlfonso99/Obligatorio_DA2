@@ -13,6 +13,8 @@ public class ApartmentOwnerTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private ApartmentOwnerRepository ownersRepository;
+    private ApartmentOwner newOwner;
+    private const int OwnerId = 1;
     
     [TestInitialize]
     public void Initialize()
@@ -28,19 +30,19 @@ public class ApartmentOwnerTests
         _context.Database.EnsureCreated();
         
         ownersRepository = new ApartmentOwnerRepository(_context);
+        newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        ApartmentOwner newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
         _context.Owners.Add(newOwner);
         _context.SaveChanges();
-        newOwner.Id = 1;
-        
-        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
+        newOwner.Id = OwnerId;
         List<ApartmentOwner> expectedOwners = new List<ApartmentOwner>()
             { newOwner};
+        
+        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedOwners, returnedOwners);
     }
@@ -48,12 +50,11 @@ public class ApartmentOwnerTests
     [TestMethod]
     public void GetByIdOk()
     {
-        ApartmentOwner newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
         _context.Owners.Add(newOwner);
         _context.SaveChanges();
-        newOwner.Id = 1;
+        newOwner.Id = OwnerId;
         
-        ApartmentOwner returnedOwner = ownersRepository.GetById(1);
+        ApartmentOwner returnedOwner = ownersRepository.GetById(OwnerId);
         
         Assert.AreEqual(newOwner, returnedOwner);
     }
@@ -61,14 +62,14 @@ public class ApartmentOwnerTests
     [TestMethod]
     public void CreateOk()
     {
-        ApartmentOwner newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
         ownersRepository.Create(newOwner);
         _context.SaveChanges();
-        newOwner.Id = 1;
-        
-        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
+        newOwner.Id = OwnerId;
         List<ApartmentOwner> expectedOwners = new List<ApartmentOwner>()
             { newOwner};
+        
+        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
+        
         
         CollectionAssert.AreEqual(expectedOwners, returnedOwners);
     }
@@ -76,17 +77,16 @@ public class ApartmentOwnerTests
     [TestMethod]
     public void UpdateOk()
     {
-        ApartmentOwner newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
         ownersRepository.Create(newOwner);
         _context.SaveChanges();
         newOwner.Name = "raul";
         newOwner.LastName = "cavani";
         ownersRepository.Update(newOwner);
         _context.SaveChanges();
-        
-        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
         List<ApartmentOwner> expectedOwners = new List<ApartmentOwner>()
             { newOwner};
+        
+        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedOwners, returnedOwners);
     }
@@ -94,7 +94,6 @@ public class ApartmentOwnerTests
     [TestMethod]
     public void DeleteOk()
     {
-        ApartmentOwner newOwner = new ApartmentOwner() { Name = "pepe2", LastName = "suarez", Email = "pepe2@gmail.com"};
         ApartmentOwner otherOwner = new ApartmentOwner() { Name = "raul", LastName = "suarez", Email = "raul@gmail.com"};
         ownersRepository.Create(newOwner);
         _context.SaveChanges();
@@ -102,10 +101,10 @@ public class ApartmentOwnerTests
         ownersRepository.Delete(newOwner);
         _context.SaveChanges();
         otherOwner.Id = 2;
-        
-        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
         List<ApartmentOwner> expectedOwners = new List<ApartmentOwner>()
             { otherOwner};
+        
+        List<ApartmentOwner> returnedOwners = ownersRepository.GetAll();
         
         CollectionAssert.AreEqual(expectedOwners, returnedOwners);
     }

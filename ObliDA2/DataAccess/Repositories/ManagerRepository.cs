@@ -17,6 +17,7 @@ public class ManagerRepository : IManagerRepository
     public void Add(Manager manager)
     {
         Context.Managers.Add(manager);
+        Context.SaveChanges();
     }
     
     public IEnumerable<Manager> GetAll()
@@ -32,6 +33,7 @@ public class ManagerRepository : IManagerRepository
     public void Remove(Manager manager)
     {
         Context.Set<Manager>().Remove(manager);
+        Context.SaveChanges();
     }
     
     public bool Exists(int id)
@@ -42,5 +44,6 @@ public class ManagerRepository : IManagerRepository
     public void Update(Manager manager)
     {
         Context.Entry(manager).State = EntityState.Modified;
+        Context.SaveChanges();
     }
 }

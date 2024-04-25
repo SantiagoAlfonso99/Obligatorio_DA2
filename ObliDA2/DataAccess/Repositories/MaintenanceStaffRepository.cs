@@ -17,6 +17,7 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     public void Create(MaintenanceStaff staff)
     {
         Context.MaintenancePersonnel.Add(staff);
+        Context.SaveChanges();
     }
     
     public List<MaintenanceStaff> GetAll()
@@ -32,5 +33,6 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     public void Delete(MaintenanceStaff staff)
     {
         Context.Set<MaintenanceStaff>().Remove(staff);
+        Context.SaveChanges();
     }
 }
