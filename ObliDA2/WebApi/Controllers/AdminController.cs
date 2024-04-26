@@ -10,6 +10,7 @@ namespace WebApi.Controllers;
 public class AdminController : ControllerBase
 {
     private readonly IAdminLogic adminLogic;
+    private readonly IUsersLogic usersLogic;
 
     public AdminController(IAdminLogic adminLogicIn)
     {
