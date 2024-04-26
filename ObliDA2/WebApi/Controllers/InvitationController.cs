@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using IBusinessLogic;
@@ -12,10 +13,12 @@ namespace WebApi.Controllers;
 public class InvitationController : ControllerBase
 {
     private readonly IInvitationLogic invitationLogic;
+    private readonly IManagerLogic managerLogic;
     
-    public InvitationController(IInvitationLogic invitationLogicIn)
+    public InvitationController(IInvitationLogic invitationLogicIn, IManagerLogic managerLogicIn)
     {
         invitationLogic = invitationLogicIn;
+        managerLogic = managerLogicIn;
     }
     
     [HttpGet]
@@ -57,6 +60,11 @@ public class InvitationController : ControllerBase
             return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
         }
         var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
+        if (invitation.DeadLine < DateTime.Now)
+        {
+            return BadRequest(new { Message = "Invitation expired" });    
+        }
+        managerLogic.Create(new Manager() { Email = response.Email, Password = response.Password, Name = invitation.Name});
         return Ok(new InvitationDetailModel(invitation));
     }
 }

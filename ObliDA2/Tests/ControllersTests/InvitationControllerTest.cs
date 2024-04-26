@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using BusinessLogic.IRepository;
+using Domain.Exceptions;
 using IBusinessLogic;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ public class InvitationControllerTest
 {
     private Invitation expectedInvitation;
     private Mock<IInvitationLogic> invitationLogicMock;
+    private Mock<IManagerLogic> managerLogic;
     private const int UserId = 1;
     private const string EmailResponse = "pepe@gmail.com";
     private const string Password = "pepe";
@@ -28,6 +30,7 @@ public class InvitationControllerTest
     [TestInitialize]
     public void Initialize()
     {
+        managerLogic = new Mock<IManagerLogic>();
         expectedInvitation = new Invitation(){Id = UserId, Name = Name, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending"};
         invitationLogicMock = new Mock<IInvitationLogic>();
         response = new InvitationResponse()
@@ -39,7 +42,7 @@ public class InvitationControllerTest
     {
         List <Invitation> invitations = new List<Invitation>() { expectedInvitation};
         invitationLogicMock.Setup(r => r.GetAll()).Returns(invitations);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
@@ -58,7 +61,7 @@ public class InvitationControllerTest
     public void ShowOkTest()
     {
         invitationLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Returns(expectedInvitation);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.Show(UserId);
         var okResult = result as OkObjectResult;
@@ -76,7 +79,7 @@ public class InvitationControllerTest
     {
         InvitationCreateModel newInvitation = new InvitationCreateModel() { CreatorId = 2, DeadLine = DateTime.Now.AddDays(3), Email = "pep@gmail.com", Name = "pep"};
         invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Returns(expectedInvitation);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.Create(newInvitation);
         var okResult = result as OkObjectResult;
@@ -93,7 +96,7 @@ public class InvitationControllerTest
     public void DeleteOkTest()
     {
         invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(ReturnsTrue);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
@@ -107,7 +110,7 @@ public class InvitationControllerTest
     public void DeleteNotFoundTest()
     {
         invitationLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(ReturnsFalse);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;
@@ -122,14 +125,16 @@ public class InvitationControllerTest
     public void UserAcceptInvitationOkTest()
     {
         invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        managerLogic.Setup(service => service.Create(It.IsAny<Manager>())).Returns(new Manager(){Email = "pepe@gmail.com"});
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.InvitationResponse(UserId, response);
         var okResult = result as OkObjectResult;
         InvitationDetailModel returnedInvitation = okResult.Value as InvitationDetailModel;
         
         invitationLogicMock.VerifyAll();
-
+        managerLogic.VerifyAll();
+            
         Assert.AreEqual(new InvitationDetailModel(expectedInvitation), returnedInvitation);
     }
     [TestMethod]
@@ -138,7 +143,7 @@ public class InvitationControllerTest
         InvitationResponse response = new InvitationResponse()
             { Email = "", acceptInvitation = true, Password = "" };
         invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
-        InvitationController controller = new InvitationController(invitationLogicMock.Object);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.InvitationResponse(UserId, response);
         var badRequestResult = result as BadRequestObjectResult;
