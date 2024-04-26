@@ -13,15 +13,25 @@ namespace Tests.ControllersTests;
 [TestClass]
 public class ManagerControllerTests
 {
-
+    private Mock<IManagerLogic> managerService;
+    private Mock<ICategoryLogic> categoryService;
+    private Mock<IApartmentLogic> apartmentService;
+    private Mock<IMaintenanceLogic> staffService;
+    private ManagerController controller;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        managerService = new Mock<IManagerLogic>();
+        categoryService = new Mock<ICategoryLogic>();
+        apartmentService = new Mock<IApartmentLogic>();
+        staffService = new Mock<IMaintenanceLogic>();
+        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
+    }
+    
     [TestMethod]
     public void GetRequestOk()
     {
-        Mock<IManagerLogic> managerService = new Mock<IManagerLogic>();
-        Mock<ICategoryLogic> categoryService = new Mock<ICategoryLogic>();
-        Mock<IApartmentLogic> apartmentService = new Mock<IApartmentLogic>();
-        Mock<IMaintenanceLogic> staffService = new Mock<IMaintenanceLogic>();
-        ManagerController controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
         Request newRequest = new Request()
         {
             AssignedToMaintenance = new MaintenanceStaff(){Id =1},Category = new Category(){Name = "Name"},
@@ -46,23 +56,6 @@ public class ManagerControllerTests
     [TestMethod]
     public void CreateRequestOk()
     {
-        Mock<IManagerLogic> managerService = new Mock<IManagerLogic>();
-        Mock<ICategoryLogic> categoryService = new Mock<ICategoryLogic>();
-        Mock<IApartmentLogic> apartmentService = new Mock<IApartmentLogic>();
-        Mock<IMaintenanceLogic> staffService = new Mock<IMaintenanceLogic>();
-        ManagerController controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = new MaintenanceStaff(){Id =1},Category = new Category(){Name = "Name"},
-            BuildingAssociated  = new Building(){Id = 1}, Department = new Apartment(){Id = 1}, Description = "p"
-        };
-        Request otherRequest = new Request()
-        {
-            AssignedToMaintenance = new MaintenanceStaff(){Id =1},Category = new Category(){Name = "Name"},
-            BuildingAssociated  = new Building(){Id = 1}, Department = new Apartment(){Id = 1}, Description = "pepe"
-        };
-        List<Request> requests = new List<Request>() { newRequest, otherRequest};
-
         Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
         Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
@@ -88,18 +81,6 @@ public class ManagerControllerTests
     [TestMethod]
     public void AssignRequestOk()
     {
-        Mock<IManagerLogic> managerService = new Mock<IManagerLogic>();
-        Mock<ICategoryLogic> categoryService = new Mock<ICategoryLogic>();
-        Mock<IApartmentLogic> apartmentService = new Mock<IApartmentLogic>();
-        Mock<IMaintenanceLogic> staffService = new Mock<IMaintenanceLogic>();
-        ManagerController controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
-        Request createdRequest = new Request()
-        {
-            Id = 1, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
-            Description = "El vecino no para de gritar"
-        };
         staffService.Setup(service => service.GetById(It.IsAny<int>())).Returns(new MaintenanceStaff(){Id = 1});
         managerService.Setup(service => service.AssignRequestToMaintenance(It.IsAny<int>(), It.IsAny<MaintenanceStaff>())).Returns(true);
 
@@ -114,18 +95,6 @@ public class ManagerControllerTests
     [TestMethod]
     public void CannotAssignRequestOk()
     {
-        Mock<IManagerLogic> managerService = new Mock<IManagerLogic>();
-        Mock<ICategoryLogic> categoryService = new Mock<ICategoryLogic>();
-        Mock<IApartmentLogic> apartmentService = new Mock<IApartmentLogic>();
-        Mock<IMaintenanceLogic> staffService = new Mock<IMaintenanceLogic>();
-        ManagerController controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
-        Request createdRequest = new Request()
-        {
-            Id = 1, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
-            Description = "El vecino no para de gritar"
-        };
         staffService.Setup(service => service.GetById(It.IsAny<int>())).Returns(new MaintenanceStaff(){Id = 1});
         managerService.Setup(service => service.AssignRequestToMaintenance(It.IsAny<int>(), It.IsAny<MaintenanceStaff>())).Returns(false);
 
