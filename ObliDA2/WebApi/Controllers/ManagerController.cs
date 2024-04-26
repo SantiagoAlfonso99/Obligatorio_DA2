@@ -5,6 +5,7 @@ using Domain.Exceptions;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using System.Linq;
+using Domain.Models;
 
 namespace WebApi.Controllers;
 
@@ -30,9 +31,10 @@ public class ManagerController : ControllerBase
     [HttpPost("requests")]
     public IActionResult CreateRequest([FromBody] ManagerCreateModel requestDto)
     {
+        Apartment department = new Apartment() {};
         try
         {
-            var request = _managerLogic.CreateRequest(requestDto.Description, requestDto.Department, requestDto.Category);
+            var request = _managerLogic.CreateRequest(requestDto.Description, department, requestDto.Category);
             var response = new ManagerDetailModel(request);
             return CreatedAtAction(nameof(GetRequests), new { id = request.Id }, response);
         }

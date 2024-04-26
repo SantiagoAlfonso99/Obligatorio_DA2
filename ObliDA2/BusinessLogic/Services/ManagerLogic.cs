@@ -1,9 +1,11 @@
 using Domain.Exceptions;
 using BusinessLogic.IRepository;
 using Domain.Models;
+using IBusinessLogic;
+
 namespace BusinessLogic.Services;
 
-public class ManagerLogic
+public class ManagerLogic : IManagerLogic
 {
     private IManagerRepository managerRepo;
     private IRequestRepository requestRepo;
@@ -14,6 +16,12 @@ public class ManagerLogic
         requestRepo = requestRepoIn;
     }
 
+    public Manager Create(Manager newManager)
+    {
+        managerRepo.Add(newManager);
+        return newManager;
+    }
+    
     public IEnumerable<Request> ViewRequests(string category = null)
     {
         List<Request> requests = requestRepo.GetAll().ToList(); 

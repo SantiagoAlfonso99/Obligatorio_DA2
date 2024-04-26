@@ -106,4 +106,15 @@ public class ManagerLogicTests
         Assert.AreEqual(description, result.Description);
         Assert.AreEqual(category, result.Category.Name);
     }
+
+    [TestMethod]
+    public void CreateManagerOk()
+    {
+        mockManagerRepo.Setup(repository => repository.Add(It.IsAny<Manager>()));
+
+        Manager newManager = managerLogic.Create(new Manager(){Name = "pepe", Email = "pepe@gmail.com", Password = "Password"});
+        Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
+
+        Assert.AreEqual(expectedManager, newManager);
+    }
 }
