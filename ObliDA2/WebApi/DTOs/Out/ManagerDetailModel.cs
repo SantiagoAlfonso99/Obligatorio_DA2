@@ -17,4 +17,13 @@ public class ManagerDetailModel
         Category = request.Category.Name;
         Status = request.Status.ToString();
     }
+    
+    public override bool Equals(object obj)
+    {
+        ManagerDetailModel other = (ManagerDetailModel)obj;
+        return Id == other.Id
+               && Category == other.Category
+               && Description == other.Description
+               && Status == other.Status;
+    }
 }
