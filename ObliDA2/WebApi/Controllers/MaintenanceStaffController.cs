@@ -12,11 +12,12 @@ public class MaintenanceStaffController : ControllerBase
 {
     private IMaintenanceLogic staffLogic;
     private IBuildingLogic buildingLogic;
-
-    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn, IBuildingLogic buildingLogicIn)
+    private IUsersLogic userLogic;
+    public MaintenanceStaffController(IMaintenanceLogic staffLogicIn, IBuildingLogic buildingLogicIn, IUsersLogic userLogicIn)
     {
         staffLogic = staffLogicIn;
         buildingLogic = buildingLogicIn;
+        userLogic = userLogicIn;
     }
     
     [HttpGet]
@@ -46,6 +47,7 @@ public class MaintenanceStaffController : ControllerBase
     public IActionResult Create(MaintenanceCreateModel newStaff)
     {
         var newStaffModel = newStaff.ToEntity();
+        userLogic.ValidateEmail(newStaffModel.Email);
         newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
         return Ok(new MaintenanceStaffDetailModel(staffLogic.Create(newStaffModel)));
     }

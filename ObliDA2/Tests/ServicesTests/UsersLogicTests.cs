@@ -43,6 +43,10 @@ public class UsersLogicTests
         
         
         userService.ValidateEmail("pepe@gmail.com");
+        
+        managerRepo.VerifyAll();
+        adminRepo.VerifyAll();
+        staffRepo.VerifyAll();
     }
     
     [TestMethod]
@@ -57,6 +61,9 @@ public class UsersLogicTests
         
         userService.ValidateEmail("pepe3@gmail.com");
         
+        managerRepo.VerifyAll();
+        adminRepo.VerifyAll();
+        staffRepo.VerifyAll();
         Assert.AreEqual(success, true);
     }
 }

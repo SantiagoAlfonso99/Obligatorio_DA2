@@ -24,14 +24,12 @@ public class AdminControllerTest
     private const string ValidEmail = "pepe@gmail.com";
     private const string PropertyName = "Message";
     private const string DeleteAdminExceptionMessage = "The deletion action could not be completed because there is no admin with that ID";
-    private const string UpdateAdminExceptionMessage = "The update action could not be completed because there is no admin with that ID";
-    private const string UpdateUserExceptionMessage = "All fields are required.";
-    private const string CreateUserExceptionMessage = "Please ensure that all fields are completed and that you provide an email address in the format x@x.com.";
-    private const string ShowAdminExceptionMessage = "The update action could not be completed because there is no admin with that ID";
+    private Mock<IUsersLogic> usersLogic;
     
     [TestInitialize]
     public void Initialize()
     {
+        usersLogic = new Mock<IUsersLogic>();
         newAdminModel = new AdminCreateModel()
             {Name = ValidName, LastName = ValidLastName, Email = ValidEmail, Password = ValidPassword };
         newAdmin = new Admin()
@@ -44,7 +42,7 @@ public class AdminControllerTest
     public void IndexOkTest()
     {
         adminLogicMock.Setup(r => r.GetAll()).Returns(admins);
-        AdminController controller = new AdminController(adminLogicMock.Object);
+        AdminController controller = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
@@ -62,7 +60,7 @@ public class AdminControllerTest
     public void ShowOkTest()
     {
         adminLogicMock.Setup(r => r.GetById(It.IsAny<int>())).Returns(newAdmin);
-        AdminController adminController = new AdminController(adminLogicMock.Object);
+        AdminController adminController = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = adminController.Show(UserId);
         var okResult = result as OkObjectResult;
@@ -77,8 +75,9 @@ public class AdminControllerTest
     [TestMethod]
     public void CreateOkTest()
     {
+        usersLogic.Setup(logic => logic.ValidateEmail(It.IsAny<string>()));
         adminLogicMock.Setup(r => r.Create(It.IsAny<Admin>())).Returns(newAdmin);
-        AdminController adminController = new AdminController(adminLogicMock.Object);
+        AdminController adminController = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = adminController.Create(newAdminModel);
         var okResult = result as OkObjectResult;
@@ -86,6 +85,7 @@ public class AdminControllerTest
         var adminExpected = new AdminDetailModel(newAdmin);
         
         adminLogicMock.VerifyAll();
+        usersLogic.VerifyAll();
         
         Assert.AreEqual(adminExpected, returnedAdmin);
     }
@@ -95,7 +95,7 @@ public class AdminControllerTest
     {
         AdminUpdateModel newAttributes = new AdminUpdateModel() {Name = ValidName, LastName = ValidLastName, Password = ValidPassword };
         adminLogicMock.Setup(r => r.Update(It.IsAny<int>() ,It.IsAny<Admin>())).Returns(newAdmin);
-        AdminController adminController = new AdminController(adminLogicMock.Object);
+        AdminController adminController = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = adminController.Update(UserId, newAttributes);
         var okResult = result as OkObjectResult;
@@ -111,7 +111,7 @@ public class AdminControllerTest
     public void DeleteOkTest()
     {
         adminLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(true);
-        AdminController adminController = new AdminController(adminLogicMock.Object);
+        AdminController adminController = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = adminController.Delete(UserId);
         var noContentResult = result as NoContentResult;
@@ -125,7 +125,7 @@ public class AdminControllerTest
     public void DeleteNotFoundTest()
     {
         adminLogicMock.Setup(r => r.Delete(It.IsAny<int>())).Returns(false);
-        AdminController adminController = new AdminController(adminLogicMock.Object);
+        AdminController adminController = new AdminController(adminLogicMock.Object, usersLogic.Object);
         
         var result = adminController.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;

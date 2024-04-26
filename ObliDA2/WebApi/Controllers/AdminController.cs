@@ -12,9 +12,10 @@ public class AdminController : ControllerBase
     private readonly IAdminLogic adminLogic;
     private readonly IUsersLogic usersLogic;
 
-    public AdminController(IAdminLogic adminLogicIn)
+    public AdminController(IAdminLogic adminLogicIn, IUsersLogic usersLogicIn)
     {
         adminLogic = adminLogicIn;
+        usersLogic = usersLogicIn;
     }
     
     [HttpGet]
@@ -32,6 +33,7 @@ public class AdminController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] AdminCreateModel newAdmin)
     {
+        usersLogic.ValidateEmail(newAdmin.Email);
         var createdAdmin = adminLogic.Create(newAdmin.ToEntity());
         return Ok(new AdminDetailModel(createdAdmin));
     }
