@@ -53,13 +53,13 @@ public class ManagerLogicTests
             new Request { Description = "Light fixture issue", Department = new Apartment(){Id =1}, Category = new Category(){Name = "Electricista"} },
             new Request { Description = "Leaky faucet", Department = new Apartment(){Id =1}, Category = new Category(){Name = "Fontanero"} }
         };
-        mockRequestRepo.Setup(repo => repo.FilterByCategory("Fontanero")).Returns(requests.Where(r => r.Category.Name == "Fontanero"));
+        mockRequestRepo.Setup(repo => repo.GetAll()).Returns(requests);
 
    
         var result = managerLogic.ViewRequests("Fontanero");
-
+        var expectedList = new List<Request>() { new Request { Description = "Leaky faucet", Department = new Apartment(){Id =1}, Category = new Category(){Name = "Fontanero"}}};
         
-        Assert.AreEqual("Fontanero", result.First().Category.Name);
+        CollectionAssert.AreEqual(expectedList, result.ToList());
     }
 
     [TestMethod]

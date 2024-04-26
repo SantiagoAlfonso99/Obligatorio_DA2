@@ -13,6 +13,15 @@ public class Request
     public virtual MaintenanceStaff AssignedToMaintenance { get; set; }
     public int BuildingAssociatedId { get; set; }
     public virtual Building BuildingAssociated { get; set; }
+    
+    public override bool Equals(object obj)
+    {
+        Request other = (Request)obj;
+        return Id == other.Id
+               && Category.Name == other.Category.Name
+               && Description == other.Description
+               && Status == other.Status;
+    }
 }
 
 public enum RequestStatus

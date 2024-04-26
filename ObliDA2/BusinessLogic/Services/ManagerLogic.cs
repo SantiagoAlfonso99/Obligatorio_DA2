@@ -16,11 +16,12 @@ public class ManagerLogic
 
     public IEnumerable<Request> ViewRequests(string category = null)
     {
+        List<Request> requests = requestRepo.GetAll().ToList(); 
         if (string.IsNullOrEmpty(category))
         {
-            return requestRepo.GetAll();
+            return requests;
         }
-        return requestRepo.FilterByCategory(category);
+        return requests.FindAll(request => request.Category.Name == category);
     }
 
     public bool AssignRequestToMaintenance(int requestId, int maintenanceId)

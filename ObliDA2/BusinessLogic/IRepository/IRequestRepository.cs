@@ -9,5 +9,4 @@ public interface IRequestRepository
     void Update(Request request);
     void Remove(Request request);
     IEnumerable<Request> GetAll();
-    IEnumerable<Request> FilterByCategory(string category);
 }
