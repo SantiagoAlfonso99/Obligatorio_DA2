@@ -70,8 +70,8 @@ public class ManagerLogicTests
         mockManagerRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(true);
         mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(new Request());
 
-   
-        var result = managerLogic.AssignRequestToMaintenance(1, 1);
+        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1 };
+        var result = managerLogic.AssignRequestToMaintenance(1, newWorker);
 
    
         Assert.IsTrue(result);
@@ -85,8 +85,8 @@ public class ManagerLogicTests
         mockRequestRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(false);
         mockManagerRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(false);
 
-   
-        managerLogic.AssignRequestToMaintenance(1, 1);
+        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1 };
+        managerLogic.AssignRequestToMaintenance(1, newWorker);
     }
 
     [TestMethod]
@@ -94,11 +94,11 @@ public class ManagerLogicTests
     {
    
         var description = "New issue";
-        var department = new Apartment(){Id =1};
+        var department = new Apartment(){Id =1, Building = new Building(){Id =1}};
         var category = "Vecino molesto";
 
    
-        var result = managerLogic.CreateRequest(description, department, category);
+        var result = managerLogic.CreateRequest(description, department, new Category(){Name = category});
 
    
         Assert.IsNotNull(result);

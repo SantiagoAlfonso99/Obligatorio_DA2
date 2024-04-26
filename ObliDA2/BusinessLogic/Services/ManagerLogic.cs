@@ -32,27 +32,30 @@ public class ManagerLogic : IManagerLogic
         return requests.FindAll(request => request.Category.Name == category);
     }
 
-    public bool AssignRequestToMaintenance(int requestId, int maintenanceId)
+    public bool AssignRequestToMaintenance(int requestId, MaintenanceStaff worker)
     {
         Request returnedRequest = requestRepo.Get(requestId);
-        if (returnedRequest == null || !managerRepo.Exists(maintenanceId) || returnedRequest.Status != RequestStatus.Open )
+        if (returnedRequest == null ||  returnedRequest.Status != RequestStatus.Open )
         {
             throw new InvalidRequestException();
         }
         Request request = requestRepo.Get(requestId);
-        request.AssignedToMaintenanceId = maintenanceId;
+        request.AssignedToMaintenanceId = worker.Id;
+        request.AssignedToMaintenance = worker;
         requestRepo.Update(request);
         return true;
     }
 
-    public Request CreateRequest(string description, Apartment department, string category)
+    public Request CreateRequest(string description, Apartment department, Category category)
     {
         var newRequest = new Request()
         {
             Description = description,
             Department = department,
-            Category = new Category(){Name = category},
-            Status = RequestStatus.Open
+            Category = category,
+            Status = RequestStatus.Open,
+            AssignedToMaintenanceId = department.Building.Id,
+            BuildingAssociated = department.Building
         };
         requestRepo.Add(newRequest);
         return newRequest;
