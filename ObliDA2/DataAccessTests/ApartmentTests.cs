@@ -13,6 +13,10 @@ public class ApartmentTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private ApartmentRepository apartmentRepository;
+    private Manager buildingManager;
+    private ApartmentOwner owner;
+    private Building newBuilding;
+    private Apartment newApartment;
     
     [TestInitialize]
     public void Initialize()
@@ -27,21 +31,21 @@ public class ApartmentTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
-        apartmentRepository = new ApartmentRepository(_context);        
+        apartmentRepository = new ApartmentRepository(_context);    
+        buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
+        newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+        newApartment = new Apartment()
+        {
+            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
+            Building = newBuilding, Terrace = true, Owner = owner
+        };
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
         _context.Apartments.Add(newApartment);
         _context.SaveChanges();
         newApartment.Id = 1;
@@ -55,15 +59,6 @@ public class ApartmentTests
     [TestMethod]
     public void GetOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
         _context.Apartments.Add(newApartment);
         _context.SaveChanges();
         newApartment.Id = 1;
@@ -76,15 +71,6 @@ public class ApartmentTests
     [TestMethod]
     public void CreateOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
         apartmentRepository.Create(newApartment);
         _context.SaveChanges();
         newApartment.Id = 1;
@@ -97,15 +83,6 @@ public class ApartmentTests
     [TestMethod]
     public void DeleteOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
         apartmentRepository.Create(newApartment);
         _context.SaveChanges();
         Apartment otherApartment = new Apartment()

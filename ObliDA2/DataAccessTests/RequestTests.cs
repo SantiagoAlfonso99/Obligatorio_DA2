@@ -14,7 +14,14 @@ public class RequestTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private RequestRepository requestRepository;
-
+    private Building newBuilding;
+    private ApartmentOwner owner;
+    private Manager buildingManager;
+    private Apartment newApartment;
+    private MaintenanceStaff staff;
+    private Request newRequest;
+    private const bool ElementExists = true;
+    
     [TestInitialize]
     public void Initialize()
     {
@@ -29,26 +36,26 @@ public class RequestTests
         _context.Database.EnsureCreated();
 
         requestRepository = new RequestRepository(_context);
+        buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
+        newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+        staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
+        newApartment = new Apartment()
+        {
+            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
+            Building = newBuilding, Terrace = true, Owner = owner
+        };
+        newRequest = new Request()
+        {
+            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
+            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
+        };
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
-        };
         _context.Requests.Add(newRequest);
         _context.SaveChanges();
         newRequest.Id = 1;
@@ -64,21 +71,6 @@ public class RequestTests
     [TestMethod]
     public void CreateOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
-        };
         List<Request> expectedRequests = new List<Request>()
             { newRequest };
         
@@ -93,21 +85,6 @@ public class RequestTests
     [TestMethod]
     public void GetByIdOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
-        };
         _context.Requests.Add(newRequest);
         Request otherRequest = new Request()
         {
@@ -126,21 +103,6 @@ public class RequestTests
     [TestMethod]
     public void DeleteOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
-        };
         _context.Requests.Add(newRequest);
         Request otherRequest = new Request()
         {
@@ -161,21 +123,6 @@ public class RequestTests
     [TestMethod]
     public void UpdateOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        ApartmentOwner owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        MaintenanceStaff staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
-        Apartment newApartment = new Apartment()
-        {
-            NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,
-            Building = newBuilding, Terrace = true, Owner = owner
-        };
-        Request newRequest = new Request()
-        {
-            AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
-        };
         requestRepository.Add(newRequest);
 
         newRequest.Id = 1;
@@ -186,5 +133,16 @@ public class RequestTests
         List<Request> expectedRequest = new List<Request>() { newRequest };
         
         CollectionAssert.AreEqual(expectedRequest, returnedRequest);
+    }
+    
+    [TestMethod]
+    public void ExistsOk()
+    {
+        requestRepository.Add(newRequest);
+
+
+        bool success = requestRepository.Exists(1);
+        
+        Assert.AreEqual(ElementExists, success);
     }
 }

@@ -13,6 +13,8 @@ public class BuildingTests
     private SqliteConnection _connection;
     private DataAppContext _context;
     private BuildingRepository buildingRepository;
+    private Manager buildingManager;
+    private Building newBuilding;
     
     [TestInitialize]
     public void Initialize()
@@ -28,14 +30,14 @@ public class BuildingTests
         _context.Database.EnsureCreated();
         
         buildingRepository = new BuildingRepository(_context);
+        buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
     }
     
     [TestMethod]
     public void GetAllOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
         _context.Buildings.Add(newBuilding);
         _context.SaveChanges();
         newBuilding.Id = 1;
@@ -50,9 +52,6 @@ public class BuildingTests
     [TestMethod]
     public void GetOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
         _context.Buildings.Add(newBuilding);
         _context.SaveChanges();
         Building otherBuilding = new Building() {Name = "otherName", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
@@ -69,9 +68,6 @@ public class BuildingTests
     [TestMethod]
     public void CreateOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
         buildingRepository.Create(newBuilding);
         _context.SaveChanges();
         newBuilding.Id = 1;
@@ -84,18 +80,13 @@ public class BuildingTests
     [TestMethod]
     public void DeleteOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
         buildingRepository.Create(newBuilding);
-        _context.SaveChanges();
         Building otherBuilding = new Building() {Name = "otherName", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
             Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
         buildingRepository.Create(otherBuilding);
         
         newBuilding.Id = 1;
         buildingRepository.Delete(newBuilding);
-        _context.SaveChanges();
         otherBuilding.Id = 2;
         List<Building> returnedBuildings = buildingRepository.GetAll();
         List<Building> expectedBuildings = new List<Building>() { otherBuilding };
@@ -106,20 +97,14 @@ public class BuildingTests
     [TestMethod]
     public void UpdateOk()
     {
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
-        Building newBuilding = new Building() { Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager };
         buildingRepository.Create(newBuilding);
-        _context.SaveChanges();
-
+        
         newBuilding.Name = "otherName";
         newBuilding.Address = "otherAddress";
         newBuilding.CommonExpenses = 5;
         newBuilding.Longitude = 55.33;
         newBuilding.Latitude = 54.22;
-
         buildingRepository.Update(newBuilding);
-        _context.SaveChanges();
     
         Building returnedBuilding = buildingRepository.GetById(1);
     
