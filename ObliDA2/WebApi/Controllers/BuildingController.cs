@@ -12,10 +12,12 @@ namespace WebApi.Controllers;
 public class BuildingController : ControllerBase
 {
     private IBuildingLogic buildingLogic;
+    private IManagerLogic managerLogic;
 
-    public BuildingController(IBuildingLogic logicIn)
+    public BuildingController(IBuildingLogic logicIn, IManagerLogic managerLogicIn)
     {
         buildingLogic = logicIn;
+        managerLogic = managerLogicIn;
     }
     
     [HttpGet]
@@ -33,7 +35,10 @@ public class BuildingController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] BuildingCreateModel newBuilding)
     {
-        return Ok(new BuildingDetailModel(buildingLogic.Create(newBuilding.ToEntity())));
+        var returnedManager = managerLogic.GetById(newBuilding.ManagerAssociatedId);
+        var building = newBuilding.ToEntity();
+        building.BuildingManager = returnedManager;
+        return Ok(new BuildingDetailModel(buildingLogic.Create(building)));
     }
     
     [HttpDelete("{id}")]

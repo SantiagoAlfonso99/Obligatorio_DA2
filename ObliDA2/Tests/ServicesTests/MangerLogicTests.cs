@@ -117,4 +117,29 @@ public class ManagerLogicTests
 
         Assert.AreEqual(expectedManager, newManager);
     }
+    
+    [TestMethod]
+    public void GetManagerOk()
+    {
+        Manager newManager = new Manager(){Name = "pepe", Email = "pepe@gmail.com", Password = "Password"};
+        mockManagerRepo.Setup(repository => repository.Get(It.IsAny<int>())).Returns(newManager);
+
+        Manager returnedManager = managerLogic.GetById(1);
+        Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
+
+        Assert.AreEqual(expectedManager, newManager);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetManagerThrowsException()
+    {
+        Manager newManager = null;
+        mockManagerRepo.Setup(repository => repository.Get(It.IsAny<int>())).Returns(newManager);
+
+        Manager returnedManager = managerLogic.GetById(1);
+        Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
+
+        Assert.AreEqual(expectedManager, newManager);
+    }
 }

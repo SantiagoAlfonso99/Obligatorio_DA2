@@ -60,6 +60,16 @@ public class ManagerLogic : IManagerLogic
         requestRepo.Add(newRequest);
         return newRequest;
     }
+
+    public Manager GetById(int id)
+    {
+        Manager returnedManager = managerRepo.Get(id);
+        if (returnedManager == null)
+        {
+            throw new NotFoundException();
+        }
+        return returnedManager;
+    }
     
     public IEnumerable<Request> GetAllRequest()
     {

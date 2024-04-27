@@ -125,7 +125,7 @@ public class InvitationControllerTest
     public void UserAcceptInvitationOkTest()
     {
         invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
-        managerLogic.Setup(service => service.Create(It.IsAny<Manager>())).Returns(new Manager(){Email = "pepe@gmail.com"});
+        managerLogic.Setup(service => service.Create(It.IsAny<Manager>())).Returns(new Manager(){Email = "pepe@gmail.com",Password = "password"});
         InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
         var result = controller.InvitationResponse(UserId, response);

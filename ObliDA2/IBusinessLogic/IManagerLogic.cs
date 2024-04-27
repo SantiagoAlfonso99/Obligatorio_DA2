@@ -7,4 +7,5 @@ public interface IManagerLogic
     bool AssignRequestToMaintenance(int requestId, MaintenanceStaff worker);
     Request CreateRequest(string description, Apartment department, Category category);
     Manager Create(Manager manager);
+    Manager GetById(int id);
 }

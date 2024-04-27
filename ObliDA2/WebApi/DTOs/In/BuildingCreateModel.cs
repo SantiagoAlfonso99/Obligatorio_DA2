@@ -10,6 +10,7 @@ public class BuildingCreateModel
     public double Longitude { get; set; }
     public string ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
+    public int ManagerAssociatedId { get; set; }
 
     public Building ToEntity()
     {
