@@ -5,11 +5,13 @@ using IBusinessLogic;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
-
+using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/invitations")]
+[AdminAuthorization]
+
 public class InvitationController : ControllerBase
 {
     private readonly IInvitationLogic invitationLogic;

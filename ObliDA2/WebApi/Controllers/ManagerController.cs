@@ -6,11 +6,13 @@ using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using System.Linq;
 using Domain.Models;
-
+using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/manager")]
+[ManagerAuthorization]
+
 public class ManagerController : ControllerBase
 {
     private readonly IManagerLogic _managerLogic;

@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
-
+using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/apartments")]
+[ManagerAuthorization]
+
 public class ApartmentController : ControllerBase
 {
     private IApartmentLogic apartmentLogic;
