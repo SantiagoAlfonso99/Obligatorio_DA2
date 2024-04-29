@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
 using Moq;
+using WebApi.DTOs.In;
 
 namespace Tests.ControllersTests;
 
@@ -57,7 +58,13 @@ public class ReportControllerTests
         };
         
         reportService.Setup(logic => logic.CreateRequestsPerMaintenanceStaffReports(It.IsAny<string>(),It.IsAny<int>())).Returns(returnedReports);
-        var result = controller.GetRequestsPerMaintenanceStaff("name", 1);
+        var requestModel = new MaintenanceRequestModel
+        {
+            WorkerName = "name",
+            BuildingId = 1
+        };
+
+        var result = controller.GetRequestsPerMaintenanceStaff(requestModel);
         var okResult = result as OkObjectResult;
         List<RequestsPerMaintenanceStaffReport> controllerResult = okResult.Value as List<RequestsPerMaintenanceStaffReport>;
         
