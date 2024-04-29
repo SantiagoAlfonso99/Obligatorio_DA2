@@ -10,7 +10,7 @@ public class UsersLogic : IUsersLogic
     private IMaintenanceStaffRepository staffRepo;
     private IManagerRepository managerRepo;
     private IAdminRepository adminRepo;
-
+    private readonly IUserRepository _repository;
     public UsersLogic(IMaintenanceStaffRepository staffRepoIn, IAdminRepository adminRepoIn, IManagerRepository managerRepoIn)
     {
         staffRepo = staffRepoIn;
@@ -28,4 +28,6 @@ public class UsersLogic : IUsersLogic
             throw new DuplicateEntryException();
         }
     }
+    
+    
 }
