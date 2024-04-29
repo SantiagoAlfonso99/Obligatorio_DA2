@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using Domain.Exceptions;
+using WebApi.DTOs.In;
 using WebApi.Filters;
+
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/reports")]
 [ManagerAuthorization]
-
 public class ReportController: ControllerBase
 {
     private readonly IReportLogic reportLogic;
@@ -18,15 +19,16 @@ public class ReportController: ControllerBase
         reportLogic = reportLogicIn;
     }
     
-    [HttpGet]
+    [HttpGet("building")]
     public IActionResult GetRequestPerBuilding([FromBody] string buildingName)
     {
         return Ok(reportLogic.CreateRequestsPerBuildingReports(buildingName));
     }
     
-    [HttpGet]
-    public IActionResult GetRequestsPerMaintenanceStaff([FromBody] string workerName, [FromBody] int buildingId)
+    [HttpGet("maintenance")]
+    public IActionResult GetRequestsPerMaintenanceStaff([FromBody] MaintenanceRequestModel requestModel)
     {
-        return Ok(reportLogic.CreateRequestsPerMaintenanceStaffReports(workerName, buildingId));
+        return Ok(reportLogic.CreateRequestsPerMaintenanceStaffReports(requestModel.WorkerName, requestModel.BuildingId));
     }
+
 }
