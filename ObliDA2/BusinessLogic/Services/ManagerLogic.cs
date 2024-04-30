@@ -76,13 +76,21 @@ public class ManagerLogic : IManagerLogic
         return requestRepo.GetAll();
     }
 
-    public Request MaintenanceStaffAcceptRequest(Request request)
+    public Request MaintenanceStaffAcceptRequest(Request request, DateTime time)
     {
-        return null;
+        request.Status = RequestStatus.Attending;
+        request.Service_start = time;
+        requestRepo.Update(request);
+        return request;
     }
     
-    public Request MaintenanceStaffCompleteRequest(Request request, int finalPrice)
+    
+    public Request MaintenanceStaffCompleteRequest(Request request, int finalPrice, DateTime time)
     {
-        return null;
+        request.Status = RequestStatus.Closed;
+        request.Service_start = time;
+        request.FinalCost = finalPrice;
+        requestRepo.Update(request);
+        return request;
     }
 }

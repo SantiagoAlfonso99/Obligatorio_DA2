@@ -72,7 +72,7 @@ public class ManagerController : ControllerBase
         }
         if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Open))
         {
-            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffAcceptRequest(returnedRequest)));
+            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffAcceptRequest(returnedRequest, DateTime.Now)));
         }
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
@@ -89,7 +89,7 @@ public class ManagerController : ControllerBase
         }
         if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Attending))
         {
-            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffCompleteRequest(returnedRequest,completeDTO.FinalPrice)));
+            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffCompleteRequest(returnedRequest,completeDTO.FinalPrice, DateTime.Now)));
         }
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }

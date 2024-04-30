@@ -9,6 +9,6 @@ public interface IManagerLogic
     Manager Create(Manager manager);
     Manager GetById(int id);
     IEnumerable<Request> GetAllRequest();
-    Request MaintenanceStaffAcceptRequest(Request request);
-    Request MaintenanceStaffCompleteRequest(Request request, int finalPrice);
+    Request MaintenanceStaffAcceptRequest(Request request, DateTime time);
+    Request MaintenanceStaffCompleteRequest(Request request, int finalPrice, DateTime time);
 }

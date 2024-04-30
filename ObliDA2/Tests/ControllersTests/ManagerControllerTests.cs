@@ -129,7 +129,7 @@ public class ManagerControllerTests
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
             Service_start = timeNow
         };
-        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
         ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
         
@@ -165,7 +165,7 @@ public class ManagerControllerTests
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
             Service_start = timeNow.AddDays(-1), Service_end = timeNow, FinalCost = 500
         };
-        managerService.Setup(managerService => managerService.MaintenanceStaffCompleteRequest(It.IsAny<Request>(), It.IsAny<int>()))
+        managerService.Setup(managerService => managerService.MaintenanceStaffCompleteRequest(It.IsAny<Request>(), It.IsAny<int>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
         ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
         
@@ -193,9 +193,6 @@ public class ManagerControllerTests
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
         
-        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
-            .Returns((Request request) => request);
-        
         AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
         var result = controller.AcceptRequest(acceptRequest);
         var notFoundResult = result as NotFoundObjectResult;
@@ -218,9 +215,6 @@ public class ManagerControllerTests
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
-        
-        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
-            .Returns((Request request) => request);
         
         CompleteRequestDTO completeRequest = new CompleteRequestDTO() { RequestId = 3 };
         var result = controller.CompleteRequest(completeRequest);
@@ -246,9 +240,6 @@ public class ManagerControllerTests
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
         
-        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
-            .Returns((Request request) => request);
-        
         AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
         var result = controller.AcceptRequest(acceptRequest);
         var badRequestResult = result as BadRequestObjectResult;
@@ -272,9 +263,6 @@ public class ManagerControllerTests
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 2
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
-        
-        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
-            .Returns((Request request) => request);
         
         CompleteRequestDTO completeRequest = new CompleteRequestDTO() { RequestId = 3, FinalPrice = 500 };
         var result = controller.CompleteRequest(completeRequest);

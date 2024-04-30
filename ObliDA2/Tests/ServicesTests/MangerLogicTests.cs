@@ -142,4 +142,53 @@ public class ManagerLogicTests
 
         Assert.AreEqual(expectedManager, newManager);
     }
+
+    [TestMethod]
+    public void MaintenanceStaffAcceptInvitationOk()
+    { 
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        DateTime timeNow = DateTime.Now;
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1
+        };
+        Request expectedRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, Service_start = timeNow
+        };
+        mockRequestRepo.Setup(repository => repository.Update(It.IsAny<Request>()));
+        
+        Request returnedRequest = managerLogic.MaintenanceStaffAcceptRequest(createdRequest, timeNow);
+        
+        mockRequestRepo.VerifyAll();
+        Assert.AreEqual(expectedRequest, returnedRequest);
+    }
+    
+    [TestMethod]
+    public void MaintenanceStaffCompleteInvitationOk()
+    { 
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        DateTime timeNow = DateTime.Now;
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, Service_start = timeNow.AddDays(-1)
+        };
+        Request expectedRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Closed, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, Service_start = timeNow.AddDays(-1),
+            FinalCost = 500, Service_end = timeNow
+        };
+        mockRequestRepo.Setup(repository => repository.Update(It.IsAny<Request>()));
+        
+        Request returnedRequest = managerLogic.MaintenanceStaffCompleteRequest(createdRequest, 500, timeNow);
+        
+        mockRequestRepo.VerifyAll();
+        Assert.AreEqual(expectedRequest, returnedRequest);
+    }
 }
