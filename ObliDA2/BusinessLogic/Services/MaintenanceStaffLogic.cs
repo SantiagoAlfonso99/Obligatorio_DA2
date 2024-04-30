@@ -5,7 +5,7 @@ using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public class MaintenanceStaffLogic
+public class MaintenanceStaffLogic : IMaintenanceLogic
 {
     private IMaintenanceStaffRepository staffRepo;
 

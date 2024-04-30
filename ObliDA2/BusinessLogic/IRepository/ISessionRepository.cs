@@ -2,7 +2,8 @@ using Domain.Models;
 
 namespace BusinessLogic.IRepository;
 
-public interface IUserRepository
+public interface ISessionRepository
 {
-    public User? FindByToken(Guid token);
+    public string? FindByToken(Guid token);
+    public void Create(Session session);
 }

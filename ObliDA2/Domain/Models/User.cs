@@ -55,4 +55,5 @@ public abstract class User
     {
         return !string.IsNullOrEmpty(emailInput) && Regex.IsMatch(emailInput, RegexMatch);
     }
+    public abstract string GetRole();
 }

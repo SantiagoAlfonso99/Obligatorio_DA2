@@ -30,4 +30,8 @@ public class Admin : User
                && this.LastName == otherAdmin.LastName;
     }
     
+    public override string GetRole()
+    {
+        return "Admin";
+    }
 }

@@ -1,3 +1,6 @@
+using ServiceFactory;
+using WebApi.Filters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +10,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers(
+    options => options.Filters.Add(typeof(ExceptionFilter))
+);
+
+ServicesFactory.RegisterServices(builder.Services);
+ServicesFactory.RegisterDataAccess(builder.Services);
+ServicesFactory.RegisterReportService(builder.Services);
+
 var app = builder.Build();
+
+//ServicesFactory.CreateDefaultUser(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

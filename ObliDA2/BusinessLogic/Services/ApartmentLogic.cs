@@ -5,7 +5,7 @@ using IBusinessLogic;
 
 namespace BusinessLogic.Services;
 
-public class ApartmentLogic
+public class ApartmentLogic : IApartmentLogic
 {
     private readonly IApartmentRepository apartmentRepo;
 

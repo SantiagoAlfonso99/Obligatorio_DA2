@@ -10,11 +10,11 @@ public class ReportLogic : IReportLogic
     private const int Incrementer = 1;
     private const string EmptyString = "";
     
-    private ManagerLogic managerLogic;
-    private BuildingLogic buildingLogic;
-    private MaintenanceStaffLogic staffLogic;
+    private IManagerLogic managerLogic;
+    private IBuildingLogic buildingLogic;
+    private IMaintenanceLogic staffLogic;
     
-    public ReportLogic(ManagerLogic managerLogicIn, BuildingLogic buildingLogicIn, MaintenanceStaffLogic staffLogicIn)
+    public ReportLogic(IManagerLogic managerLogicIn, IBuildingLogic buildingLogicIn, IMaintenanceLogic staffLogicIn)
     {
         managerLogic = managerLogicIn;
         buildingLogic = buildingLogicIn;

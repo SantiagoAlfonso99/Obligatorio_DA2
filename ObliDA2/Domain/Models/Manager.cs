@@ -11,4 +11,9 @@ public class Manager : User
                && Password == other.Password
                && Email == other.Email;
     }
+
+    public override string GetRole()
+    {
+        return "Manager";
+    }
 }

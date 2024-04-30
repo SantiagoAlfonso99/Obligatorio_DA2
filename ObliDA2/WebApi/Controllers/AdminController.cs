@@ -8,7 +8,6 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/admins")]
-[AdminAuthorization]
 
 public class AdminController : ControllerBase
 {

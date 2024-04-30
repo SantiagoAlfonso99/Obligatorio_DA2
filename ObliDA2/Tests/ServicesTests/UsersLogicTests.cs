@@ -14,6 +14,7 @@ public class UsersLogicTests
     private Mock<IManagerRepository> managerRepo;
     private Mock<IMaintenanceStaffRepository> staffRepo;
     private Mock<IAdminRepository> adminRepo;
+    private Mock<ISessionRepository> sessionRepo;
     private List<Manager> managers;
     private List<Admin> admins;
     private List<MaintenanceStaff> personnel;
@@ -22,6 +23,7 @@ public class UsersLogicTests
     [TestInitialize]
     public void Initialize()
     {
+        sessionRepo = new Mock<ISessionRepository>();
         managerRepo = new Mock<IManagerRepository>();
         staffRepo = new Mock<IMaintenanceStaffRepository>();
         adminRepo = new Mock<IAdminRepository>();
@@ -35,7 +37,7 @@ public class UsersLogicTests
     [ExpectedException(typeof(DuplicateEntryException))]
     public void DuplicatedEmailThrowsException()
     {
-        UsersLogic userService = new UsersLogic(staffRepo.Object, adminRepo.Object, managerRepo.Object);
+        UsersLogic userService = new UsersLogic(staffRepo.Object, adminRepo.Object, managerRepo.Object, sessionRepo.Object);
         
         managerRepo.Setup(repository => repository.GetAll()).Returns(managers);
         adminRepo.Setup(repository => repository.GetAll()).Returns(admins);
@@ -52,7 +54,7 @@ public class UsersLogicTests
     [TestMethod]
     public void ValidEmailShouldNotThrowAnException()
     {
-        UsersLogic userService = new UsersLogic(staffRepo.Object, adminRepo.Object, managerRepo.Object);
+        UsersLogic userService = new UsersLogic(staffRepo.Object, adminRepo.Object, managerRepo.Object, sessionRepo.Object);
 
         bool success = true;
         managerRepo.Setup(repository => repository.GetAll()).Returns(managers);

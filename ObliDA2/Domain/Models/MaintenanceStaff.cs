@@ -33,4 +33,9 @@ public class MaintenanceStaff : User
                && Email == other.Email
                && AssociatedBuilding == other.AssociatedBuilding;
     }
+    
+    public override string GetRole()
+    {
+        return "MaintenanceStaff";
+    }
 }
