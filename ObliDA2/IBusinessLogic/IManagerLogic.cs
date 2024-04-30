@@ -9,4 +9,5 @@ public interface IManagerLogic
     Manager Create(Manager manager);
     Manager GetById(int id);
     IEnumerable<Request> GetAllRequest();
+    Request MaintenanceStaffAcceptRequest(Request request);
 }

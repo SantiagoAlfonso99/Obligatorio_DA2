@@ -17,11 +17,10 @@ builder.Services.AddControllers(
 ServicesFactory.RegisterServices(builder.Services);
 ServicesFactory.RegisterDataAccess(builder.Services);
 ServicesFactory.RegisterReportService(builder.Services);
-
 var app = builder.Build();
 
-//ServicesFactory.CreateDefaultUser(app.Services);
-
+ServicesFactory.CreateDefaultUser(app.Services);
+ServicesFactory.CreateDefaultCategories(app.Services);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

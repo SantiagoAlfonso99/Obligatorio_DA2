@@ -27,8 +27,8 @@ public class UsersLogic : IUsersLogic
         {
             return currentUser;
         }
-
-        return FindUserByEmail(sessionRepository.FindByToken(token.Value));
+        currentUser = FindUserByEmail(sessionRepository.FindByToken(token.Value));
+        return currentUser;
     }
     
     public void ValidateEmail(string email)
@@ -67,6 +67,7 @@ public class UsersLogic : IUsersLogic
         User user = FindUserByEmail(email);
         if (user != null && user.Password == password)
         {
+            currentUser = user;
             return user;
         }
         throw new NotFoundException();

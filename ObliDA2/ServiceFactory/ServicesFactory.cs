@@ -75,4 +75,24 @@ public class ServicesFactory
             return;
         }
     }
+    
+    public static void CreateDefaultCategories(IServiceProvider serviceProvider)
+    {
+        try
+        {
+            using var scope = serviceProvider.CreateScope();
+            var services = scope.ServiceProvider;
+            
+            var categoryLogic = services.GetRequiredService<ICategoryLogic>();
+            categoryLogic.Create(new Category() { Name = "Electricista" });
+            categoryLogic.Create(new Category() { Name = "Fontanero" });
+            categoryLogic.Create(new Category() { Name = "Plomero" });
+            categoryLogic.Create(new Category() { Name = "Albañil" });
+            categoryLogic.Create(new Category() { Name = "Vecino Molesto"});
+        }
+        catch (Exception)
+        {
+            return;
+        }
+    }
 }

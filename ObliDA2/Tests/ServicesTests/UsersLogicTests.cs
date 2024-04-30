@@ -68,4 +68,15 @@ public class UsersLogicTests
         staffRepo.VerifyAll();
         Assert.AreEqual(success, true);
     }
+
+    [TestMethod]
+    public void GetCurrentUserOk()
+    {
+        UsersLogic userService = new UsersLogic(staffRepo.Object, adminRepo.Object, managerRepo.Object, sessionRepo.Object);
+        userService.GetCurrentUser();
+        managerRepo.Setup(repository => repository.GetAll()).Returns(managers);
+        adminRepo.Setup(repository => repository.GetAll()).Returns(admins);
+        staffRepo.Setup(repository => repository.GetAll()).Returns(personnel);
+        
+    }
 }

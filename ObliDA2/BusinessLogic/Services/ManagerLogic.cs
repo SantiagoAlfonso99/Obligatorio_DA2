@@ -75,4 +75,9 @@ public class ManagerLogic : IManagerLogic
     {
         return requestRepo.GetAll();
     }
+
+    public Request MaintenanceStaffAcceptRequest(Request request)
+    {
+        return null;
+    }
 }

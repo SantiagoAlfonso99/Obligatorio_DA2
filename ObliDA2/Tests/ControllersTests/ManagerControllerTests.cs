@@ -17,16 +17,18 @@ public class ManagerControllerTests
     private Mock<ICategoryLogic> categoryService;
     private Mock<IApartmentLogic> apartmentService;
     private Mock<IMaintenanceLogic> staffService;
+    private Mock<IUsersLogic> userLogic;
     private ManagerController controller;
     
     [TestInitialize]
     public void Initialize()
     {
+        userLogic = new Mock<IUsersLogic>();
         managerService = new Mock<IManagerLogic>();
         categoryService = new Mock<ICategoryLogic>();
         apartmentService = new Mock<IApartmentLogic>();
         staffService = new Mock<IMaintenanceLogic>();
-        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object);
+        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object);
     }
     
     [TestMethod]
@@ -104,5 +106,93 @@ public class ManagerControllerTests
         var returnedMessage = badResult.Value.GetType().GetProperty("Message"); 
         
         Assert.AreEqual(returnedMessage.GetValue(badResult.Value), "Assignment could not be completed");
+    }
+
+    [TestMethod]
+    public void MaintenanceStaffAcceptRequestOk()
+    {
+        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
+            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
+        DateTime timeNow = DateTime.Now;
+        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        Request returnedRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
+            Service_start = timeNow
+        };
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+            .Returns(returnedRequest);
+        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        
+        AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
+        var result = controller.AcceptRequest(acceptRequest);
+        userLogic.VerifyAll();
+        var okResult = result as OkObjectResult;
+        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
+    
+        
+        Assert.AreEqual(returnedValue, expectedModel);
+    }
+    
+    [TestMethod]
+    public void MaintenanceStaffAcceptInvitationThrowsNotFound()
+    {
+        MaintenanceStaff returnedMaintenance = null;
+        Guid? token = null;
+        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+            .Returns((Request request) => request);
+        
+        AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
+        var result = controller.AcceptRequest(acceptRequest);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty("Message");
+    
+        Assert.AreEqual("The user referred to by the token or the given request was not found.", message.GetValue(notFoundResult.Value));
+    }
+    
+    [TestMethod]
+    public void MaintenanceStaffAcceptINvitationBadRequest()
+    {
+        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
+            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };;
+        Guid? token = null;
+        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 2
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+            .Returns((Request request) => request);
+        
+        AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
+        var result = controller.AcceptRequest(acceptRequest);
+        var badRequestResult = result as BadRequestObjectResult;
+        var message = badRequestResult.Value.GetType().GetProperty("Message");
+    
+        Assert.AreEqual("Please verify that this is a request from you and that it is still an open request.", message.GetValue(badRequestResult.Value));
     }
 }

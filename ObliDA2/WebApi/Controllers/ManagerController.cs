@@ -19,14 +19,16 @@ public class ManagerController : ControllerBase
     private readonly ICategoryLogic _categoryLogic;
     private readonly IApartmentLogic _apartmentLogic;
     private readonly IMaintenanceLogic _maintenanceLogic;
-
+    private readonly IUsersLogic _usersLogic;
+    
     public ManagerController(IManagerLogic managerLogic, ICategoryLogic catLogicIn, IApartmentLogic apartLogicIn
-    , IMaintenanceLogic _maintenanceLogicIn)
+    , IMaintenanceLogic _maintenanceLogicIn, IUsersLogic userLogicIn)
     {
         _managerLogic = managerLogic;
         _categoryLogic = catLogicIn;
         _apartmentLogic = apartLogicIn;
         _maintenanceLogic = _maintenanceLogicIn;
+        _usersLogic = userLogicIn;
     }
 
     [HttpGet("requests")]
@@ -56,5 +58,22 @@ public class ManagerController : ControllerBase
             return Ok(new { Message = "Request successfully assigned." });   
         }
         return BadRequest(new { Message = "Assignment could not be completed"});
+    }
+
+    [HttpPut("requests")]
+    public IActionResult AcceptRequest([FromBody] AcceptRequestDTO accept)
+    {
+        Guid? token = null;
+        User user = _usersLogic.GetCurrentUser(token);
+        Request returnedRequest = _managerLogic.GetAllRequest().ToList().FirstOrDefault(request => request.Id == accept.RequestId);
+        if (returnedRequest == null || user == null)
+        {
+            return NotFound(new {Message = "The user referred to by the token or the given request was not found."});
+        }
+        if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Open))
+        {
+            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffAcceptRequest(returnedRequest)));
+        }
+        return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
 }
