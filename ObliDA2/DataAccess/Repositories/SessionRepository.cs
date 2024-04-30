@@ -11,9 +11,15 @@ public class SessionRepository : ISessionRepository
     {
         Context = context;
     }
-    public User? FindByToken(Guid token)
+    public string? FindByToken(Guid token)
     {
         var session = Context.Set<Session>().FirstOrDefault(s => s.Token == token);
-        return session?.User;
+        return session?.UserEmail;
+    }
+
+    public void Create(Session session)
+    {
+        Context.Sessions.Add(session);
+        Context.SaveChanges();
     }
 }

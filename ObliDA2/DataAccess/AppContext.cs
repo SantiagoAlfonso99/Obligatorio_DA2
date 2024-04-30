@@ -11,7 +11,6 @@ public class AppContext : DbContext
     public AppContext(DbContextOptions options) : base(options) { }
     
     public virtual DbSet<Admin>? Admins { get; set; }
-    public virtual DbSet<Session>? Sessions { get; set; }
     public virtual DbSet<Manager>? Managers { get; set; }
     public virtual DbSet<MaintenanceStaff>? MaintenancePersonnel { get; set; }
     public virtual DbSet<Building>? Buildings { get; set; }
@@ -20,6 +19,7 @@ public class AppContext : DbContext
     public virtual DbSet<Category>? Categories { get; set; }
     public virtual DbSet<Request>? Requests { get; set; }
     public virtual DbSet<Invitation>? Invitations { get; set; }
+    public virtual DbSet<Session>? Sessions { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
