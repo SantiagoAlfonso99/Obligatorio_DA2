@@ -144,6 +144,41 @@ public class ManagerControllerTests
     }
     
     [TestMethod]
+    public void MaintenanceStaffCompleteRequestOk()
+    {
+        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
+            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
+        DateTime timeNow = DateTime.Now;
+        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
+            Service_start = timeNow.AddDays(-1)
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        Request returnedRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Closed, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
+            Service_start = timeNow.AddDays(-1), Service_end = timeNow, FinalCost = 500
+        };
+        managerService.Setup(managerService => managerService.MaintenanceStaffCompleteRequest(It.IsAny<Request>(), It.IsAny<int>()))
+            .Returns(returnedRequest);
+        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        
+        CompleteRequestDTO acceptRequest = new CompleteRequestDTO() { RequestId = 3, FinalPrice = 500};
+        var result = controller.CompleteRequest(acceptRequest);
+        userLogic.VerifyAll();
+        var okResult = result as OkObjectResult;
+        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
+        
+        Assert.AreEqual(returnedValue, expectedModel);
+    }
+    
+    [TestMethod]
     public void MaintenanceStaffAcceptInvitationThrowsNotFound()
     {
         MaintenanceStaff returnedMaintenance = null;
@@ -170,10 +205,63 @@ public class ManagerControllerTests
     }
     
     [TestMethod]
-    public void MaintenanceStaffAcceptINvitationBadRequest()
+    public void MaintenanceStaffCompleteInvitationThrowsNotFound()
+    {
+        MaintenanceStaff returnedMaintenance = null;
+        Guid? token = null;
+        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+            .Returns((Request request) => request);
+        
+        CompleteRequestDTO completeRequest = new CompleteRequestDTO() { RequestId = 3 };
+        var result = controller.CompleteRequest(completeRequest);
+        var notFoundResult = result as NotFoundObjectResult;
+        var message = notFoundResult.Value.GetType().GetProperty("Message");
+    
+        Assert.AreEqual("The user referred to by the token or the given request was not found.", message.GetValue(notFoundResult.Value));
+    }
+    
+    [TestMethod]
+    public void MaintenanceStaffAcceptInvitationBadRequest()
     {
         MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
             { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };;
+        Guid? token = null;
+        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        Category newCategory = new Category() { Name = "name" };
+        Request createdRequest = new Request()
+        {
+            Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 2
+        };
+        managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
+        
+        managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
+            .Returns((Request request) => request);
+        
+        AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
+        var result = controller.AcceptRequest(acceptRequest);
+        var badRequestResult = result as BadRequestObjectResult;
+        var message = badRequestResult.Value.GetType().GetProperty("Message");
+    
+        Assert.AreEqual("Please verify that this is a request from you and that it is still an open request.", message.GetValue(badRequestResult.Value));
+    }
+    
+    [TestMethod]
+    public void MaintenanceStaffCompleteInvitationBadRequest()
+    {
+        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
+            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
         Guid? token = null;
         userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
         Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
@@ -188,8 +276,8 @@ public class ManagerControllerTests
         managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>()))
             .Returns((Request request) => request);
         
-        AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
-        var result = controller.AcceptRequest(acceptRequest);
+        CompleteRequestDTO completeRequest = new CompleteRequestDTO() { RequestId = 3, FinalPrice = 500 };
+        var result = controller.CompleteRequest(completeRequest);
         var badRequestResult = result as BadRequestObjectResult;
         var message = badRequestResult.Value.GetType().GetProperty("Message");
     

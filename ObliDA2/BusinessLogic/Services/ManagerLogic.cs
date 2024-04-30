@@ -80,4 +80,9 @@ public class ManagerLogic : IManagerLogic
     {
         return null;
     }
+    
+    public Request MaintenanceStaffCompleteRequest(Request request, int finalPrice)
+    {
+        return null;
+    }
 }

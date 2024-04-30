@@ -10,4 +10,5 @@ public interface IManagerLogic
     Manager GetById(int id);
     IEnumerable<Request> GetAllRequest();
     Request MaintenanceStaffAcceptRequest(Request request);
+    Request MaintenanceStaffCompleteRequest(Request request, int finalPrice);
 }

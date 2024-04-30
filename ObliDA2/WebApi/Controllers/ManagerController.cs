@@ -60,7 +60,7 @@ public class ManagerController : ControllerBase
         return BadRequest(new { Message = "Assignment could not be completed"});
     }
 
-    [HttpPut("requests")]
+    [HttpPut("requests/accept")]
     public IActionResult AcceptRequest([FromBody] AcceptRequestDTO accept)
     {
         Guid? token = null;
@@ -73,6 +73,23 @@ public class ManagerController : ControllerBase
         if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Open))
         {
             return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffAcceptRequest(returnedRequest)));
+        }
+        return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
+    }
+    
+    [HttpPut("requests/complete")]
+    public IActionResult CompleteRequest([FromBody] CompleteRequestDTO completeDTO)
+    {
+        Guid? token = null;
+        User user = _usersLogic.GetCurrentUser(token);
+        Request returnedRequest = _managerLogic.GetAllRequest().ToList().FirstOrDefault(request => request.Id == completeDTO.RequestId);
+        if (returnedRequest == null || user == null)
+        {
+            return NotFound(new {Message = "The user referred to by the token or the given request was not found."});
+        }
+        if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Attending))
+        {
+            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffCompleteRequest(returnedRequest,completeDTO.FinalPrice)));
         }
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
