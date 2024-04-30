@@ -8,7 +8,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/admins")]
-
+[BaseAuthorization("Admin")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminLogic adminLogic;

@@ -8,7 +8,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/MaintenanceStaff")]
-[MaintenanceAuthorization]
+[BaseAuthorization("Manager")]
 
 public class MaintenanceStaffController : ControllerBase
 {

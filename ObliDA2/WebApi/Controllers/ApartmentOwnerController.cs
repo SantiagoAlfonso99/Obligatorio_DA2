@@ -8,7 +8,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/ApartmentOwners")]
-[ManagerAuthorization]
+[BaseAuthorization("Manager")]
 
 public class ApartmentOwnerController : ControllerBase
 {

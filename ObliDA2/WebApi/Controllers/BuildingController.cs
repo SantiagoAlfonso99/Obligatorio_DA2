@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/building")]
-[ManagerAuthorization]
+[BaseAuthorization("Manager")]
 
 public class BuildingController : ControllerBase
 {

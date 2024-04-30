@@ -10,7 +10,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/categories")]
-[AdminAuthorization]
+[BaseAuthorization("Admin")]
 
 public class CategoryController : ControllerBase
 {

@@ -11,7 +11,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/manager")]
-[ManagerAuthorization]
+[BaseAuthorization("Manager")]
 
 public class ManagerController : ControllerBase
 {

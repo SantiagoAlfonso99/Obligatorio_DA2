@@ -10,7 +10,6 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/invitations")]
-[AdminAuthorization]
 
 public class InvitationController : ControllerBase
 {
@@ -23,12 +22,14 @@ public class InvitationController : ControllerBase
         managerLogic = managerLogicIn;
     }
     
+    [BaseAuthorization("Admin")]
     [HttpGet]
     public IActionResult Index()
     {
         return Ok(invitationLogic.GetAll().Select(invitation => new InvitationDetailModel(invitation)).ToList());
     }
     
+    [BaseAuthorization("Admin")]
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
@@ -36,6 +37,7 @@ public class InvitationController : ControllerBase
         return Ok(new InvitationDetailModel(invitation));
     }
     
+    [BaseAuthorization("Admin")]
     [HttpPost]
     public IActionResult Create([FromBody] InvitationCreateModel newInvitation)
     {
@@ -43,6 +45,7 @@ public class InvitationController : ControllerBase
         return Ok(new InvitationDetailModel(createdInvitation));
     }
     
+    [BaseAuthorization("Admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

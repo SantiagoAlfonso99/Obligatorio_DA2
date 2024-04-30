@@ -9,7 +9,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/reports")]
-[ManagerAuthorization]
+[BaseAuthorization("Manager")]
 public class ReportController: ControllerBase
 {
     private readonly IReportLogic reportLogic;
