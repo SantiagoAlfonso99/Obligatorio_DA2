@@ -37,12 +37,12 @@ public class ApartmentController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult Create(ApartmentCreateModel newApartment)
+    public IActionResult Create([FromBody] ApartmentCreateModel newApartment)
     {
         var newApartmentModel = newApartment.ToEntity();
         newApartmentModel.Building = buildingLogic.GetById(newApartment.BuildingId);
         newApartmentModel.Owner = ownerLogic.GetById(newApartment.OwnerId);
-        return Ok(new ApartmentDetailModel(apartmentLogic.Create(newApartment.ToEntity())));
+        return Ok(new ApartmentDetailModel(apartmentLogic.Create(newApartmentModel)));
     }
     
     [HttpDelete("{id}")]

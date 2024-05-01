@@ -11,7 +11,6 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/manager")]
-[BaseAuthorization("Manager")]
 
 public class ManagerController : ControllerBase
 {
@@ -31,6 +30,7 @@ public class ManagerController : ControllerBase
         _usersLogic = userLogicIn;
     }
 
+    [BaseAuthorization("Manager")]
     [HttpGet("requests")]
     public IActionResult GetRequests(string category)
     {
@@ -39,6 +39,7 @@ public class ManagerController : ControllerBase
         return Ok(response);
     }
     
+    [BaseAuthorization("Manager")]
     [HttpPost("requests")]
     public IActionResult CreateRequest([FromBody] ManagerCreateModel requestDto)
     {
@@ -48,6 +49,7 @@ public class ManagerController : ControllerBase
         return Ok(new ManagerDetailModel(request));
     }
 
+    [BaseAuthorization("Manager")]
     [HttpPost("assign")]
     public IActionResult AssignRequest([FromBody] ManagerAssignModel assignRequestDto)
     {
@@ -60,6 +62,7 @@ public class ManagerController : ControllerBase
         return BadRequest(new { Message = "Assignment could not be completed"});
     }
 
+    [BaseAuthorization("Maintenance")]
     [HttpPut("requests/accept")]
     public IActionResult AcceptRequest([FromBody] AcceptRequestDTO accept)
     {
@@ -77,6 +80,7 @@ public class ManagerController : ControllerBase
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
     
+    [BaseAuthorization("Maintenance")]
     [HttpPut("requests/complete")]
     public IActionResult CompleteRequest([FromBody] CompleteRequestDTO completeDTO)
     {
