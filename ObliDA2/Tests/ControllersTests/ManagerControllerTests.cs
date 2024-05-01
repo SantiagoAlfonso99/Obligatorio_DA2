@@ -19,10 +19,20 @@ public class ManagerControllerTests
     private Mock<IMaintenanceLogic> staffService;
     private Mock<IUsersLogic> userLogic;
     private ManagerController controller;
+    private MaintenanceStaff returnedMaintenance;
+    private DateTime timeNow;
+    private Apartment newApartment;
+    private Category newCategory;
     
     [TestInitialize]
     public void Initialize()
     {
+        returnedMaintenance = new MaintenanceStaff()
+            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
+        timeNow = DateTime.Now;
+        newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        newCategory = new Category() { Name = "name" };
+        
         userLogic = new Mock<IUsersLogic>();
         managerService = new Mock<IManagerLogic>();
         categoryService = new Mock<ICategoryLogic>();
@@ -111,12 +121,7 @@ public class ManagerControllerTests
     [TestMethod]
     public void MaintenanceStaffAcceptRequestOk()
     {
-        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
-            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
-        DateTime timeNow = DateTime.Now;
         userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
@@ -146,13 +151,8 @@ public class ManagerControllerTests
     [TestMethod]
     public void MaintenanceStaffCompleteRequestOk()
     {
-        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
-            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
-        DateTime timeNow = DateTime.Now;
         userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
-        Request createdRequest = new Request()
+       Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance,
@@ -181,11 +181,9 @@ public class ManagerControllerTests
     [TestMethod]
     public void MaintenanceStaffAcceptInvitationThrowsNotFound()
     {
-        MaintenanceStaff returnedMaintenance = null;
+        returnedMaintenance = null;
         Guid? token = null;
         userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
@@ -207,8 +205,6 @@ public class ManagerControllerTests
         MaintenanceStaff returnedMaintenance = null;
         Guid? token = null;
         userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
@@ -227,12 +223,8 @@ public class ManagerControllerTests
     [TestMethod]
     public void MaintenanceStaffAcceptInvitationBadRequest()
     {
-        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
-            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };;
         Guid? token = null;
         userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
@@ -251,12 +243,8 @@ public class ManagerControllerTests
     [TestMethod]
     public void MaintenanceStaffCompleteInvitationBadRequest()
     {
-        MaintenanceStaff returnedMaintenance = new MaintenanceStaff()
-            { Name = "pepe", LastName = "rodriguez", Password = "juan123", Email = "pepe@gmail.com", Id = 1 };
         Guid? token = null;
         userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,

@@ -14,11 +14,16 @@ public class ManagerLogicTests
     private Mock<IManagerRepository> mockManagerRepo;
     private Mock<IRequestRepository> mockRequestRepo;
     private ManagerLogic managerLogic;
-
+    private Apartment newApartment;
+    private Category newCategory;
+    private DateTime timeNow;
+    
     [TestInitialize]
     public void Setup()
     {
-   
+        newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
+        newCategory = new Category() { Name = "name" };
+        timeNow = DateTime.Now;
         mockManagerRepo = new Mock<IManagerRepository>();
         mockRequestRepo = new Mock<IRequestRepository>();
 
@@ -146,9 +151,6 @@ public class ManagerLogicTests
     [TestMethod]
     public void MaintenanceStaffAcceptInvitationOk()
     { 
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
-        DateTime timeNow = DateTime.Now;
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
@@ -170,9 +172,6 @@ public class ManagerLogicTests
     [TestMethod]
     public void MaintenanceStaffCompleteInvitationOk()
     { 
-        Apartment newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
-        Category newCategory = new Category() { Name = "name" };
-        DateTime timeNow = DateTime.Now;
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
