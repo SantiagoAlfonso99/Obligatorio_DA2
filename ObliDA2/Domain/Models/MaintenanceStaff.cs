@@ -36,6 +36,6 @@ public class MaintenanceStaff : User
     
     public override string GetRole()
     {
-        return "MaintenanceStaff";
+        return "Maintenance";
     }
 }
