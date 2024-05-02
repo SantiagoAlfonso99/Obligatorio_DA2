@@ -46,16 +46,14 @@ public class ManagerLogic : IManagerLogic
         return true;
     }
 
-    public Request CreateRequest(string description, Apartment department, Category category)
+    public Request CreateRequest(string description, Apartment department, Category category, Building building)
     {
         var newRequest = new Request()
         {
             Description = description,
             Department = department,
             Category = category,
-            Status = RequestStatus.Open,
-            AssignedToMaintenanceId = department.Building.Id,
-            BuildingAssociated = department.Building
+            Status = RequestStatus.Open
         };
         requestRepo.Add(newRequest);
         return newRequest;

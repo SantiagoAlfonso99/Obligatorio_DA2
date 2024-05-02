@@ -35,7 +35,7 @@ public class ReportLogic : IReportLogic
             newReport.OpenRequests = MinValue;
             foreach (var request in returnedRequests)
             {
-                if (request.BuildingAssociatedId == building.Id)
+                if (request.Department.BuildingId == building.Id)
                 {
                     if (request.Status == RequestStatus.Open)
                     {
@@ -64,7 +64,7 @@ public class ReportLogic : IReportLogic
     public List<RequestsPerMaintenanceStaffReport> CreateRequestsPerMaintenanceStaffReports(string workerName, int buildingId)
     {
         List<MaintenanceStaff> workers = staffLogic.GetAll().Where(worker => worker.AssociatedBuilding.Id == buildingId).ToList();
-        IEnumerable<Request> returnedRequests = managerLogic.GetAllRequest().Where(request => request.BuildingAssociatedId == buildingId).ToList();
+        IEnumerable<Request> returnedRequests = managerLogic.GetAllRequest().Where(request => request.Department.BuildingId == buildingId).ToList();
         List<RequestsPerMaintenanceStaffReport> reports = new List<RequestsPerMaintenanceStaffReport>();
         foreach (var worker in workers)
         {

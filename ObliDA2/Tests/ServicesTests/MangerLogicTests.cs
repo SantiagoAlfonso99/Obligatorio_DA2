@@ -101,9 +101,9 @@ public class ManagerLogicTests
         var description = "New issue";
         var department = new Apartment(){Id =1, Building = new Building(){Id =1}};
         var category = "Vecino molesto";
-
+        var building = new Building() { Id = 1 };
    
-        var result = managerLogic.CreateRequest(description, department, new Category(){Name = category});
+        var result = managerLogic.CreateRequest(description, department, new Category(){Name = category}, building);
 
    
         Assert.IsNotNull(result);

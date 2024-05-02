@@ -19,15 +19,17 @@ public class ManagerController : ControllerBase
     private readonly IApartmentLogic _apartmentLogic;
     private readonly IMaintenanceLogic _maintenanceLogic;
     private readonly IUsersLogic _usersLogic;
+    private readonly IBuildingLogic buildingLogic;
     
     public ManagerController(IManagerLogic managerLogic, ICategoryLogic catLogicIn, IApartmentLogic apartLogicIn
-    , IMaintenanceLogic _maintenanceLogicIn, IUsersLogic userLogicIn)
+    , IMaintenanceLogic _maintenanceLogicIn, IUsersLogic userLogicIn, IBuildingLogic buildingLogicIn)
     {
         _managerLogic = managerLogic;
         _categoryLogic = catLogicIn;
         _apartmentLogic = apartLogicIn;
         _maintenanceLogic = _maintenanceLogicIn;
         _usersLogic = userLogicIn;
+        buildingLogic = buildingLogicIn;
     }
 
     [BaseAuthorization("Manager")]
@@ -45,7 +47,8 @@ public class ManagerController : ControllerBase
     {
         var category = _categoryLogic.GetById(requestDto.CategoryId);
         var apartment = _apartmentLogic.GetById(requestDto.DepartmentId);
-        var request = _managerLogic.CreateRequest(requestDto.Description, apartment, category);
+        var building = buildingLogic.GetById(apartment.BuildingId);
+        var request = _managerLogic.CreateRequest(requestDto.Description, apartment, category, building);
         return Ok(new ManagerDetailModel(request));
     }
 

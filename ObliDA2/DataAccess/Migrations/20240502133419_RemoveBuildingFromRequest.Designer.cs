@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20240502133419_RemoveBuildingFromRequest")]
+    partial class RemoveBuildingFromRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -375,7 +378,7 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Apartment", "Department")
-                        .WithMany()
+                        .WithMany("Requests")
                         .HasForeignKey("DepartmentId");
 
                     b.Navigation("AssignedToMaintenance");
@@ -383,6 +386,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Domain.Models.Apartment", b =>
+                {
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

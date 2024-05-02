@@ -40,9 +40,8 @@ public class Apartment
     
     public bool Terrace { get; set; }
     public virtual ApartmentOwner Owner { get; set; } 
+    public int BuildingId { get; set; }
     public virtual Building Building { get; set; }
-
-    public virtual ICollection<Request> Requests { get; set; }
     public override bool Equals(object obj)
     {
         if (obj == null || GetType() != obj.GetType())

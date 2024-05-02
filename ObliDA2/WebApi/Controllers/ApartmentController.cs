@@ -42,6 +42,7 @@ public class ApartmentController : ControllerBase
         var newApartmentModel = newApartment.ToEntity();
         newApartmentModel.Building = buildingLogic.GetById(newApartment.BuildingId);
         newApartmentModel.Owner = ownerLogic.GetById(newApartment.OwnerId);
+        newApartmentModel.BuildingId = newApartment.BuildingId;
         return Ok(new ApartmentDetailModel(apartmentLogic.Create(newApartmentModel)));
     }
     

@@ -49,7 +49,7 @@ public class RequestTests
         newRequest = new Request()
         {
             AssignedToMaintenance = staff,Category = new Category(){Name = "Name"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
+            Department = newApartment, Description = "p"
         };
     }
     
@@ -89,7 +89,7 @@ public class RequestTests
         Request otherRequest = new Request()
         {
             AssignedToMaintenance = staff,Category = new Category(){Name = "otherName"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
+            Department = newApartment, Description = "p"
         };
         _context.Requests.Add(otherRequest);
         _context.SaveChanges();
@@ -107,7 +107,7 @@ public class RequestTests
         Request otherRequest = new Request()
         {
             AssignedToMaintenance = staff,Category = new Category(){Name = "otherName"},
-            BuildingAssociated  = newBuilding, Department = newApartment, Description = "p"
+            Department = newApartment, Description = "p"
         };
         _context.Requests.Add(otherRequest);
         requestRepository.Remove(newRequest);

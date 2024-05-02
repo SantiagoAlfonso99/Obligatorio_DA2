@@ -35,10 +35,10 @@ public class ReportLogicTests
 
         var requests = new List<Request>
         {
-            new Request { Id = 1, BuildingAssociatedId = 1, Status = RequestStatus.Open },
-            new Request { Id = 2, BuildingAssociatedId = 1, Status = RequestStatus.Closed },
-            new Request { Id = 3, BuildingAssociatedId = 2, Status = RequestStatus.Attending },
-            new Request { Id = 4, BuildingAssociatedId = 2, Status = RequestStatus.Closed }
+            new Request { Id = 1, Department = new Apartment(){Id =1, BuildingId = 1}, Status = RequestStatus.Open },
+            new Request { Id = 2, Department = new Apartment(){Id =1, BuildingId = 1}, Status = RequestStatus.Closed },
+            new Request { Id = 3, Department = new Apartment(){Id =2, BuildingId = 2}, Status = RequestStatus.Attending },
+            new Request { Id = 4, Department = new Apartment(){Id =2, BuildingId = 2}, Status = RequestStatus.Closed }
         };
 
         buildingRepo.Setup(b => b.GetAll()).Returns(new List<Building> { building1, building2 });
@@ -72,12 +72,12 @@ public class ReportLogicTests
 
         var requests = new List<Request>
         {
-            new Request { Id = 5, BuildingAssociatedId = 3, Status = RequestStatus.Open },
-            new Request { Id = 6, BuildingAssociatedId = 3, Status = RequestStatus.Attending },
-            new Request { Id = 7, BuildingAssociatedId = 4, Status = RequestStatus.Open },
-            new Request { Id = 8, BuildingAssociatedId = 4, Status = RequestStatus.Closed },
-            new Request { Id = 9, BuildingAssociatedId = 4, Status = RequestStatus.Closed },
-            new Request { Id = 10, BuildingAssociatedId = 4, Status = RequestStatus.Closed }
+            new Request { Id = 5, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Open },
+            new Request { Id = 6, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Attending },
+            new Request { Id = 7, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Open },
+            new Request { Id = 8, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed },
+            new Request { Id = 9, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed },
+            new Request { Id = 10, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed }
         };
 
         buildingRepo.Setup(b => b.GetAll()).Returns(new List<Building> { building3, building4, building5 });
@@ -112,12 +112,12 @@ public class ReportLogicTests
 
         var requests = new List<Request>
         {
-            new Request { Id = 5, BuildingAssociatedId = 3, Status = RequestStatus.Open },
-            new Request { Id = 6, BuildingAssociatedId = 3, Status = RequestStatus.Attending },
-            new Request { Id = 7, BuildingAssociatedId = 4, Status = RequestStatus.Open },
-            new Request { Id = 8, BuildingAssociatedId = 4, Status = RequestStatus.Closed },
-            new Request { Id = 9, BuildingAssociatedId = 4, Status = RequestStatus.Closed },
-            new Request { Id = 10, BuildingAssociatedId = 4, Status = RequestStatus.Closed }
+            new Request { Id = 5, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Open },
+            new Request { Id = 6, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Attending },
+            new Request { Id = 7, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Open },
+            new Request { Id = 8, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed },
+            new Request { Id = 9, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed },
+            new Request { Id = 10, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed }
         };
 
         buildingRepo.Setup(b => b.GetAll()).Returns(new List<Building> { building3, building4, building5 });
@@ -158,12 +158,12 @@ public class ReportLogicTests
         
         var requests = new List<Request>
         {
-            new Request { Id = 5, BuildingAssociatedId = 3, Status = RequestStatus.Open },
-            new Request { Id = 6, BuildingAssociatedId = 4, Status = RequestStatus.Attending, Service_start = DateTime.Now.AddHours(-2), AssignedToMaintenanceId = 1},
-            new Request { Id = 7, BuildingAssociatedId = 4, Status = RequestStatus.Open, AssignedToMaintenanceId = 1 },
-            new Request { Id = 8, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-2), Service_end = now, AssignedToMaintenanceId = 1},
-            new Request { Id = 9, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-6), Service_end = now, AssignedToMaintenanceId = 2 },
-            new Request { Id = 10, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-9), Service_end = now, AssignedToMaintenanceId = 2 }
+            new Request { Id = 5, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Open },
+            new Request { Id = 6, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Attending, Service_start = DateTime.Now.AddHours(-2), AssignedToMaintenanceId = 1},
+            new Request { Id = 7, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Open, AssignedToMaintenanceId = 1 },
+            new Request { Id = 8, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-2), Service_end = now, AssignedToMaintenanceId = 1},
+            new Request { Id = 9, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-6), Service_end = now, AssignedToMaintenanceId = 2 },
+            new Request { Id = 10, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-9), Service_end = now, AssignedToMaintenanceId = 2 }
         };
         staffRepo.Setup(repository => repository.GetAll()).Returns(mockWorkers);
         buildingRepo.Setup(b => b.GetAll()).Returns(new List<Building> { building3, building4, building5 });
@@ -218,15 +218,15 @@ public class ReportLogicTests
         
         var requests = new List<Request>
         {
-            new Request { Id = 5, BuildingAssociatedId = 3, Status = RequestStatus.Open },
-            new Request { Id = 6, BuildingAssociatedId = 4, Status = RequestStatus.Attending, Service_start = DateTime.Now.AddHours(-2), AssignedToMaintenanceId = 1},
-            new Request { Id = 7, BuildingAssociatedId = 4, Status = RequestStatus.Open, AssignedToMaintenanceId = 1 },
-            new Request { Id = 8, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-2), Service_end = now, AssignedToMaintenanceId = 1},
-            new Request { Id = 9, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-6), Service_end = now, AssignedToMaintenanceId = 2 },
-            new Request { Id = 10, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-9), Service_end = now, AssignedToMaintenanceId = 2 },
-            new Request { Id = 11, BuildingAssociatedId = 4, Status = RequestStatus.Open, AssignedToMaintenanceId = 2 },
-            new Request { Id = 12, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-4), Service_end = now, AssignedToMaintenanceId = 2 },
-            new Request { Id = 13, BuildingAssociatedId = 4, Status = RequestStatus.Closed, Service_start = now.AddHours(-8), Service_end = now, AssignedToMaintenanceId = 2 }
+            new Request { Id = 5, Department = new Apartment(){Id = 1, BuildingId = 3}, Status = RequestStatus.Open },
+            new Request { Id = 6, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Attending, Service_start = DateTime.Now.AddHours(-2), AssignedToMaintenanceId = 1},
+            new Request { Id = 7, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Open, AssignedToMaintenanceId = 1 },
+            new Request { Id = 8, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-2), Service_end = now, AssignedToMaintenanceId = 1},
+            new Request { Id = 9, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-6), Service_end = now, AssignedToMaintenanceId = 2 },
+            new Request { Id = 10, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-9), Service_end = now, AssignedToMaintenanceId = 2 },
+            new Request { Id = 11, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Open, AssignedToMaintenanceId = 2 },
+            new Request { Id = 12, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-4), Service_end = now, AssignedToMaintenanceId = 2 },
+            new Request { Id = 13, Department = new Apartment(){Id = 1, BuildingId = 4}, Status = RequestStatus.Closed, Service_start = now.AddHours(-8), Service_end = now, AssignedToMaintenanceId = 2 }
         };
         staffRepo.Setup(repository => repository.GetAll()).Returns(mockWorkers);
         buildingRepo.Setup(b => b.GetAll()).Returns(new List<Building> { building3, building4, building5 });

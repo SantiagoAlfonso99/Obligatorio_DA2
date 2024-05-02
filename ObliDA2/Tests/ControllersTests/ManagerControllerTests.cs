@@ -18,6 +18,7 @@ public class ManagerControllerTests
     private Mock<IApartmentLogic> apartmentService;
     private Mock<IMaintenanceLogic> staffService;
     private Mock<IUsersLogic> userLogic;
+    private Mock<IBuildingLogic> buildingLogic;
     private ManagerController controller;
     private MaintenanceStaff returnedMaintenance;
     private DateTime timeNow;
@@ -38,7 +39,8 @@ public class ManagerControllerTests
         categoryService = new Mock<ICategoryLogic>();
         apartmentService = new Mock<IApartmentLogic>();
         staffService = new Mock<IMaintenanceLogic>();
-        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object);
+        buildingLogic = new Mock<IBuildingLogic>();
+        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object, buildingLogic.Object);
     }
     
     [TestMethod]
@@ -47,12 +49,12 @@ public class ManagerControllerTests
         Request newRequest = new Request()
         {
             AssignedToMaintenance = new MaintenanceStaff(){Id =1},Category = new Category(){Name = "Name"},
-            BuildingAssociated  = new Building(){Id = 1}, Department = new Apartment(){Id = 1}, Description = "p"
+            Department = new Apartment(){Id = 1, BuildingId = 1}, Description = "p"
         };
         Request otherRequest = new Request()
         {
             AssignedToMaintenance = new MaintenanceStaff(){Id =1},Category = new Category(){Name = "Name"},
-            BuildingAssociated  = new Building(){Id = 1}, Department = new Apartment(){Id = 1}, Description = "pepe"
+            Department = new Apartment(){Id = 1, BuildingId = 1}, Description = "pepe"
         };
         List<Request> requests = new List<Request>() { newRequest, otherRequest};
         managerService.Setup(managerService => managerService.ViewRequests("Name")).Returns(requests);
@@ -78,7 +80,7 @@ public class ManagerControllerTests
         categoryService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newCategory);
         apartmentService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newApartment);
         managerService.Setup(service =>
-                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>()))
+                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>(),It.IsAny<Building>()))
             .Returns(createdRequest);
         
         ManagerCreateModel createRequestModel = new ManagerCreateModel() { CategoryId = 1, DepartmentId = 1, Description = "El vecino no para de gritar" };

@@ -12,8 +12,6 @@ public class Request
     public DateTime Service_end { get; set; }
     public int? AssignedToMaintenanceId { get; set; } 
     public virtual MaintenanceStaff AssignedToMaintenance { get; set; }
-    public int BuildingAssociatedId { get; set; }
-    public virtual Building BuildingAssociated { get; set; }
     
     public override bool Equals(object obj)
     {
