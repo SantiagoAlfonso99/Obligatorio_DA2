@@ -22,12 +22,14 @@ public class RequestRepository : IRequestRepository
     
     public IEnumerable<Request> GetAll()
     {
-        return Context.Requests.ToList();
+        return Context.Requests.Include(request => request.Department).ToList();
     }
     
     public Request Get(int id)
     {
-        return Context.Requests.Find(id);
+        return Context.Requests
+            .Include(request => request.Department).ThenInclude(apartment => apartment.Building)
+            .FirstOrDefault(request => request.Id == id);
     }
     
     public void Remove(Request request)

@@ -22,7 +22,7 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     
     public List<MaintenanceStaff> GetAll()
     {
-        return Context.MaintenancePersonnel.ToList();
+        return Context.MaintenancePersonnel.Include(worker => worker.AssociatedBuilding).ToList();
     }
     
     public MaintenanceStaff GetById(int id)
