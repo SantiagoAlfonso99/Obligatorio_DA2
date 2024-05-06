@@ -28,9 +28,9 @@ public class ExceptionFilter : IExceptionFilter
         {
             context.Result = new JsonResult("An invalid operation occurred:") { StatusCode = 409 };
         }
-        catch (Exception)
+        /*catch (Exception)
         {
             context.Result = new JsonResult("We encountered some issues, try again later") { StatusCode = 500 };
-        }
+        }*/
     }
 }

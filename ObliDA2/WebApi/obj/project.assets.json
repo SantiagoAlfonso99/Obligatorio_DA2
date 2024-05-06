@@ -3434,19 +3434,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gonza\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
       "projectName": "WebApi",
-      "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
-      "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\WebApi\\obj\\",
+      "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\gonza\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3458,17 +3458,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
-              "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
             },
-            "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
             },
-            "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
-              "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
             },
-            "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
-              "projectPath": "C:\\Users\\gonza\\OneDrive\\Documents\\GitHub\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj"
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj"
             }
           }
         }
@@ -3477,11 +3477,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {

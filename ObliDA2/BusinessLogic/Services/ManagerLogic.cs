@@ -46,7 +46,7 @@ public class ManagerLogic : IManagerLogic
         return true;
     }
 
-    public Request CreateRequest(string description, Apartment department, Category category, Building building)
+    public Request CreateRequest(string description, Apartment department, Category category)
     {
         var newRequest = new Request()
         {
@@ -76,17 +76,18 @@ public class ManagerLogic : IManagerLogic
 
     public Request MaintenanceStaffAcceptRequest(Request request, DateTime time)
     {
-        request.Status = RequestStatus.Attending;
-        request.Service_start = time;
+        Request newRequest = requestRepo.Get(request.Id);
+        newRequest.Status = RequestStatus.Attending;
+        newRequest.Service_start = time;
         requestRepo.Update(request);
-        return request;
+        return newRequest;
     }
     
     
     public Request MaintenanceStaffCompleteRequest(Request request, int finalPrice, DateTime time)
     {
         request.Status = RequestStatus.Closed;
-        request.Service_start = time;
+        request.Service_end = time;
         request.FinalCost = finalPrice;
         requestRepo.Update(request);
         return request;

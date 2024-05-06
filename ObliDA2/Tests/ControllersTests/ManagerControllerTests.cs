@@ -18,7 +18,6 @@ public class ManagerControllerTests
     private Mock<IApartmentLogic> apartmentService;
     private Mock<IMaintenanceLogic> staffService;
     private Mock<IUsersLogic> userLogic;
-    private Mock<IBuildingLogic> buildingLogic;
     private ManagerController controller;
     private MaintenanceStaff returnedMaintenance;
     private DateTime timeNow;
@@ -39,8 +38,7 @@ public class ManagerControllerTests
         categoryService = new Mock<ICategoryLogic>();
         apartmentService = new Mock<IApartmentLogic>();
         staffService = new Mock<IMaintenanceLogic>();
-        buildingLogic = new Mock<IBuildingLogic>();
-        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object, buildingLogic.Object);
+        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object);
     }
     
     [TestMethod]
@@ -80,7 +78,7 @@ public class ManagerControllerTests
         categoryService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newCategory);
         apartmentService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newApartment);
         managerService.Setup(service =>
-                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>(),It.IsAny<Building>()))
+                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>()))
             .Returns(createdRequest);
         
         ManagerCreateModel createRequestModel = new ManagerCreateModel() { CategoryId = 1, DepartmentId = 1, Description = "El vecino no para de gritar" };
@@ -181,15 +179,14 @@ public class ManagerControllerTests
     }
     
     [TestMethod]
-    public void MaintenanceStaffAcceptInvitationThrowsNotFound()
+    public void MaintenanceStaffAcceptRequestThrowsNotFound()
     {
         returnedMaintenance = null;
-        Guid? token = null;
-        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
-            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = new MaintenanceStaff{Id =1}
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
         

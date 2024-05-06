@@ -7,6 +7,7 @@ namespace BusinessLogic.Services;
 public class ReportLogic : IReportLogic
 {
     private const int MinValue = 0;
+    private const double DoubleMinValue = 0;
     private const int Incrementer = 1;
     private const string EmptyString = "";
     
@@ -24,10 +25,12 @@ public class ReportLogic : IReportLogic
     public List<RequestsPerBuildingReport> CreateRequestsPerBuildingReports(string buildingName)
     {
         List<Building> returnedBuildings = buildingLogic.GetAll();
+        Console.WriteLine(returnedBuildings.Capacity);
         IEnumerable<Request> returnedRequests = managerLogic.GetAllRequest();
         List<RequestsPerBuildingReport> reports = new List<RequestsPerBuildingReport>();
         foreach (var building in returnedBuildings)
         {
+            Console.WriteLine(building.Name);
             RequestsPerBuildingReport newReport = new RequestsPerBuildingReport();
             newReport.BuildingName = building.Name;
             newReport.AttendingRequests = MinValue;
@@ -68,14 +71,14 @@ public class ReportLogic : IReportLogic
         List<RequestsPerMaintenanceStaffReport> reports = new List<RequestsPerMaintenanceStaffReport>();
         foreach (var worker in workers)
         {
-            double closedRequestCounter = MinValue;
-            double totalClosingTime = MinValue;
+            double closedRequestCounter = 0;
+            double totalClosingTime = 0;
             RequestsPerMaintenanceStaffReport newReport = new RequestsPerMaintenanceStaffReport();
             newReport.MaintenanceWorker = worker.Name;
             newReport.AttendingRequests = MinValue;
             newReport.ClosedRequests = MinValue;
             newReport.OpenRequests = MinValue;
-            newReport.AverageClosingTime = MinValue;
+            newReport.AverageClosingTime = 0;
             foreach (var request in returnedRequests)
             {
                 if (request.AssignedToMaintenanceId == worker.Id)
@@ -91,13 +94,16 @@ public class ReportLogic : IReportLogic
                     else if (request.Status == RequestStatus.Closed)
                     {
                         closedRequestCounter++;
-                        double closingTimeInHours = (request.Service_end - request.Service_start).TotalHours;
-                        totalClosingTime = totalClosingTime + closingTimeInHours;
+                        TimeSpan serviceDuration = request.Service_end - request.Service_start;
+                        totalClosingTime = totalClosingTime + serviceDuration.TotalHours;
                         newReport.ClosedRequests = newReport.ClosedRequests + Incrementer;   
                     }   
                 }
             }
-            newReport.AverageClosingTime = totalClosingTime / closedRequestCounter;
+            if (closedRequestCounter > 0)
+            {
+                newReport.AverageClosingTime = totalClosingTime / closedRequestCounter;
+            }
             reports.Add(newReport);
         }
         if (workerName == EmptyString)

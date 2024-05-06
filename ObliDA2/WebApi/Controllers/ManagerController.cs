@@ -19,17 +19,15 @@ public class ManagerController : ControllerBase
     private readonly IApartmentLogic _apartmentLogic;
     private readonly IMaintenanceLogic _maintenanceLogic;
     private readonly IUsersLogic _usersLogic;
-    private readonly IBuildingLogic buildingLogic;
     
     public ManagerController(IManagerLogic managerLogic, ICategoryLogic catLogicIn, IApartmentLogic apartLogicIn
-    , IMaintenanceLogic _maintenanceLogicIn, IUsersLogic userLogicIn, IBuildingLogic buildingLogicIn)
+    , IMaintenanceLogic _maintenanceLogicIn, IUsersLogic userLogicIn)
     {
         _managerLogic = managerLogic;
         _categoryLogic = catLogicIn;
         _apartmentLogic = apartLogicIn;
         _maintenanceLogic = _maintenanceLogicIn;
         _usersLogic = userLogicIn;
-        buildingLogic = buildingLogicIn;
     }
 
     [BaseAuthorization("Manager")]
@@ -47,8 +45,7 @@ public class ManagerController : ControllerBase
     {
         var category = _categoryLogic.GetById(requestDto.CategoryId);
         var apartment = _apartmentLogic.GetById(requestDto.DepartmentId);
-        var building = buildingLogic.GetById(apartment.BuildingId);
-        var request = _managerLogic.CreateRequest(requestDto.Description, apartment, category, building);
+        var request = _managerLogic.CreateRequest(requestDto.Description, apartment, category);
         return Ok(new ManagerDetailModel(request));
     }
 
@@ -69,8 +66,7 @@ public class ManagerController : ControllerBase
     [HttpPut("requests/accept")]
     public IActionResult AcceptRequest([FromBody] AcceptRequestDTO accept)
     {
-        Guid? token = null;
-        User user = _usersLogic.GetCurrentUser(token);
+        User user = _usersLogic.GetCurrentUser();
         Request returnedRequest = _managerLogic.GetAllRequest().ToList().FirstOrDefault(request => request.Id == accept.RequestId);
         if (returnedRequest == null || user == null)
         {
@@ -78,7 +74,9 @@ public class ManagerController : ControllerBase
         }
         if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Open))
         {
-            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffAcceptRequest(returnedRequest, DateTime.Now)));
+            var request = _managerLogic.MaintenanceStaffAcceptRequest(returnedRequest, DateTime.Now);
+            MaintenanceStaffResponse newDetailModel = new MaintenanceStaffResponse(request);
+            return Ok(newDetailModel);
         }
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
@@ -87,8 +85,7 @@ public class ManagerController : ControllerBase
     [HttpPut("requests/complete")]
     public IActionResult CompleteRequest([FromBody] CompleteRequestDTO completeDTO)
     {
-        Guid? token = null;
-        User user = _usersLogic.GetCurrentUser(token);
+        User user = _usersLogic.GetCurrentUser();
         Request returnedRequest = _managerLogic.GetAllRequest().ToList().FirstOrDefault(request => request.Id == completeDTO.RequestId);
         if (returnedRequest == null || user == null)
         {
@@ -96,7 +93,7 @@ public class ManagerController : ControllerBase
         }
         if (returnedRequest.AssignedToMaintenanceId == user.Id && returnedRequest.Status == (RequestStatus.Attending))
         {
-            return Ok(new ManagerDetailModel(_managerLogic.MaintenanceStaffCompleteRequest(returnedRequest,completeDTO.FinalPrice, DateTime.Now)));
+            return Ok(new MaintenanceStaffResponse(_managerLogic.MaintenanceStaffCompleteRequest(returnedRequest,completeDTO.FinalPrice, DateTime.Now)));
         }
         return BadRequest(new { Message = "Please verify that this is a request from you and that it is still an open request."});
     }
