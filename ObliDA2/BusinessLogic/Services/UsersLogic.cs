@@ -11,14 +11,17 @@ public class UsersLogic : IUsersLogic
     private IManagerRepository managerRepo;
     private IAdminRepository adminRepo;
     private ISessionRepository sessionRepository;
+    private ICompanyAdminRepository companyAdminRepository;
     private User? currentUser;
     
-    public UsersLogic(IMaintenanceStaffRepository staffRepoIn, IAdminRepository adminRepoIn, IManagerRepository managerRepoIn, ISessionRepository sessionRepo)
+    public UsersLogic(IMaintenanceStaffRepository staffRepoIn, IAdminRepository adminRepoIn, IManagerRepository managerRepoIn, ISessionRepository sessionRepo
+    , ICompanyAdminRepository companyAdminIn)
     {
         staffRepo = staffRepoIn;
         managerRepo = managerRepoIn;
         adminRepo = adminRepoIn;
         sessionRepository = sessionRepo;
+        companyAdminRepository = companyAdminIn;
     }
 
     public User? GetCurrentUser(Guid? token = null)
@@ -36,6 +39,7 @@ public class UsersLogic : IUsersLogic
         bool duplicatedEmail = staffRepo.GetAll().Exists(staff => staff.Email == email);
         duplicatedEmail = duplicatedEmail || managerRepo.GetAll().ToList().Exists(manager => manager.Email == email);
         duplicatedEmail = duplicatedEmail || adminRepo.GetAll().Exists(admin => admin.Email == email);
+        duplicatedEmail = duplicatedEmail || companyAdminRepository.GetAll().Exists(admin => admin.Email == email);
         if (duplicatedEmail)
         {
             throw new DuplicateEntryException();
@@ -47,6 +51,7 @@ public class UsersLogic : IUsersLogic
         Manager returnedManager = managerRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
         Admin returnedAdmin = adminRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
         MaintenanceStaff returnedStaff = staffRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
+        CompanyAdmin returnedCompanyAdmin = companyAdminRepository.GetAll().FirstOrDefault(admin => admin.Email == email);
         if (returnedAdmin != null)
         {
             return returnedAdmin;
@@ -58,6 +63,10 @@ public class UsersLogic : IUsersLogic
         else if (returnedManager != null)
         {
             return returnedManager;
+        }
+        else if (returnedCompanyAdmin != null)
+        {
+            return returnedCompanyAdmin;
         }
         throw new NotFoundException();
     }
