@@ -15,6 +15,7 @@ public class ServicesFactory
     public static void RegisterServices(IServiceCollection serviceCollection){
         serviceCollection.AddTransient<IAdminLogic, AdminLogic>();
         serviceCollection.AddTransient<IManagerLogic, ManagerLogic>();
+        serviceCollection.AddTransient<ICompanyAdminLogic, CompanyAdminLogic>();
         serviceCollection.AddTransient<IMaintenanceLogic, MaintenanceStaffLogic>();
         serviceCollection.AddTransient<IApartmentLogic, ApartmentLogic>();
         serviceCollection.AddTransient<IApartmentOwnerLogic, ApartmentOwnerLogic>();
@@ -48,6 +49,7 @@ public class ServicesFactory
         serviceCollection.AddTransient<IBuildingRepository, BuildingRepository>();
         serviceCollection.AddTransient<IRequestRepository, RequestRepository>();
         serviceCollection.AddTransient<ISessionRepository, SessionRepository>();
+        serviceCollection.AddTransient<ICompanyAdminRepository, CompanyAdminRepository>();
         serviceCollection.AddTransient<IInvitationRepository, InvitationRepository>();
     }
 
