@@ -20,12 +20,14 @@ public class AppContext : DbContext
     public virtual DbSet<Request>? Requests { get; set; }
     public virtual DbSet<Invitation>? Invitations { get; set; }
     public virtual DbSet<Session>? Sessions { get; set; }
+    public virtual DbSet<CompanyAdmin>? CompanyAdmins { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Admin>().ToTable("Admin");
         modelBuilder.Entity<Manager>().ToTable("Manager");
         modelBuilder.Entity<MaintenanceStaff>().ToTable("MaintenancePersonnel");
+        modelBuilder.Entity<CompanyAdmin>().ToTable("CompanyAdmin");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
