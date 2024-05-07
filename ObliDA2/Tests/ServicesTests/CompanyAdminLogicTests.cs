@@ -2,6 +2,7 @@
 using Domain.Models;
 using BusinessLogic.Services;
 using Moq;
+using Domain.Exceptions;
 
 using BusinessLogic.IRepository;
 
@@ -10,12 +11,21 @@ namespace Tests.ServicesTests;
 [TestClass]
 public class CompanyAdminLogicTests
 {
+    private CompanyAdminLogic service;
+    private Mock<ICompanyAdminRepository> companyAdminsRepo;
+    private Mock<IConstructionCompanyRepository> companyRepo;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        companyAdminsRepo = new Mock<ICompanyAdminRepository>();
+        companyRepo = new Mock<IConstructionCompanyRepository>();
+        service = new CompanyAdminLogic(companyAdminsRepo.Object, companyRepo.Object);
+    }
+    
     [TestMethod]
     public void CreateOk()
     {
-        Mock<ICompanyAdminRepository> companyAdminsRepo = new Mock<ICompanyAdminRepository>();
-        Mock<IConstructionCompanyRepository> companyRepo = new Mock<IConstructionCompanyRepository>();
-        CompanyAdminLogic service = new CompanyAdminLogic(companyAdminsRepo.Object, companyRepo.Object);
         companyAdminsRepo.Setup(repository => repository.Create(It.IsAny<CompanyAdmin>()));
         CompanyAdmin companyAdmin = new CompanyAdmin() {Email = "perez@gmail.com", Password = "password123", Name = "Matias", Id = 1};
 
@@ -28,9 +38,6 @@ public class CompanyAdminLogicTests
     [TestMethod]
     public void GetAllOk()
     {
-        Mock<ICompanyAdminRepository> companyAdminsRepo = new Mock<ICompanyAdminRepository>();
-        Mock<IConstructionCompanyRepository> companyRepo = new Mock<IConstructionCompanyRepository>();
-        CompanyAdminLogic service = new CompanyAdminLogic(companyAdminsRepo.Object, companyRepo.Object);
         companyAdminsRepo.Setup(repository => repository.GetAll()).Returns(new List<CompanyAdmin>(){new CompanyAdmin() {Email = "perez@gmail.com", Password = "password123", Name = "Matias", Id = 1}});
         List<CompanyAdmin> expectedAdmins = new List<CompanyAdmin>(){new CompanyAdmin() {Email = "perez@gmail.com", Password = "password123", Name = "Matias", Id = 1}};
         
@@ -43,9 +50,6 @@ public class CompanyAdminLogicTests
     [TestMethod]
     public void CreateCompanyOk()
     {
-        Mock<ICompanyAdminRepository> companyAdminsRepo = new Mock<ICompanyAdminRepository>();
-        Mock<IConstructionCompanyRepository> companyRepo = new Mock<IConstructionCompanyRepository>();
-        CompanyAdminLogic service = new CompanyAdminLogic(companyAdminsRepo.Object, companyRepo.Object);
         companyRepo.Setup(repository => repository.Create(It.IsAny<ConstructionCompany>()));
         ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
         ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
@@ -60,9 +64,6 @@ public class CompanyAdminLogicTests
     [TestMethod]
     public void GetCompanyByIdOk()
     {
-        Mock<ICompanyAdminRepository> companyAdminsRepo = new Mock<ICompanyAdminRepository>();
-        Mock<IConstructionCompanyRepository> companyRepo = new Mock<IConstructionCompanyRepository>();
-        CompanyAdminLogic service = new CompanyAdminLogic(companyAdminsRepo.Object, companyRepo.Object);
         ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
         companyRepo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newCompany);
         ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
@@ -72,5 +73,19 @@ public class CompanyAdminLogicTests
         companyAdminsRepo.VerifyAll();
         companyRepo.VerifyAll();
         Assert.AreEqual(expectedCompany, returnedCompany);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
+    public void GetCompanyByIdThrowsException()
+    {
+        ConstructionCompany newCompany = null;
+        companyRepo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newCompany);
+        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        
+        ConstructionCompany returnedCompany = service.GetById(1);
+        
+        companyAdminsRepo.VerifyAll();
+        companyRepo.VerifyAll();
     }
 }
