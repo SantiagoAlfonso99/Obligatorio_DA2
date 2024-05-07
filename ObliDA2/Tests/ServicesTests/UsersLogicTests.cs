@@ -51,6 +51,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
     }
     
     [TestMethod]
@@ -67,6 +68,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(success, true);
     }
 
@@ -85,6 +87,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.IsTrue(expectedAdmin.AreEqual(returnedAdmin));
     }
     
@@ -104,6 +107,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(expectedManager, returnedManager);
     }
     
@@ -122,6 +126,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(expectedMaintenanceStaff, returnedMaintenanceStaff);
     }
     
@@ -139,6 +144,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
     }
     
     [TestMethod]
@@ -158,6 +164,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(expectedMaintenanceStaff, returnedMaintenanceStaff);
     }
     
@@ -179,6 +186,7 @@ public class UsersLogicTests
         managerRepo.VerifyAll();
         adminRepo.VerifyAll();
         staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
     }
 
     [TestMethod]
@@ -211,6 +219,10 @@ public class UsersLogicTests
         MaintenanceStaff returnedUser = (MaintenanceStaff)userService.GetCurrentUser(sessionToken);
         
         sessionRepo.VerifyAll();
+        managerRepo.VerifyAll();
+        adminRepo.VerifyAll();
+        staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(expectedMaintenanceStaff, returnedUser);
     }
     
@@ -232,6 +244,10 @@ public class UsersLogicTests
         MaintenanceStaff returnedCurrentUser = (MaintenanceStaff)userService.GetCurrentUser(); 
         
         sessionRepo.VerifyAll();
+        managerRepo.VerifyAll();
+        adminRepo.VerifyAll();
+        staffRepo.VerifyAll();
+        companyAdminRepo.VerifyAll();
         Assert.AreEqual(expectedMaintenanceStaff, returnedCurrentUser);
     }
 }
