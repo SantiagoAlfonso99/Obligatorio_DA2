@@ -136,22 +136,21 @@ public class ManagerControllerTests
         };
         managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
-        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        MaintenanceStaffResponse expectedModel = new MaintenanceStaffResponse(returnedRequest);
         
         AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
         var result = controller.AcceptRequest(acceptRequest);
         userLogic.VerifyAll();
         var okResult = result as OkObjectResult;
-        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
-    
+        MaintenanceStaffResponse returnedValue = okResult.Value as MaintenanceStaffResponse;
         
-        Assert.AreEqual(returnedValue, expectedModel);
+        Assert.AreEqual(expectedModel, returnedValue);
     }
     
     [TestMethod]
     public void MaintenanceStaffCompleteRequestOk()
     {
-        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
+       userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
        Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
@@ -167,15 +166,15 @@ public class ManagerControllerTests
         };
         managerService.Setup(managerService => managerService.MaintenanceStaffCompleteRequest(It.IsAny<Request>(), It.IsAny<int>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
-        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        MaintenanceStaffResponse expectedModel = new MaintenanceStaffResponse(returnedRequest);
         
         CompleteRequestDTO acceptRequest = new CompleteRequestDTO() { RequestId = 3, FinalPrice = 500};
         var result = controller.CompleteRequest(acceptRequest);
         userLogic.VerifyAll();
         var okResult = result as OkObjectResult;
-        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
+        MaintenanceStaffResponse returnedValue = okResult.Value as MaintenanceStaffResponse;
         
-        Assert.AreEqual(returnedValue, expectedModel);
+        Assert.AreEqual(expectedModel, returnedValue);
     }
     
     [TestMethod]

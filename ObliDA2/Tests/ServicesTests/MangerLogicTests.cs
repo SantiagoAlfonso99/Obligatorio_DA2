@@ -161,6 +161,7 @@ public class ManagerLogicTests
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
             Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, Service_start = timeNow
         };
+        mockRequestRepo.Setup(repository => repository.Get(It.IsAny<int>())).Returns(createdRequest);
         mockRequestRepo.Setup(repository => repository.Update(It.IsAny<Request>()));
         
         Request returnedRequest = managerLogic.MaintenanceStaffAcceptRequest(createdRequest, timeNow);

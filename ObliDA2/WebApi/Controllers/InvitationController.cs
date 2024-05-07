@@ -41,6 +41,10 @@ public class InvitationController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] InvitationCreateModel newInvitation)
     {
+        if (newInvitation.Role != "CompanyAdmin" && newInvitation.Role != "Manager")
+        {
+            return BadRequest(new { Message = "Invalid role name" }); 
+        }
         var createdInvitation = invitationLogic.Create(newInvitation.ToEntity());
         return Ok(new InvitationDetailModel(createdInvitation));
     }

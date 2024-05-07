@@ -77,7 +77,8 @@ public class InvitationControllerTest
     [TestMethod]
     public void CreateOkTest()
     {
-        InvitationCreateModel newInvitation = new InvitationCreateModel() { CreatorId = 2, DeadLine = DateTime.Now.AddDays(3), Email = "pep@gmail.com", Name = "pep"};
+        expectedInvitation = new Invitation(){Id = UserId, Name = Name, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending", Role = "Manager"};
+        InvitationCreateModel newInvitation = new InvitationCreateModel() { DeadLine = DateTime.Now.AddDays(3), Email = "pep@gmail.com", Name = "pep", Role = "Manager"};
         invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Returns(expectedInvitation);
         InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
         
@@ -90,6 +91,21 @@ public class InvitationControllerTest
             new InvitationDetailModel(expectedInvitation),
             returnedInvitation
         );
+    }
+    
+    [TestMethod]
+    public void CreateInvitationWithInvalidRoleNameThrowsException()
+    {
+        expectedInvitation = new Invitation(){Id = UserId, Name = Name, DeadLine = DateTime.Now.AddDays(4), RecipientEmail = EmailResponse, Status = "Pending", Role = "Manager"};
+        InvitationCreateModel newInvitation = new InvitationCreateModel() { DeadLine = DateTime.Now.AddDays(3), Email = "pep@gmail.com", Name = "pep", Role = "Manage"};
+        invitationLogicMock.Setup(r => r.Create(It.IsAny<Invitation>())).Returns(expectedInvitation);
+        InvitationController controller = new InvitationController(invitationLogicMock.Object, managerLogic.Object);
+        
+        var result = controller.Create(newInvitation);
+        var badRequestResult = result as BadRequestObjectResult;
+        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
+
+        Assert.AreEqual("Invalid role name", message.GetValue(badRequestResult.Value));
     }
     
     [TestMethod]
@@ -151,4 +167,6 @@ public class InvitationControllerTest
 
         Assert.AreEqual(AcceptInvitationBadRequest, message.GetValue(badRequestResult.Value));
     }
+    
+    
 }
