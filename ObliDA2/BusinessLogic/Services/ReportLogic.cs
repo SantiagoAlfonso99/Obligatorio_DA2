@@ -7,7 +7,6 @@ namespace BusinessLogic.Services;
 public class ReportLogic : IReportLogic
 {
     private const int MinValue = 0;
-    private const double DoubleMinValue = 0;
     private const int Incrementer = 1;
     private const string EmptyString = "";
     
