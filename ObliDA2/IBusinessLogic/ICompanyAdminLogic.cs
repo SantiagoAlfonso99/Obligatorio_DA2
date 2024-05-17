@@ -6,6 +6,6 @@ public interface ICompanyAdminLogic
 {
     CompanyAdmin Create(CompanyAdmin companyAdmin);
     List<CompanyAdmin> GetAll();
-    ConstructionCompany CreateCompany(ConstructionCompany newModel);
+    ConstructionCompany CreateCompany(ConstructionCompany newModel, CompanyAdmin admin);
     ConstructionCompany GetById(int id);
 }

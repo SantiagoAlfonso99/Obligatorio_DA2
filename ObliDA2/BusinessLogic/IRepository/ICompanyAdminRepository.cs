@@ -6,4 +6,5 @@ public interface ICompanyAdminRepository
 {
     List<CompanyAdmin> GetAll();
     void Create(CompanyAdmin companyAdmin);
+    void Update(CompanyAdmin companyAdmin);
 }

@@ -2,7 +2,9 @@
 
 public class CompanyAdmin : User
 {
-
+    public int? CompanyId { get; set; }
+    public ConstructionCompany? Company { get; set; }
+    
     public override string GetRole()
     {
         return "CompanyAdmin";

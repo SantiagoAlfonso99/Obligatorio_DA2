@@ -21,6 +21,7 @@ public class AppContext : DbContext
     public virtual DbSet<Invitation>? Invitations { get; set; }
     public virtual DbSet<Session>? Sessions { get; set; }
     public virtual DbSet<CompanyAdmin>? CompanyAdmins { get; set; }
+    public virtual DbSet<ConstructionCompany>? ConstructionCompanies { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

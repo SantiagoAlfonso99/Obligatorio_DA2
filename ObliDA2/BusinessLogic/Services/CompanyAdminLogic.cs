@@ -27,9 +27,18 @@ public class CompanyAdminLogic : ICompanyAdminLogic
         return companyAdminRepository.GetAll();
     }
     
-    public ConstructionCompany CreateCompany(ConstructionCompany newModel)
+    public ConstructionCompany CreateCompany(ConstructionCompany newModel, CompanyAdmin admin)
     {
+        ConstructionCompany returnedCompany = companyRepo.GetAll().FirstOrDefault(company => company.Name == newModel.Name);
+        if (returnedCompany != null)
+        {
+            throw new DuplicateEntryException();
+        }
         companyRepo.Create(newModel);
+        ConstructionCompany createdCompany = companyRepo.GetAll().FirstOrDefault(company => company.Name == newModel.Name);
+        admin.Company = createdCompany;
+        admin.CompanyId = createdCompany.Id;
+        companyAdminRepository.Update(admin);
         return newModel;
     }
     

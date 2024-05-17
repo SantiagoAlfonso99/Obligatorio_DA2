@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using BusinessLogic.IRepository;
 
 namespace DataAccess.Repositories;
@@ -15,6 +16,12 @@ public class CompanyAdminRepository : ICompanyAdminRepository
     public void Create(CompanyAdmin companyAdmin)
     {
         Context.CompanyAdmins.Add(companyAdmin);
+        Context.SaveChanges();
+    }
+    
+    public void Update(CompanyAdmin companyAdmin)
+    {
+        Context.Entry(companyAdmin).State = EntityState.Modified;
         Context.SaveChanges();
     }
     

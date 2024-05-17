@@ -56,4 +56,16 @@ public class CompanyAdminTests
         
         CollectionAssert.AreEqual(expectedAdmins,returnedAdmins);
     }
+    
+    [TestMethod]
+    public void UpdateOk()
+    {
+        CompanyAdmin admin = new CompanyAdmin() { Name = "pepe", Email = "pep@gmail.com", Password = "password" };
+        _repository.Create(admin);
+        admin.Company = new ConstructionCompany() { Name = "name"};
+        _repository.Update(admin);
+        CompanyAdmin returnedAdmin = _repository.GetAll().FirstOrDefault(companyAdmin => companyAdmin.Id == 1);
+        
+        Assert.AreEqual(admin.Company,returnedAdmin.Company);
+    }
 }

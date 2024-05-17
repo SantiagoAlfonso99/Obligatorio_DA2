@@ -50,11 +50,47 @@ public class CompanyAdminLogicTests
     [TestMethod]
     public void CreateCompanyOk()
     {
-        companyRepo.Setup(repository => repository.Create(It.IsAny<ConstructionCompany>()));
-        ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
-        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        List<ConstructionCompany> companies = new List<ConstructionCompany>()
+        {
+            new ConstructionCompany() { Id = 1, Name = "c1" },
+            new ConstructionCompany() { Id = 2, Name = "c2" },
+        };
+        ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =3 };
+        List<ConstructionCompany> otherCompanies = new List<ConstructionCompany>()
+        {
+            new ConstructionCompany() { Id = 1, Name = "c1" },
+            new ConstructionCompany() { Id = 2, Name = "c2" },
+            newCompany
+        };
+        companyRepo.SetupSequence(repository => repository.GetAll()).Returns(companies).Returns(otherCompanies);
+        companyRepo.Setup(repository => repository.Create(It.IsAny<ConstructionCompany>())).Callback<ConstructionCompany>(newCompany => companies.Add(newCompany));
+        CompanyAdmin admin = new CompanyAdmin() { Name = "pepe", Email = "pepe@gmail.com", Password = "pepe", Id = 1 };
+        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =3 };
         
-        ConstructionCompany returnedCompany = service.CreateCompany(newCompany);
+        ConstructionCompany returnedCompany = service.CreateCompany(newCompany, admin);
+        
+        companyAdminsRepo.VerifyAll();
+        companyRepo.VerifyAll();
+        Assert.AreEqual(expectedCompany, returnedCompany);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(DuplicateEntryException))]
+    public void CreateCompanyWithInvalidNameThrowsException()
+    {
+        List<ConstructionCompany> companies = new List<ConstructionCompany>()
+        {
+            new ConstructionCompany() { Id = 1, Name = "c1" },
+            new ConstructionCompany() { Id = 2, Name = "c2" },
+            new ConstructionCompany() { Id = 3, Name = "Company1" },
+        };
+        ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =3 };
+        companyRepo.SetupSequence(repository => repository.GetAll()).Returns(companies);
+        companyRepo.Setup(repository => repository.Create(It.IsAny<ConstructionCompany>())).Callback<ConstructionCompany>(newCompany => companies.Add(newCompany));
+        CompanyAdmin admin = new CompanyAdmin() { Name = "pepe", Email = "pepe@gmail.com", Password = "pepe", Id = 1 };
+        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =3 };
+        
+        ConstructionCompany returnedCompany = service.CreateCompany(newCompany, admin);
         
         companyAdminsRepo.VerifyAll();
         companyRepo.VerifyAll();
