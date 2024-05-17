@@ -6,6 +6,7 @@ public class BuildingDetailModel
 {
     public BuildingDetailModel(Building buildingIn)
     {
+        ManagerName = buildingIn.BuildingManager == null ? "" : buildingIn.BuildingManager.Name;
         Id = buildingIn.Id;
         Name = buildingIn.Name;
         Address = buildingIn.Address;
@@ -22,6 +23,7 @@ public class BuildingDetailModel
     public double Longitude { get; set; }
     public string ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
+    public string ManagerName { get; set; }
     
     public override bool Equals(object obj)
     {
@@ -36,6 +38,7 @@ public class BuildingDetailModel
                && Longitude.Equals(other.Longitude)
                && Latitude.Equals(other.Latitude)
                && ConstructionCompany == other.ConstructionCompany
-               && CommonExpenses == other.CommonExpenses;
+               && CommonExpenses == other.CommonExpenses
+               && ManagerName == other.ManagerName;
     }
 }

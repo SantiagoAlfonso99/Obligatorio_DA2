@@ -36,6 +36,8 @@ public class BuildingControllerTests
     [TestMethod]
     public void GetAllOk()
     {
+        newBuilding.BuildingManager = new Manager()
+            { Email = "peep@gmail.com", Id = 2, Name = "pepe", Password = "pepe" };
         List<Building> buildings = new List<Building>(){newBuilding};
         service.Setup(logic => logic.GetAll()).Returns(buildings);
         BuildingController controller = new BuildingController(service.Object, managerService.Object);
@@ -43,6 +45,8 @@ public class BuildingControllerTests
         var result = controller.Index();
         var okResult = result as OkObjectResult;
         List<BuildingDetailModel> returnedBuilding = okResult.Value as List<BuildingDetailModel>;
+        expectedModel.BuildingManager = new Manager()
+            { Email = "peep@gmail.com", Id = 2, Name = "pepe", Password = "pepe" };
         List<BuildingDetailModel> expectedModels = new List<BuildingDetailModel>(){new BuildingDetailModel(expectedModel)};
 
         service.VerifyAll();

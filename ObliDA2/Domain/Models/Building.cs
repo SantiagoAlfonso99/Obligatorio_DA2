@@ -62,7 +62,7 @@ public class Building
             commonExpenses = value;
         }
     }
-    public virtual Manager BuildingManager { get; set; }
+    public virtual Manager? BuildingManager { get; set; }
     
     public override bool Equals(object obj)
     {

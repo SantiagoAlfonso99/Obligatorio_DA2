@@ -9,7 +9,6 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/building")]
-[BaseAuthorization("Manager")]
 
 public class BuildingController : ControllerBase
 {
@@ -22,18 +21,21 @@ public class BuildingController : ControllerBase
         managerLogic = managerLogicIn;
     }
     
+    [BaseAuthorization("CompanyAdmin")]
     [HttpGet]
     public IActionResult Index()
     {
         return Ok(buildingLogic.GetAll().Select(building => new BuildingDetailModel(building)).ToList());
     }
     
+    [BaseAuthorization("CompanyAdmin")]
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
         return Ok(new BuildingDetailModel(buildingLogic.GetById(id)));
     }
     
+    [BaseAuthorization("CompanyAdmin")]
     [HttpPost]
     public IActionResult Create([FromBody] BuildingCreateModel newBuilding)
     {
@@ -43,6 +45,7 @@ public class BuildingController : ControllerBase
         return Ok(new BuildingDetailModel(buildingLogic.Create(building)));
     }
     
+    [BaseAuthorization("Manager")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -54,6 +57,7 @@ public class BuildingController : ControllerBase
         return NotFound(new { Message = "The deletion action could not be completed because there is no Building with that ID" });
     }
     
+    [BaseAuthorization("Manager")]
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] BuildingUpdateModel newAttributes)
     {
