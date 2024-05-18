@@ -28,7 +28,10 @@ public class BuildingController : ControllerBase
     [HttpGet]
     public IActionResult Index()
     {
-        return Ok(buildingLogic.GetAll().Select(building => new BuildingDetailModel(building)).ToList());
+        var companyAdmin = (CompanyAdmin) usersLogic.GetCurrentUser();
+        var company = companyAdmin.Company;
+        var buildings = buildingLogic.GetAll().FindAll(building => building.Company.Equals(company));
+        return Ok(buildings.Select(building => new BuildingDetailModel(building)).ToList());
     }
     
     [BaseAuthorization("CompanyAdmin")]
