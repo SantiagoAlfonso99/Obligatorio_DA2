@@ -9,4 +9,5 @@ public interface IBuildingLogic
     Building Create(Building newBuilding);
     bool Delete(int id);
     Building Update(int id, Building newAttributes);
+    Building UpdateManager(Building newAttributes);
 }

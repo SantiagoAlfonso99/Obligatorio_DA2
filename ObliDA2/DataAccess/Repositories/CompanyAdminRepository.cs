@@ -27,6 +27,6 @@ public class CompanyAdminRepository : ICompanyAdminRepository
     
     public List<CompanyAdmin> GetAll()
     {
-        return Context.CompanyAdmins.ToList();
+        return Context.CompanyAdmins.Include(admin => admin.Company).ToList();
     }
 }

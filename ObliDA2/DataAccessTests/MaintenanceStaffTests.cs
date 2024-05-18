@@ -29,10 +29,11 @@ public class MaintenanceStaffTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
+        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
         staffRepository = new MaintenanceStaffRepository(_context);
         Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
         newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
     }
     

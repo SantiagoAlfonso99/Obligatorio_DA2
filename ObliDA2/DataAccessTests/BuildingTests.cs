@@ -15,6 +15,7 @@ public class BuildingTests
     private BuildingRepository buildingRepository;
     private Manager buildingManager;
     private Building newBuilding;
+    private ConstructionCompany company;
     
     [TestInitialize]
     public void Initialize()
@@ -28,11 +29,12 @@ public class BuildingTests
 
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
-        
+
+        company = new ConstructionCompany() { Name = "Company" };
         buildingRepository = new BuildingRepository(_context);
         buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
     }
     
     [TestMethod]
@@ -55,7 +57,7 @@ public class BuildingTests
         _context.Buildings.Add(newBuilding);
         _context.SaveChanges();
         Building otherBuilding = new Building() {Name = "otherName", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
         _context.Buildings.Add(otherBuilding);
         _context.SaveChanges();
         otherBuilding.Id = 2;
@@ -82,7 +84,7 @@ public class BuildingTests
     {
         buildingRepository.Create(newBuilding);
         Building otherBuilding = new Building() {Name = "otherName", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
         buildingRepository.Create(otherBuilding);
         
         newBuilding.Id = 1;

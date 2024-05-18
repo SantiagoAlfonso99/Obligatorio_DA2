@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
+using Domain.Models;
 using Microsoft.Extensions.FileProviders;
 using WebApi.Filters;
 namespace WebApi.Controllers;
@@ -14,10 +15,12 @@ public class BuildingController : ControllerBase
 {
     private IBuildingLogic buildingLogic;
     private IManagerLogic managerLogic;
+    private IUsersLogic usersLogic;
 
-    public BuildingController(IBuildingLogic logicIn, IManagerLogic managerLogicIn)
+    public BuildingController(IBuildingLogic logicIn, IManagerLogic managerLogicIn, IUsersLogic usersLogicIn)
     {
         buildingLogic = logicIn;
+        usersLogic = usersLogicIn;
         managerLogic = managerLogicIn;
     }
     
@@ -39,9 +42,13 @@ public class BuildingController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] BuildingCreateModel newBuilding)
     {
-        var returnedManager = managerLogic.GetById(newBuilding.ManagerAssociatedId);
         var building = newBuilding.ToEntity();
-        building.BuildingManager = returnedManager;
+        var companyAdmin = (CompanyAdmin)usersLogic.GetCurrentUser();
+        building.Company = companyAdmin.Company;
+        if (building.Company == null)
+        {
+            return BadRequest(new { Message = "The building could not be created because the admin does not have an associated construction company." });
+        }
         return Ok(new BuildingDetailModel(buildingLogic.Create(building)));
     }
     
@@ -62,5 +69,15 @@ public class BuildingController : ControllerBase
     public IActionResult Update(int id, [FromBody] BuildingUpdateModel newAttributes)
     {
         return Ok(new BuildingDetailModel(buildingLogic.Update(id, newAttributes.ToEntity())));
+    }
+    
+    [BaseAuthorization("CompanyAdmin")]
+    [HttpPut("{id}/manager")]
+    public IActionResult UpdateBuildingManager(int id, [FromBody] BuildingUpdateManager newManager)
+    {
+        var returnedManager = managerLogic.GetById(newManager.ManagerId);
+        var building = buildingLogic.GetById(id);
+        building.BuildingManager = returnedManager;
+        return Ok(new BuildingDetailModel(buildingLogic.UpdateManager(building)));
     }
 }

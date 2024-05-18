@@ -57,8 +57,13 @@ public class BuildingLogic : IBuildingLogic
     {
         Building returnedBuilding = this.GetById(id);
         returnedBuilding.CommonExpenses = newAttributes.CommonExpenses;
-        returnedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
         buildingRepo.Update(returnedBuilding);
         return returnedBuilding;
+    }
+    
+    public Building UpdateManager(Building newAttributes)
+    {
+        buildingRepo.Update(newAttributes);
+        return newAttributes;
     }
 }

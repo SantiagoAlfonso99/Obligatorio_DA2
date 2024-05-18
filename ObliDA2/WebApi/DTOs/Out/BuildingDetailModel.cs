@@ -12,7 +12,7 @@ public class BuildingDetailModel
         Address = buildingIn.Address;
         Latitude = buildingIn.Latitude;
         Longitude = buildingIn.Longitude;
-        ConstructionCompany = buildingIn.ConstructionCompany;
+        ConstructionCompany = buildingIn.Company.Name;
         CommonExpenses = buildingIn.CommonExpenses;
     }
     

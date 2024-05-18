@@ -8,7 +8,6 @@ public class BuildingCreateModel
     public string Address { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public string ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
     public int ManagerAssociatedId { get; set; }
 
@@ -20,7 +19,6 @@ public class BuildingCreateModel
             Address = this.Address,
             Latitude = this.Latitude,
             Longitude = this.Longitude,
-            ConstructionCompany = this.ConstructionCompany,
             CommonExpenses = this.CommonExpenses
         };
     }

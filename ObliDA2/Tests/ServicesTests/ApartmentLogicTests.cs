@@ -21,9 +21,10 @@ public class ApartmentLogicTests
     [TestInitialize]
     public void Initialize()
     {
+        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
         ApartmentOwner owner = new ApartmentOwner() {Id = 1, Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"};
         Building newBuilding = new Building() {Id =1, Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company", BuildingManager = new Manager(){Id = 1}};
+            Latitude = 40.000, Longitude = 70.000, Company = company, BuildingManager = new Manager(){Id = 1}};
         newApartment = new Apartment()
         {
             Id =1, NumberOfBathrooms = 3, NumberOfBedrooms = 4,
