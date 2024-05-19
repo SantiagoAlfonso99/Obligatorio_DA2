@@ -41,20 +41,25 @@ public class BuildingControllerTests
     [TestMethod]
     public void GetAllOk()
     {
-        newBuilding.BuildingManager = new Manager()
-            { Email = "peep@gmail.com", Id = 2, Name = "pepe", Password = "pepe" };
-        List<Building> buildings = new List<Building>(){newBuilding};
+        var user = new CompanyAdmin()
+        {
+            Name = "Name", Email = "email@gmail.com", Password = "password",
+            Id = 1, Company = new ConstructionCompany() { Id = 2, Name = "Name" }
+        };
+        Building otherBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
+            Latitude = 40.000, Longitude = 70.000, Company = new ConstructionCompany(){Id =2, Name ="Name"}, BuildingManager = new Manager(){Id = 1}};
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
+        List<Building> buildings = new List<Building>(){newBuilding, otherBuilding};
         service.Setup(logic => logic.GetAll()).Returns(buildings);
         
         var result = controller.Index();
         var okResult = result as OkObjectResult;
         List<BuildingDetailModel> returnedBuilding = okResult.Value as List<BuildingDetailModel>;
-        expectedModel.BuildingManager = new Manager()
-            { Email = "peep@gmail.com", Id = 2, Name = "pepe", Password = "pepe" };
-        List<BuildingDetailModel> expectedModels = new List<BuildingDetailModel>(){new BuildingDetailModel(expectedModel)};
+        List<BuildingDetailModel> expectedModels = new List<BuildingDetailModel>(){new BuildingDetailModel(otherBuilding)};
 
+        usersLogic.VerifyAll();
         service.VerifyAll();
-        CollectionAssert.AreEqual(returnedBuilding, expectedModels);
+        CollectionAssert.AreEqual(expectedModels, returnedBuilding);
     }
     
     [TestMethod]

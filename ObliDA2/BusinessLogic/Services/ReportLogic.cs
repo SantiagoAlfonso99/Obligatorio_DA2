@@ -65,10 +65,14 @@ public class ReportLogic : IReportLogic
     
     public List<RequestsPerMaintenanceStaffReport> CreateRequestsPerMaintenanceStaffReports(string workerName, int buildingId)
     {
-        List<MaintenanceStaff> workers = staffLogic.GetAll().Where(worker => worker.AssociatedBuilding.Id == buildingId).ToList();
+        List<MaintenanceStaff> workers = staffLogic.GetAll();
+
+        var filteredWorkers = workers
+            .Where(worker => worker.Buildings.Any(building => building.Id == buildingId))
+            .ToList();
         IEnumerable<Request> returnedRequests = managerLogic.GetAllRequest().Where(request => request.Department.BuildingId == buildingId).ToList();
         List<RequestsPerMaintenanceStaffReport> reports = new List<RequestsPerMaintenanceStaffReport>();
-        foreach (var worker in workers)
+        foreach (var worker in filteredWorkers)
         {
             double closedRequestCounter = 0;
             double totalClosingTime = 0;

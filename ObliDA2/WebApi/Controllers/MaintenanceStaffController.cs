@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using IBusinessLogic;
 using WebApi.DTOs.In;
@@ -50,7 +51,15 @@ public class MaintenanceStaffController : ControllerBase
     {
         var newStaffModel = newStaff.ToEntity();
         userLogic.ValidateEmail(newStaffModel.Email);
-        newStaffModel.AssociatedBuilding = buildingLogic.GetById(newStaff.AssociatedBuildingId);
+        newStaffModel.Buildings = new List<Building>() { buildingLogic.GetById(newStaff.AssociatedBuildingId)};
         return Ok(new MaintenanceStaffDetailModel(staffLogic.Create(newStaffModel)));
+    }
+    
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] MaintenanceStaffUpdateModel newAttributes)
+    {
+        var workerToModify = staffLogic.GetById(id);
+        workerToModify.Buildings.Add(buildingLogic.GetById(newAttributes.BuildingId));
+        return Ok(new MaintenanceStaffDetailModel(staffLogic.Update(workerToModify)));
     }
 }

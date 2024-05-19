@@ -34,7 +34,7 @@ public class MaintenanceStaffTests
         Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
             Latitude = 44.22, Company = company, BuildingManager = buildingManager};
-        newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
+        newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",Buildings = new List<Building>(){buildingAssociated}};
     }
     
     [TestMethod]
@@ -43,7 +43,7 @@ public class MaintenanceStaffTests
         staffRepository.Create(newWorker);
         _context.SaveChanges();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
-            { new MaintenanceStaff() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated } };
+            { new MaintenanceStaff() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",Buildings = new List<Building>(){buildingAssociated} } };
         
         List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         
@@ -65,14 +65,14 @@ public class MaintenanceStaffTests
     [TestMethod]
     public void DeleteOk()
     {
-        MaintenanceStaff otherWorker = new MaintenanceStaff{ Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated};
+        MaintenanceStaff otherWorker = new MaintenanceStaff{ Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",Buildings = new List<Building>(){buildingAssociated}};
         staffRepository.Create(newWorker);
         _context.SaveChanges();
         staffRepository.Create(otherWorker);
         staffRepository.Delete(newWorker);
         _context.SaveChanges();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
-            { new MaintenanceStaff() { Id = 2, Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated } };
+            { new MaintenanceStaff() { Id = 2, Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",Buildings = new List<Building>(){buildingAssociated} } };
 
         
         List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();

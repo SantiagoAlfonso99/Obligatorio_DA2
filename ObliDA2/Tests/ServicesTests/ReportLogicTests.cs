@@ -152,8 +152,8 @@ public class ReportLogicTests
 
         List<MaintenanceStaff> mockWorkers = new List<MaintenanceStaff>
         {
-            new MaintenanceStaff { Id = 1, Name = "Worker 1", AssociatedBuilding = new Building { Id = 4 } },
-            new MaintenanceStaff { Id = 2, Name = "Worker 2", AssociatedBuilding = new Building { Id = 4 } }
+            new MaintenanceStaff { Id = 1, Name = "Worker 1", Buildings = new List<Building>(){building4} },
+            new MaintenanceStaff { Id = 2, Name = "Worker 2", Buildings = new List<Building>(){building4} }
         };
         
         var requests = new List<Request>
@@ -212,8 +212,8 @@ public class ReportLogicTests
 
         List<MaintenanceStaff> mockWorkers = new List<MaintenanceStaff>
         {
-            new MaintenanceStaff { Id = 1, Name = "Worker 1", AssociatedBuilding = new Building { Id = 4 } },
-            new MaintenanceStaff { Id = 2, Name = "Worker 2", AssociatedBuilding = new Building { Id = 4 } }
+            new MaintenanceStaff { Id = 1, Name = "Worker 1", Buildings = new List<Building>(){building4} },
+            new MaintenanceStaff { Id = 2, Name = "Worker 2", Buildings = new List<Building>(){building4} }
         };
         
         var requests = new List<Request>

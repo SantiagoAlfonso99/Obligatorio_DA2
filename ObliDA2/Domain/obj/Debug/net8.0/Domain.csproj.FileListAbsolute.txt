@@ -10,3 +10,15 @@ C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.d
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\refint\Domain.dll
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.pdb
 C:\Users\HP\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\ref\Domain.dll
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\bin\Debug\net8.0\Domain.deps.json
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\bin\Debug\net8.0\Domain.dll
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\bin\Debug\net8.0\Domain.pdb
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.sourcelink.json
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.dll
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\refint\Domain.dll
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\Domain.pdb
+C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\Domain\obj\Debug\net8.0\ref\Domain.dll

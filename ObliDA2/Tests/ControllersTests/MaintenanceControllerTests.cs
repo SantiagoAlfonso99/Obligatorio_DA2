@@ -29,7 +29,9 @@ public class MaintenanceControllerTests
         usersService = new Mock<IUsersLogic>();
         buildingService = new Mock<IBuildingLogic>();
         service = new Mock<IMaintenanceLogic>();
-        newStaff = new MaintenanceStaff() { Id = UserId, Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", AssociatedBuilding = new Building(){Id =1}};
+        Building newBuilding = newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
+            Latitude = 40.000, Longitude = 70.000, Company = new ConstructionCompany(){Id =1, Name ="C1"}, BuildingManager = new Manager(){Id = 1}};
+        newStaff = new MaintenanceStaff() { Id = UserId, Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", Buildings = new List<Building>(){newBuilding}};
     }
     
     [TestMethod]
