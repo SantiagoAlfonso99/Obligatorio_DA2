@@ -1,38 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj": {}
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
               }
             }
           }
@@ -41,11 +39,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -67,39 +60,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
               }
             }
           }
@@ -108,11 +99,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -154,28 +140,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -188,11 +172,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -214,36 +193,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
         "projectName": "IBusinessLogic",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
               }
             }
           }
@@ -252,11 +229,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -278,45 +250,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj",
         "projectName": "ServiceFactory",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\DataAccess\\DataAccess.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
               }
             }
           }
@@ -325,11 +295,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -357,42 +322,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj",
         "projectName": "Tests",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\Tests.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj"
               }
             }
           }
@@ -401,11 +364,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -449,45 +407,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
+    "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
-        "packagesPath": "C:\\Users\\Szade\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\obj\\",
+        "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\WebApi.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Szade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\BusinessLogic\\BusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
               },
-              "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
-                "projectPath": "C:\\Users\\Szade\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj"
+              "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj": {
+                "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\ServiceFactory\\ServiceFactory.csproj"
               }
             }
           }
@@ -496,11 +452,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -535,7 +486,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

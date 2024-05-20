@@ -35,4 +35,10 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
         Context.Set<MaintenanceStaff>().Remove(staff);
         Context.SaveChanges();
     }
+    
+    public void Update(MaintenanceStaff staff)
+    {
+        Context.Entry(staff).State = EntityState.Modified;
+        Context.SaveChanges();
+    }
 }

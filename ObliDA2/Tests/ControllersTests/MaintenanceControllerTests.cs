@@ -7,6 +7,7 @@ using WebApi.Controllers;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using Moq;
+using MaintenanceStaff = Domain.Models.MaintenanceStaff;
 
 namespace Tests.ControllersTests;
 
@@ -21,6 +22,7 @@ public class MaintenanceControllerTests
     private MaintenanceStaff newStaff;
     private MaintenanceStaffController controller;
     private const string PropertyName = "Message";
+    private Building newBuilding;
     
     [TestInitialize]
     public void Initialize()
@@ -29,7 +31,7 @@ public class MaintenanceControllerTests
         usersService = new Mock<IUsersLogic>();
         buildingService = new Mock<IBuildingLogic>();
         service = new Mock<IMaintenanceLogic>();
-        Building newBuilding = newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
+        newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
             Latitude = 40.000, Longitude = 70.000, Company = new ConstructionCompany(){Id =1, Name ="C1"}, BuildingManager = new Manager(){Id = 1}};
         newStaff = new MaintenanceStaff() { Id = UserId, Name = "pepe", LastName = "rodriguez", Password = "pepe", Email = "pepe@gmail.com", Buildings = new List<Building>(){newBuilding}};
     }
@@ -77,6 +79,27 @@ public class MaintenanceControllerTests
         service.VerifyAll();
         
         Assert.IsNotNull(noContentResult);
+    }
+    
+    [TestMethod]
+    public void UpdateOk()
+    {
+        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newStaff);
+        Building otherBuilding = new Building() {Name = "BuildingName2", Address = "Address2", CommonExpenses = 5, 
+            Latitude = 40.001, Longitude = 70.000, Company = new ConstructionCompany(){Id =1, Name ="C1"}, BuildingManager = new Manager(){Id = 1}};
+        buildingService.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(otherBuilding);
+        service.Setup(logic => logic.Update(It.IsAny<MaintenanceStaff>())).Returns(newStaff);
+        controller = new MaintenanceStaffController(service.Object, buildingService.Object, usersService.Object);
+
+        MaintenanceStaffUpdateModel newModel = new MaintenanceStaffUpdateModel() { BuildingId = 1 };
+        var result = controller.Update(1, newModel);
+        var okResult = result as OkObjectResult;
+        MaintenanceStaffDetailModel returnedValue = okResult.Value as MaintenanceStaffDetailModel;
+        MaintenanceStaffDetailModel expectedValue = new MaintenanceStaffDetailModel(newStaff);
+        
+        service.VerifyAll();
+        
+        Assert.AreEqual(expectedValue, returnedValue);
     }
     
     [TestMethod]

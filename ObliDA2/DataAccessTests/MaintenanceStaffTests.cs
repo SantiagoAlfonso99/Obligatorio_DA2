@@ -15,6 +15,8 @@ public class MaintenanceStaffTests
     private MaintenanceStaffRepository staffRepository;
     private MaintenanceStaff newWorker;
     private Building buildingAssociated;
+    private ConstructionCompany company;
+    private Manager buildingManager;
     
     [TestInitialize]
     public void Initialize()
@@ -29,9 +31,9 @@ public class MaintenanceStaffTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
-        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
+        company = new ConstructionCompany() { Name = "Company" };
         staffRepository = new MaintenanceStaffRepository(_context);
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
             Latitude = 44.22, Company = company, BuildingManager = buildingManager};
         newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",Buildings = new List<Building>(){buildingAssociated}};
@@ -60,6 +62,23 @@ public class MaintenanceStaffTests
         MaintenanceStaff returnedStaff = staffRepository.GetById(1);
         
         Assert.AreEqual(newWorker, returnedStaff);
+    }
+    
+    [TestMethod]
+    public void UpdateOk()
+    {
+        staffRepository.Create(newWorker);
+        Building otherBuilding = new Building() {Name = "name2", Address = "address2", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.23, Company = company, BuildingManager = buildingManager};
+        newWorker.Buildings.Add(otherBuilding);
+        staffRepository.Update(newWorker);
+        List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
+            { newWorker};
+        
+        
+        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
+        
+        CollectionAssert.AreEqual(expectedStaff, returnedStaff);
     }
     
     [TestMethod]
