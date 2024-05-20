@@ -8,4 +8,5 @@ public interface ICompanyAdminLogic
     List<CompanyAdmin> GetAll();
     ConstructionCompany CreateCompany(ConstructionCompany newModel, CompanyAdmin admin);
     ConstructionCompany GetById(int id);
+    ConstructionCompany UpdateCompany(ConstructionCompany company);
 }

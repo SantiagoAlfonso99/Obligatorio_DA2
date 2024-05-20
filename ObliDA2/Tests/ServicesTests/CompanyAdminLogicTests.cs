@@ -112,6 +112,19 @@ public class CompanyAdminLogicTests
     }
     
     [TestMethod]
+    public void UpdateOk()
+    {
+        ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        companyRepo.Setup(repository => repository.Update(It.IsAny<ConstructionCompany>()));
+        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        
+        ConstructionCompany returnedCompany = service.UpdateCompany(newCompany);
+        
+        companyAdminsRepo.VerifyAll();
+        Assert.AreEqual(expectedCompany, returnedCompany);
+    }
+    
+    [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void GetCompanyByIdThrowsException()
     {

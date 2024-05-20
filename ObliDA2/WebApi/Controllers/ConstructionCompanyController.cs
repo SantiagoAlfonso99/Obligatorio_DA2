@@ -33,4 +33,12 @@ public class ConstructionCompanyController : ControllerBase
         }
         return Ok(new CompanyConstructionDetailModel(adminLogic.CreateCompany(newCompany.ToEntity(), companyAdmin)));
     }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] CompanyCreateModel newCompany)
+    {
+        var company = adminLogic.GetById(id);
+        company.Name = newCompany.Name; 
+        return Ok(new CompanyConstructionDetailModel(adminLogic.UpdateCompany(company)));
+    }
 }

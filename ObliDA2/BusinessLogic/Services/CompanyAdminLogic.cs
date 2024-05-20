@@ -51,4 +51,10 @@ public class CompanyAdminLogic : ICompanyAdminLogic
         }
         return company;
     }
+
+    public ConstructionCompany UpdateCompany(ConstructionCompany company)
+    {
+        companyRepo.Update(company);
+        return company;
+    }
 }

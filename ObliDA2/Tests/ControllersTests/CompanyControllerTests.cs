@@ -55,4 +55,27 @@ public class CompanyControllerTests
         userService.VerifyAll();
         Assert.AreEqual("An administrator of companies can only create a single construction company.", message.GetValue(badResult.Value));
     }
+    
+    public void UpdateOk()
+    {
+        Mock<IUsersLogic> userService = new Mock<IUsersLogic>();
+        Mock<ICompanyAdminLogic> adminService = new Mock<ICompanyAdminLogic>();
+        ConstructionCompanyController controller = new ConstructionCompanyController(adminService.Object, userService.Object);
+        ConstructionCompany returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
+        
+        adminService.Setup(service => service.GetById(It.IsAny<int>()))
+            .Returns(returnedCompany);
+        adminService.Setup(service => service.UpdateCompany(It.IsAny<ConstructionCompany>()))
+            .Returns(returnedCompany);
+
+        CompanyCreateModel newModel = new CompanyCreateModel() { Name = "Company2" };
+        var result = controller.Update(1, newModel);
+        var okResult = result as OkObjectResult;
+        CompanyConstructionDetailModel expectedCompany = new CompanyConstructionDetailModel(returnedCompany);
+        CompanyConstructionDetailModel company = okResult.Value as CompanyConstructionDetailModel;
+        
+        userService.VerifyAll();
+        adminService.VerifyAll();
+        Assert.AreEqual(expectedCompany.Name, company.Name);
+    }
 }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.IRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using BusinessLogic.IRepository;
 using Domain.Models;
 
 namespace DataAccess.Repositories;
@@ -15,6 +16,12 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
     public void Create(ConstructionCompany company)
     {
         Context.ConstructionCompanies.Add(company);
+        Context.SaveChanges();
+    }
+    
+    public void Update(ConstructionCompany company)
+    {
+        Context.Entry(company).State = EntityState.Modified;
         Context.SaveChanges();
     }
     

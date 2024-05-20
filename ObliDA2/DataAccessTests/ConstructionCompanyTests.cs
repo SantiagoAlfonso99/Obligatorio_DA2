@@ -53,6 +53,19 @@ public class ConstructionCompanyTests
     }
     
     [TestMethod]
+    public void UpdateOk()
+    {
+        ConstructionCompany company = new ConstructionCompany() { Name = "construction1" };
+        constructionRepo.Create(company);
+        company.Name = "construction2";
+        
+        constructionRepo.Update(company);
+        ConstructionCompany returnedCompany = constructionRepo.GetById(1);
+        
+        Assert.AreEqual(company,returnedCompany);
+    }
+    
+    [TestMethod]
     public void GetAllOk()
     {
         ConstructionCompany company = new ConstructionCompany() { Name = "construction1" };
