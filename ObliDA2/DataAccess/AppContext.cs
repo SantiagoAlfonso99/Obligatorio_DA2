@@ -29,6 +29,10 @@ public class AppContext : DbContext
         modelBuilder.Entity<Manager>().ToTable("Manager");
         modelBuilder.Entity<MaintenanceStaff>().ToTable("MaintenancePersonnel");
         modelBuilder.Entity<CompanyAdmin>().ToTable("CompanyAdmin");
+
+        modelBuilder.Entity<MaintenanceStaff>()
+            .HasMany(m => m.Buildings)
+            .WithMany(b => b.Workers);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

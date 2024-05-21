@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20240521143552_newFeatures")]
+    partial class newFeatures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BuildingMaintenanceStaff", b =>
-                {
-                    b.Property<int>("BuildingsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BuildingsId", "WorkersId");
-
-                    b.HasIndex("WorkersId");
-
-                    b.ToTable("BuildingMaintenanceStaff");
-                });
 
             modelBuilder.Entity("Domain.Models.Admin", b =>
                 {
@@ -156,6 +144,9 @@ namespace DataAccess.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
+                    b.Property<int?>("MaintenanceStaffId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -165,6 +156,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("BuildingManagerId");
 
                     b.HasIndex("CompanyId");
+
+                    b.HasIndex("MaintenanceStaffId");
 
                     b.ToTable("Buildings");
                 });
@@ -383,21 +376,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("BuildingMaintenanceStaff", b =>
-                {
-                    b.HasOne("Domain.Models.Building", null)
-                        .WithMany()
-                        .HasForeignKey("BuildingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.MaintenanceStaff", null)
-                        .WithMany()
-                        .HasForeignKey("WorkersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Models.Apartment", b =>
                 {
                     b.HasOne("Domain.Models.Building", "Building")
@@ -428,6 +406,10 @@ namespace DataAccess.Migrations
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Models.MaintenanceStaff", null)
+                        .WithMany("Buildings")
+                        .HasForeignKey("MaintenanceStaffId");
 
                     b.Navigation("BuildingManager");
 
@@ -464,6 +446,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Domain.Models.MaintenanceStaff", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 #pragma warning restore 612, 618
         }
