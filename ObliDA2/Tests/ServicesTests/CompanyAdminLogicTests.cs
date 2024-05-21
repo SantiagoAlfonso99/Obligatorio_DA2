@@ -98,6 +98,13 @@ public class CompanyAdminLogicTests
     }
     
     [TestMethod]
+    [ExpectedException(typeof(EmptyOrNullException))]
+    public void CreateCompanyWithEmptyNameThrowsException()
+    {
+        ConstructionCompany company = new ConstructionCompany() { Name = "" };
+    }
+    
+    [TestMethod]
     public void GetCompanyByIdOk()
     {
         ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
@@ -116,12 +123,25 @@ public class CompanyAdminLogicTests
     {
         ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
         companyRepo.Setup(repository => repository.Update(It.IsAny<ConstructionCompany>()));
+        companyRepo.Setup(repository => repository.GetAll()).Returns(new List<ConstructionCompany>());
         ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
         
         ConstructionCompany returnedCompany = service.UpdateCompany(newCompany);
         
         companyAdminsRepo.VerifyAll();
         Assert.AreEqual(expectedCompany, returnedCompany);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(DuplicateEntryException))]
+    public void UpdateWithUsedNameThrowsExceptionOk()
+    {
+        ConstructionCompany newCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        companyRepo.Setup(repository => repository.Update(It.IsAny<ConstructionCompany>()));
+        companyRepo.Setup(repository => repository.GetAll()).Returns(new List<ConstructionCompany>(){new ConstructionCompany() { Name = "Company1", Id =2 }});
+        ConstructionCompany expectedCompany = new ConstructionCompany() { Name = "Company1", Id =1 };
+        
+        ConstructionCompany returnedCompany = service.UpdateCompany(newCompany);
     }
     
     [TestMethod]

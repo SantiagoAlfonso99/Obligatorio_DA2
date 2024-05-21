@@ -54,6 +54,11 @@ public class CompanyAdminLogic : ICompanyAdminLogic
 
     public ConstructionCompany UpdateCompany(ConstructionCompany company)
     {
+        ConstructionCompany returnedCompany = companyRepo.GetAll().FirstOrDefault(company => company.Name == company.Name);
+        if (returnedCompany != null)
+        {
+            throw new DuplicateEntryException();
+        }
         companyRepo.Update(company);
         return company;
     }

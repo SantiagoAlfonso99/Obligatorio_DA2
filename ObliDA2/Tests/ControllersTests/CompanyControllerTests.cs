@@ -11,16 +11,30 @@ namespace Tests.ControllersTests;
 [TestClass]
 public class CompanyControllerTests
 {
+    private Mock<IUsersLogic> userService;
+    private Mock<ICompanyAdminLogic> adminService;
+    private ConstructionCompanyController controller;
+    private const string Message = "An administrator of companies can only create a single construction company.";
+    private CompanyCreateModel newCompany;
+    private ConstructionCompany returnedCompany;
+    private CompanyAdmin admin;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        newCompany = new CompanyCreateModel() { Name = "Company1"};
+        returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
+        admin = new CompanyAdmin() { Name = "name", Email = "email@gmail.com", Password = "pepe", Id = 1, Company = returnedCompany};
+
+        userService = new Mock<IUsersLogic>();
+        adminService = new Mock<ICompanyAdminLogic>();
+        controller = new ConstructionCompanyController(adminService.Object, userService.Object);
+    }
+    
     [TestMethod]
     public void CreateOk()
     {
-        Mock<IUsersLogic> userService = new Mock<IUsersLogic>();
-        Mock<ICompanyAdminLogic> adminService = new Mock<ICompanyAdminLogic>();
-        ConstructionCompanyController controller = new ConstructionCompanyController(adminService.Object, userService.Object);
-        CompanyCreateModel newCompany = new CompanyCreateModel() { Name = "Company1"};
-        CompanyAdmin admin = new CompanyAdmin() { Name = "name", Email = "email@gmail.com", Password = "pepe", Id = 1 };
-        ConstructionCompany returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
-        
+        admin.Company = null;
         userService.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(admin);
         adminService.Setup(service => service.CreateCompany(It.IsAny<ConstructionCompany>(), It.IsAny<CompanyAdmin>()))
             .Returns(returnedCompany);
@@ -38,29 +52,19 @@ public class CompanyControllerTests
     [TestMethod]
     public void CreateReturnsBadRequest()
     {
-        Mock<IUsersLogic> userService = new Mock<IUsersLogic>();
-        Mock<ICompanyAdminLogic> adminService = new Mock<ICompanyAdminLogic>();
-        ConstructionCompanyController controller = new ConstructionCompanyController(adminService.Object, userService.Object);
-        CompanyCreateModel newCompany = new CompanyCreateModel() { Name = "Company1"};
-        ConstructionCompany returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
-        CompanyAdmin admin = new CompanyAdmin() { Name = "name", Email = "email@gmail.com", Password = "pepe", Id = 1, Company = returnedCompany};
-        
         userService.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(admin);
-        
         
         var result = controller.Create(newCompany);
         var badResult = result as BadRequestObjectResult;
         var message = badResult.Value.GetType().GetProperty("Message");
         
         userService.VerifyAll();
-        Assert.AreEqual("An administrator of companies can only create a single construction company.", message.GetValue(badResult.Value));
+        Assert.AreEqual(Message, message.GetValue(badResult.Value));
     }
     
+    [TestMethod]
     public void UpdateOk()
     {
-        Mock<IUsersLogic> userService = new Mock<IUsersLogic>();
-        Mock<ICompanyAdminLogic> adminService = new Mock<ICompanyAdminLogic>();
-        ConstructionCompanyController controller = new ConstructionCompanyController(adminService.Object, userService.Object);
         ConstructionCompany returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
         
         adminService.Setup(service => service.GetById(It.IsAny<int>()))

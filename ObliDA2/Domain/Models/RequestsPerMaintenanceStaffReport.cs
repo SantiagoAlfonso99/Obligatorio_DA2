@@ -2,6 +2,19 @@
 
 public class RequestsPerMaintenanceStaffReport
 {
+    private const int MinValue = 0;
+    private const double DoubleMinValue = 0;
+    
+    public RequestsPerMaintenanceStaffReport(){}
+    public RequestsPerMaintenanceStaffReport(string workerName)
+    {
+        this.MaintenanceWorker = workerName;
+        this.AttendingRequests = MinValue;
+        this.ClosedRequests = MinValue;
+        this.OpenRequests = MinValue;
+        this.AverageClosingTime = DoubleMinValue;
+    }
+    
     public string MaintenanceWorker { get; set; }
     public int OpenRequests { get; set; }
     public int AttendingRequests { get; set; }

@@ -1,9 +1,22 @@
-﻿namespace Domain.Models;
+﻿using Domain.Exceptions;
+namespace Domain.Models;
 
 public class ConstructionCompany
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string name;
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new EmptyOrNullException();
+            }
+            name = value;
+        }
+    }
     
     public override bool Equals(object obj)
     {
