@@ -663,7 +663,8 @@
       "BusinessLogic/1.0.0": {
         "dependencies": {
           "Domain": "1.0.0",
-          "IBusinessLogic": "1.0.0"
+          "IBusinessLogic": "1.0.0",
+          "IImporter": "1.0.0"
         },
         "runtime": {
           "BusinessLogic.dll": {}
@@ -688,10 +689,19 @@
       },
       "IBusinessLogic/1.0.0": {
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "IImporter": "1.0.0"
         },
         "runtime": {
           "IBusinessLogic.dll": {}
+        }
+      },
+      "IImporter/1.0.0": {
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "runtime": {
+          "IImporter.dll": {}
         }
       },
       "ServiceFactory/1.0.0": {
@@ -1171,6 +1181,11 @@
       "sha512": ""
     },
     "IBusinessLogic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "IImporter/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

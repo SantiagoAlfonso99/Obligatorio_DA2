@@ -9,7 +9,7 @@ using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/building")]
+[Route("api/buildings")]
 
 public class BuildingController : ControllerBase
 {
@@ -63,7 +63,8 @@ public class BuildingController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        bool success = buildingLogic.Delete(id);
+        int managerId = usersLogic.GetCurrentUser().Id;
+        bool success = buildingLogic.Delete(id, managerId);
         if (success)
         {
             return NoContent();
@@ -75,15 +76,21 @@ public class BuildingController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] BuildingUpdateModel newAttributes)
     {
-        return Ok(new BuildingDetailModel(buildingLogic.Update(id, newAttributes.ToEntity())));
+        int managerId = usersLogic.GetCurrentUser().Id;
+        return Ok(new BuildingDetailModel(buildingLogic.Update(id, newAttributes.ToEntity(), managerId)));
     }
     
     [BaseAuthorization("CompanyAdmin")]
     [HttpPut("{id}/manager")]
     public IActionResult UpdateBuildingManager(int id, [FromBody] BuildingUpdateManager newManager)
     {
+        var admin = (CompanyAdmin) usersLogic.GetCurrentUser();
         var returnedManager = managerLogic.GetById(newManager.ManagerId);
         var building = buildingLogic.GetById(id);
+        if (admin.Company == null || admin.Company.Id != building.CompanyId)
+        {
+            return BadRequest(new { Message = "You don't have the necessary permission to modify the building." });
+        }
         building.BuildingManager = returnedManager;
         return Ok(new BuildingDetailModel(buildingLogic.UpdateManager(building)));
     }

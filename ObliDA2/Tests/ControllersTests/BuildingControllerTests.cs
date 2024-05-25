@@ -23,11 +23,17 @@ public class BuildingControllerTests
     private const string NotFoundMessage =
         "The deletion action could not be completed because there is no Building with that ID";
     private BuildingController controller;
-    private Mock<IUsersLogic> usersLogic;    
+    private Mock<IUsersLogic> usersLogic;
+    private Manager returnedManager;
     
     [TestInitialize]
     public void Initialize()
     {
+        returnedManager = new Manager()
+        {
+            Name = "Name", Email = "email@gmail.com", Password = "password",
+            Id = 1
+        };
         managerService = new Mock<IManagerLogic>();
         service = new Mock<IBuildingLogic>();
         newBuilding = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
@@ -121,7 +127,8 @@ public class BuildingControllerTests
     [TestMethod]
     public void DeleteOk()
     {
-        service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(true);
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedManager);
+        service.Setup(logic => logic.Delete(It.IsAny<int>(),It.IsAny<int>())).Returns(true);
         
         var result = controller.Delete(UserId);
         var noContentResult = result as NoContentResult;
@@ -134,7 +141,8 @@ public class BuildingControllerTests
     public void UpdateOk()
     {
         newBuilding.CommonExpenses = 500;
-        service.Setup(logic => logic.Update(It.IsAny<int>(),It.IsAny<Building>())).Returns(newBuilding);
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedManager);
+        service.Setup(logic => logic.Update(It.IsAny<int>(),It.IsAny<Building>(), It.IsAny<int>())).Returns(newBuilding);
         BuildingUpdateModel newAttributes = new BuildingUpdateModel() {CommonExpenses = 500};
         
         var result = controller.Update(2, newAttributes);
@@ -154,6 +162,10 @@ public class BuildingControllerTests
             Name = "Name", Email = "email@gmail.com", Password = "password",
             Id = 1
         };
+        var currentUser = new CompanyAdmin() { Name = "Name2", Email = "email2@gmail.com", Password = "password",
+            Id = 3, Company = new ConstructionCompany(){Id =1, Name="Company"}};
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        newBuilding.CompanyId = 1;
         service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newBuilding);
         managerService.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(user);
         newBuilding.BuildingManager = user;
@@ -165,15 +177,45 @@ public class BuildingControllerTests
         BuildingDetailModel returnedBuilding = okResult.Value as BuildingDetailModel;
         BuildingDetailModel expectedModelDetail = new BuildingDetailModel(newBuilding);
        
+        usersLogic.VerifyAll();
         managerService.VerifyAll(); 
         service.VerifyAll();
         Assert.AreEqual(expectedModelDetail, returnedBuilding);
     }
     
     [TestMethod]
+    public void UpdateManagerThrowsBadRequest()
+    {
+        var user = new Manager()
+        {
+            Name = "Name", Email = "email@gmail.com", Password = "password",
+            Id = 1
+        };
+        var currentUser = new CompanyAdmin() { Name = "Name2", Email = "email2@gmail.com", Password = "password",
+            Id = 3, Company = new ConstructionCompany(){Id =1, Name="Company"}};
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(currentUser);
+        newBuilding.CompanyId = 2;
+        service.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(newBuilding);
+        managerService.Setup(logic => logic.GetById(It.IsAny<int>())).Returns(user);
+        newBuilding.BuildingManager = user;
+        service.Setup(logic => logic.UpdateManager(It.IsAny<Building>())).Returns(newBuilding);
+        BuildingUpdateManager update = new BuildingUpdateManager() { ManagerId = 1 };        
+
+        var result = controller.UpdateBuildingManager(1, update);
+        var badResult = result as BadRequestObjectResult;
+        var message = badResult.Value.GetType().GetProperty(PropertyName);
+        
+        usersLogic.VerifyAll();
+        managerService.VerifyAll();
+        Assert.AreEqual("You don't have the necessary permission to modify the building.", message.GetValue(badResult.Value));
+    }
+    
+    
+    [TestMethod]
     public void DeleteReturnsFalse()
     {
-        service.Setup(logic => logic.Delete(It.IsAny<int>())).Returns(false);
+        usersLogic.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedManager);
+        service.Setup(logic => logic.Delete(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
         
         var result = controller.Delete(UserId);
         var notFoundResult = result as NotFoundObjectResult;

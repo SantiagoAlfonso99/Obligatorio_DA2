@@ -16,13 +16,27 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Domain": "1.0.0"
+          "Domain": "1.0.0",
+          "IImporter": "1.0.0"
         },
         "compile": {
           "bin/placeholder/IBusinessLogic.dll": {}
         },
         "runtime": {
           "bin/placeholder/IBusinessLogic.dll": {}
+        }
+      },
+      "IImporter/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/IImporter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IImporter.dll": {}
         }
       }
     }
@@ -37,12 +51,18 @@
       "type": "project",
       "path": "../IBusinessLogic/IBusinessLogic.csproj",
       "msbuildProject": "../IBusinessLogic/IBusinessLogic.csproj"
+    },
+    "IImporter/1.0.0": {
+      "type": "project",
+      "path": "../IImporter/IImporter.csproj",
+      "msbuildProject": "../IImporter/IImporter.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "Domain >= 1.0.0",
-      "IBusinessLogic >= 1.0.0"
+      "IBusinessLogic >= 1.0.0",
+      "IImporter >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -75,6 +95,9 @@
             },
             "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj": {
               "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IBusinessLogic\\IBusinessLogic.csproj"
+            },
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IImporter\\IImporter.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IImporter\\IImporter.csproj"
             }
           }
         }

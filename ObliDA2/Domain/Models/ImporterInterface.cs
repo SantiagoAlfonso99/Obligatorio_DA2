@@ -2,5 +2,5 @@
 
 public interface ImporterInterface
 {
-    
+    List<Building> ImportBuildings();
 }

@@ -93,29 +93,15 @@ public class ApartmentLogicTests
     }
     
     [TestMethod]
-    public void DeleteReturnsTrue()
+    public void DeleteOk()
     {
         repo.Setup(repository => repository.Delete(It.IsAny<Apartment>()));
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(new Apartment(){Id =1});
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        bool success = service.Delete(UserId);
+        var returnedApartment = service.Delete(newApartment);
         
         repo.VerifyAll();
-        Assert.AreEqual(success, DeleteSuccess);
-    }
-    
-    [TestMethod]
-    public void DeleteReturnsFalse()
-    {
-        Apartment nullApartment = null;
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullApartment);
-        ApartmentLogic service = new ApartmentLogic(repo.Object);
-        
-        bool success = service.Delete(UserId);
-        
-        repo.VerifyAll();
-        Assert.AreEqual(success, Unsuccessfully);
+        Assert.AreEqual(newApartment, returnedApartment);
     }
     
     [TestMethod]

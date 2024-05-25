@@ -30,3 +30,5 @@ C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\obj\Debug\net8
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\obj\Debug\net8.0\refint\IBusinessLogic.dll
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\obj\Debug\net8.0\IBusinessLogic.pdb
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\obj\Debug\net8.0\ref\IBusinessLogic.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\bin\Debug\net8.0\IImporter.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\IBusinessLogic\bin\Debug\net8.0\IImporter.pdb

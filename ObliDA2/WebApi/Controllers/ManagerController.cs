@@ -10,7 +10,7 @@ using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/manager")]
+[Route("api/managers")]
 
 public class ManagerController : ControllerBase
 {

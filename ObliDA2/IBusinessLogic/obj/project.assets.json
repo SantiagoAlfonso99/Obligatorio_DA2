@@ -11,6 +11,19 @@
         "runtime": {
           "bin/placeholder/Domain.dll": {}
         }
+      },
+      "IImporter/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/IImporter.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/IImporter.dll": {}
+        }
       }
     }
   },
@@ -19,11 +32,17 @@
       "type": "project",
       "path": "../Domain/Domain.csproj",
       "msbuildProject": "../Domain/Domain.csproj"
+    },
+    "IImporter/1.0.0": {
+      "type": "project",
+      "path": "../IImporter/IImporter.csproj",
+      "msbuildProject": "../IImporter/IImporter.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Domain >= 1.0.0"
+      "Domain >= 1.0.0",
+      "IImporter >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -53,6 +72,9 @@
           "projectReferences": {
             "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj": {
               "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\Domain\\Domain.csproj"
+            },
+            "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IImporter\\IImporter.csproj": {
+              "projectPath": "C:\\Users\\HP\\RiderProjects\\276280-243218\\ObliDA2\\IImporter\\IImporter.csproj"
             }
           }
         }

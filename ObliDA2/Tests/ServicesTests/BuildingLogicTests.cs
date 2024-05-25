@@ -83,11 +83,12 @@ public class BuildingLogicTests
     [TestMethod]
     public void DeleteShouldReturnsTrue()
     {
+        newBuilding.BuildingManagerId = 1;
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
         repo.Setup(repository => repository.Delete(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
 
-        bool success = service.Delete(UserId);
+        bool success = service.Delete(UserId, 1);
         
         Assert.AreEqual(DeleteSuccessfully, success);
     }
@@ -100,7 +101,7 @@ public class BuildingLogicTests
         repo.Setup(repository => repository.Delete(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
 
-        bool success = service.Delete(UserId);
+        bool success = service.Delete(UserId, 1);
         
         Assert.AreEqual( DeleteFailed, success);
     }
@@ -108,12 +109,13 @@ public class BuildingLogicTests
     [TestMethod]
     public void UpdateOk()
     {
+        newBuilding.BuildingManagerId = 1;
         repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
         repo.Setup(repository => repository.Update(It.IsAny<Building>()));
         service = new BuildingLogic(repo.Object);
         Building newAttributes = new Building() { CommonExpenses = 500};
         
-        Building returnedBuilding = service.Update(UserId, newAttributes);
+        Building returnedBuilding = service.Update(UserId, newAttributes, 1);
         expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         
         Assert.AreEqual( returnedBuilding, expectedBuilding);
@@ -134,6 +136,22 @@ public class BuildingLogicTests
     
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
+    public void UpdateThrowsNotFoundExceptionForInvalidManagerId()
+    {
+        newBuilding.BuildingManagerId = 1;
+        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(newBuilding);
+        repo.Setup(repository => repository.Update(It.IsAny<Building>()));
+        service = new BuildingLogic(repo.Object);
+        Building newAttributes = new Building() { CommonExpenses = 500};
+        
+        Building returnedBuilding = service.Update(UserId, newAttributes, 2);
+        expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
+        
+        Assert.AreEqual( returnedBuilding, expectedBuilding);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
     public void UpdateNonExistentElementThrowsException()
     {
         newBuilding = null;
@@ -142,7 +160,7 @@ public class BuildingLogicTests
         service = new BuildingLogic(repo.Object);
         Building newAttributes = new Building() { CommonExpenses = 500};
         
-        Building returnedBuilding = service.Update(UserId, newAttributes);
+        Building returnedBuilding = service.Update(UserId, newAttributes, 1);
         expectedBuilding.CommonExpenses = newAttributes.CommonExpenses;
         
         Assert.AreEqual( returnedBuilding, expectedBuilding);

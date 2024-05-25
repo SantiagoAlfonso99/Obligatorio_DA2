@@ -7,7 +7,7 @@ using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/ApartmentOwners")]
+[Route("api/apartmentOwners")]
 [BaseAuthorization("Manager")]
 
 public class ApartmentOwnerController : ControllerBase

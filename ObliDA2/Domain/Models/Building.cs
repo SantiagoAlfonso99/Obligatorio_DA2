@@ -38,6 +38,7 @@ public class Building
     }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+    public int CompanyId { get; set; }
     public virtual ConstructionCompany Company { get; set; }
     public int CommonExpenses
     {
@@ -51,7 +52,9 @@ public class Building
             commonExpenses = value;
         }
     }
+    public int? BuildingManagerId { get; set; }
     public virtual Manager? BuildingManager { get; set; }
+    public virtual ICollection<MaintenanceStaff> Workers {get; set; }
     
     public override bool Equals(object obj)
     {

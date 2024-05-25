@@ -68,21 +68,17 @@ public class InvitationController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult InvitationResponse(int id, [FromBody] InvitationResponse response)
     {
-        if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Password))
-        {
-            return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
-        }
         usersLogic.ValidateEmail(response.Email);
         var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
         if (invitation.DeadLine < DateTime.Now)
         {
             return BadRequest(new { Message = "Invitation expired" });    
         }
-        if (invitation.Role == "Manager")
+        if (invitation.Role == "Manager" && invitation.Status != "Rejected")
         {
             managerLogic.Create(new Manager() { Email = response.Email, Password = response.Password, Name = invitation.Name});
         }
-        else
+        else if(invitation.Status != "Rejected")
         {
             companyAdminLogic.Create(new CompanyAdmin() { Email = response.Email, Password = response.Password, Name = invitation.Name});
         }

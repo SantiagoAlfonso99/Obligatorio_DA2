@@ -38,13 +38,9 @@ public class InvitationLogic : IInvitationLogic
         {
             throw new DuplicateEntryException();
         }
-        Invitation newInvitation = new Invitation()
-        {
-            DeadLine = invitationData.DeadLine, RecipientEmail = invitationData.RecipientEmail,
-            Name = invitationData.Name, Status = PendingStatus
-        };
-        invitationRepo.Create(newInvitation);
-        return newInvitation;
+        invitationData.Status = PendingStatus;
+        invitationRepo.Create(invitationData);
+        return invitationData;
     }
 
     public bool Delete(int id)
@@ -61,18 +57,11 @@ public class InvitationLogic : IInvitationLogic
     public Invitation InvitationResponse(int id, string email, bool answer)
     {
         Invitation invitationToUpdate = invitationRepo.GetById(id);
-        if (invitationToUpdate == null)
+        if (invitationToUpdate == null || invitationToUpdate.RecipientEmail != email || invitationToUpdate.Status != "Pending")
         {
             throw new NotFoundException();
         }
-        if (answer && invitationToUpdate.RecipientEmail == email)
-        {
-            invitationToUpdate.Status = AcceptedStatus;
-        }
-        else if(invitationToUpdate.RecipientEmail == email && !answer)
-        {
-            invitationToUpdate.Status = RejectedStatus;
-        }
+        invitationToUpdate.Status = answer ? AcceptedStatus : RejectedStatus;
         invitationRepo.Update(invitationToUpdate);
         return invitationToUpdate;
     }

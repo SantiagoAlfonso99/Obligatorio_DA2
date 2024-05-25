@@ -49,6 +49,7 @@ public class ServicesFactory
         serviceCollection.AddTransient<IBuildingRepository, BuildingRepository>();
         serviceCollection.AddTransient<IRequestRepository, RequestRepository>();
         serviceCollection.AddTransient<ISessionRepository, SessionRepository>();
+        serviceCollection.AddTransient<IConstructionCompanyRepository, ConstructionCompanyRepository>();
         serviceCollection.AddTransient<ICompanyAdminRepository, CompanyAdminRepository>();
         serviceCollection.AddTransient<IInvitationRepository, InvitationRepository>();
     }

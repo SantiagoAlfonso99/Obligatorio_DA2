@@ -200,3 +200,5 @@ C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\WebApi\obj\Debug\net8.0\refin
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\WebApi\obj\Debug\net8.0\WebApi.pdb
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\WebApi\obj\Debug\net8.0\WebApi.genruntimeconfig.cache
 C:\Users\Szade\RiderProjects\276280-243218\ObliDA2\WebApi\obj\Debug\net8.0\ref\WebApi.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\WebApi\bin\Debug\net8.0\IImporter.dll
+C:\Users\HP\RiderProjects\276280-243218\ObliDA2\WebApi\bin\Debug\net8.0\IImporter.pdb

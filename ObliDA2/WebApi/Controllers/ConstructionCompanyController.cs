@@ -9,7 +9,7 @@ using WebApi.Filters;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("api/companyController")]
+[Route("api/constructionCompanies")]
 [BaseAuthorization("CompanyAdmin")]
 
 public class ConstructionCompanyController : ControllerBase

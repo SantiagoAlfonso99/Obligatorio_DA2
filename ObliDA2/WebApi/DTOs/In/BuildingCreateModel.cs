@@ -9,7 +9,6 @@ public class BuildingCreateModel
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public int CommonExpenses { get; set; }
-    public int ManagerAssociatedId { get; set; }
 
     public Building ToEntity()
     {

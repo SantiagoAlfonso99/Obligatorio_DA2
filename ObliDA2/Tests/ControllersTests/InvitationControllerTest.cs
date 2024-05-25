@@ -21,7 +21,6 @@ public class InvitationControllerTest
     private const int UserId = 1;
     private const string EmailResponse = "pepe@gmail.com";
     private const string Password = "pepe";
-    private const string AcceptInvitationBadRequest = "Please ensure to enter a non-null or non-empty email and password";
     private const string PropertyName = "Message";
     private const string Name = "pepe";
     private const string ExpectedMessage = "The deletion action could not be completed because there is no invitation with that ID";
@@ -170,19 +169,4 @@ public class InvitationControllerTest
             
         Assert.AreEqual(new InvitationDetailModel(expectedInvitation), returnedInvitation);
     }
-    
-    [TestMethod]
-    public void UserAcceptInvitationBadRequestTest()
-    {
-        InvitationResponse response = new InvitationResponse()
-            { Email = "", acceptInvitation = true, Password = "" };
-        invitationLogicMock.Setup(r => r.InvitationResponse(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(expectedInvitation);
-        
-        var result = controller.InvitationResponse(UserId, response);
-        var badRequestResult = result as BadRequestObjectResult;
-        var message = badRequestResult.Value.GetType().GetProperty(PropertyName);
-
-        Assert.AreEqual(AcceptInvitationBadRequest, message.GetValue(badRequestResult.Value));
-    }
-    
 }
