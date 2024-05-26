@@ -1,0 +1,32 @@
+<div class="container-fluid mt-5">
+    <div class="top-bar">
+        <div class="menu-section">
+            <a class="menu-link" routerLink="/home">Home</a>
+            <a class="menu-link" routerLink="/about-da2">About DA2</a>
+            <a class="menu-link" routerLink="/team">Our Team</a>
+            <a class="menu-link" routerLink="/project">Project</a>
+            <div class="menu-dropdown">
+                <div class="menu-title">Services</div>
+                <div class="menu-content">
+                    <a routerLink="/manager">Manager</a>
+                    <a routerLink="/admin">Admin</a>
+                    <a routerLink="/maintenance">Maintenance</a>
+                    <a routerLink="/invitation">Invitations</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 class="text-center mb-4">Meet our team</h1>
+    <div class="row">
+        <div class="col" *ngFor="let member of teamMembers">
+            <div class="team-card">
+                <img [src]="member.imageUrl" alt="Photo of {{ member.name }}" class="team-image">
+                <div class="team-content">
+                    <p>{{ member.role }}</p>
+                    <h5>{{ member.name }}</h5>
+                    <p class="additional-text">{{ member.text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

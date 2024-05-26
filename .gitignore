@@ -4,3 +4,5 @@
 # Compilados
 */obj/
 */bin/
+
+*.angular/

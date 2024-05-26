@@ -1,0 +1,14 @@
+/* Global styles.css */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent scrolling globally if needed */
+  font-family: Arial, sans-serif; /* Global font */
+}
+
+button {
+  cursor: pointer; /* Style all buttons to have a pointer cursor */
+  padding: 8px 16px; /* Standard button padding */
+  border-radius: 4px; /* Standard border-radius */
+}

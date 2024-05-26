@@ -1,0 +1,35 @@
+<div class="app-container">
+    <div class="top-bar">
+        <div class="menu-section">
+            <a class="menu-link" routerLink="/home">Home</a>
+            <a class="menu-link" routerLink="/about-da2">About DA2</a>
+            <a class="menu-link" routerLink="/team">Our Team</a>
+            <a class="menu-link" routerLink="/project">Project</a>
+            <div class="menu-dropdown">
+                <div class="menu-title">Services</div>
+                <div class="menu-content">
+                    <a routerLink="/manager">Manager</a>
+                    <a routerLink="/admin">Admin</a>
+                    <a routerLink="/maintenance">Maintenance</a>
+                    <a routerLink="/invitation">Invitations</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-overlay-container"> <!-- New wrapper for image and thumbnails -->
+        <img src="../../../assets/general.png" alt="Centered Image" class="centered-image">
+        <h1 class="text-center mb-4">Project</h1>
+        <p> Se desea desarrollar una aplicación que permita administrar edificios. Este sistema es utilizado por
+            personas con
+            diferentes perfiles. </p>
+        <div class="thumbnail-container">
+            <div *ngFor="let pdf of pdfs" class="pdf-thumbnail"
+                [ngClass]="{'border-color-1': pdf.color === 'color1', 'border-color-2': pdf.color === 'color2'}">
+                <img src="{{ pdf.thumbnailUrl }}" alt="Thumbnail" (click)="openPDF(pdf.url)">
+                <div class="thumbnail-title">{{ pdf.title }}</div>
+            </div>
+        </div>
+    </div>
+
+</div>

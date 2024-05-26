@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+
+:root {
+  --mdc-theme-error: #fb8500; /* Pumpkin Orange for error messages */
+  --mdc-outlined-card-outline-width: 2px;
+}
+
+html,
+body {
+  height: 100%; /* Ensures the full height of the page is used */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  overflow: hidden; /* Prevents scrollbars */
+}
+
+.wrap-login {
+  height: 100vh;
+  display: flex;
+  flex-direction: row; /* Aligns children in a row */
+  align-items: stretch; /* Stretches children to fill container */
+  justify-content: stretch; /* Ensures children fill the horizontal space */
+  width: 100vw; /* Ensures the container is full viewport width */
+  margin: 0;
+  background: none;
+}
+
+.container {
+  display: flex;
+  flex-grow: 1; /* Allows container to grow and take available space */
+  background: #ffffff; /* White background for clarity */
+  box-shadow: none; /* Optional: remove shadow if not desired */
+  border-radius: 0; /* Removes border radius */
+  overflow: hidden; /* Ensures no overflow */
+  height: 100%;
+  width: 100%; /* Ensures container uses full width */
+  margin: 0; /* Removes any margin */
+}
+
+.login-image {
+  flex: 1 1 50%; /* Takes half of the container */
+  background-image: url("../../../assets/wall.png"); /* Adjust the path as needed */
+  background-size: cover;
+  background-position: center;
+}
+
+.login-content {
+  flex: 1 1 50%; /* Takes the remaining half */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0; /* Removes padding */
+  background-color: #ffffff; /* Optional: background color */
+}
+
+.login-box {
+  width: 100%;
+  max-width: 800px; /* Maximum width of the login box */
+  padding: 20px;
+  box-shadow: none; /* Removes shadow */
+  border-radius: 0; /* Removes border-radius */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Additional styles for inputs */
+.login-box mat-form-field {
+  width: 100%;
+  border-radius: 0; /* Makes form fields flat */
+}
+
+/* Styles for the cancel button */
+.cancel-button {
+  width: calc(70% - 10px) !important; /* Adjust width to fill half the space */
+  border-radius: 2px !important;
+  background-color: #e0e0e0 !important; /* Light grey, similar to your image */
+  color: #333 !important; /* Darker text for better contrast */
+  margin-right: 5px !important; /* Space between buttons */
+}
+
+/* Styles for the login button */
+.login-button {
+  width: calc(70% - 10px) !important; /* Adjust width to fill half the space */
+  border-radius: 2px !important;
+  background-color: #ffb703 !important; /* Bootstrap primary blue, or use custom color */
+  color: white !important; /* White text for better visibility */
+  margin-left: 5px !important; /* Space between buttons */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+  }
+
+  .login-image,
+  .login-content {
+    width: 100%;
+    flex: 1 1 100%; /* Each takes full vertical space when stacked */
+  }
+}
+
+@media (max-width: 430px) {
+  .login-box {
+    padding: 10px; /* Reduced padding on very small screens */
+  }
+}
+
+.status-message {
+  margin-top: 20px;
+  padding: 10px;
+  color: #d32f2f; /* Red color for errors, change as needed */
+  background-color: #ffccbc; /* Light red background */
+  border: 1px solid #d32f2f;
+  border-radius: 4px;
+  text-align: center;
+}

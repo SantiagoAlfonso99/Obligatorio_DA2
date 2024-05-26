@@ -1,0 +1,47 @@
+<div class="wrap-login">
+    <div class="container">
+        <div class="login-image"></div> <!-- This div will display the image covering the entire left side -->
+        <div class="login-content"> <!-- This div contains the join form on the right side -->
+            <form [formGroup]="joinForm" (ngSubmit)="onJoin()">
+                <mat-card class="login-box">
+                    <mat-card-header>
+                        <img mat-card-avatar [src]="logoUrl" alt="Logo">
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="Enter your email" formControlName="email" required>
+                            <mat-error *ngIf="joinForm.get('email')?.hasError('required')">Email is required</mat-error>
+                            <mat-error *ngIf="joinForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" placeholder="Enter your password" formControlName="password"
+                                required>
+                            <mat-error *ngIf="joinForm.get('password')?.hasError('required')">Password is
+                                required</mat-error>
+                            <mat-error *ngIf="joinForm.get('password')?.hasError('minlength')">Password must be at least
+                                6 characters long</mat-error>
+                        </mat-form-field>
+
+                        <!-- Checkbox for invitation acceptance -->
+                        <mat-checkbox formControlName="acceptInvitation" required>Accept Invitation</mat-checkbox>
+                        <mat-error *ngIf="joinForm.get('acceptInvitation')?.hasError('required')">You must accept the
+                            invitation to continue.</mat-error>
+
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-raised-button class="cancel-button" routerLink="/home">Cancel</button>
+                        <button mat-raised-button class="login-button" [disabled]="!joinForm.valid">Join For
+                            Free</button>
+                    </mat-card-actions>
+                </mat-card>
+            </form>
+            <!-- Status message display -->
+            <div *ngIf="statusMessage" class="status-message">
+                {{ statusMessage }}
+            </div>
+        </div>
+    </div>
+</div>
