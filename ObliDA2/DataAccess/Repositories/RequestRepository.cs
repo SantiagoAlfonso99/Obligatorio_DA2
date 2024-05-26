@@ -22,7 +22,7 @@ public class RequestRepository : IRequestRepository
     
     public IEnumerable<Request> GetAll()
     {
-        return Context.Requests.Include(request => request.Department).ToList();
+        return Context.Requests.Include(request => request.Department).Include(request => request.Category).ToList();
     }
     
     public Request Get(int id)
