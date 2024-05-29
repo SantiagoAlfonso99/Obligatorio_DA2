@@ -35,14 +35,9 @@ public class ApartmentLogic : IApartmentLogic
         return returnedApartment;
     }
     
-    public bool Delete(int id)
+    public Apartment Delete(Apartment apartment)
     {
-        Apartment returnedApartment = apartmentRepo.GetById(id);
-        if (returnedApartment != null)
-        {
-            apartmentRepo.Delete(returnedApartment);
-            return true;
-        }
-        return false;
+        apartmentRepo.Delete(apartment);
+        return apartment;
     }
 }

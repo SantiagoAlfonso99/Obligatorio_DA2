@@ -7,4 +7,5 @@ public interface IMaintenanceLogic
     public MaintenanceStaff GetById(int id);
     public bool Delete(int id);
     public MaintenanceStaff Create(MaintenanceStaff newStaff);
+    public MaintenanceStaff Update(MaintenanceStaff newStaff);
 }

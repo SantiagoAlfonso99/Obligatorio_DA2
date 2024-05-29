@@ -8,4 +8,5 @@ public interface IMaintenanceStaffRepository
     MaintenanceStaff GetById(int id);
     void Create(MaintenanceStaff newStaff);
     void Delete(MaintenanceStaff staffToRemove);
+    void Update(MaintenanceStaff maintenanceStaff);
 }

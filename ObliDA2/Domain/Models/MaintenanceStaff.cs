@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using System.Collections;
+using Domain.Exceptions;
 
 namespace Domain.Models;
 
@@ -17,7 +18,7 @@ public class MaintenanceStaff : User
             lastName = value;
         }
     }
-    public virtual Building AssociatedBuilding { get; set; }
+    public virtual ICollection<Building> Buildings {get; set; }
     
     public override bool Equals(object obj)
     {
@@ -30,8 +31,7 @@ public class MaintenanceStaff : User
                && LastName == other.LastName
                && Name == other.Name
                && Password == other.Password
-               && Email == other.Email
-               && AssociatedBuilding == other.AssociatedBuilding;
+               && Email == other.Email; 
     }
     
     public override string GetRole()

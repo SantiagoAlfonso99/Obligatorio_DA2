@@ -35,12 +35,13 @@ public class RequestTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
+        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
         requestRepository = new RequestRepository(_context);
         buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
         newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",AssociatedBuilding = newBuilding};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
+        staff = new MaintenanceStaff() { Name = "Name", LastName = "perez", Password = "Password",Email = "pepe@gmail.com",Buildings = new List<Building>(){newBuilding}};
         newApartment = new Apartment()
         {
             NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,

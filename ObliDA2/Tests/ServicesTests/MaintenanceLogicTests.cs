@@ -81,6 +81,8 @@ public class MaintenanceLogicTests
         Assert.AreEqual(expectedStaff, returnedStaff);
     }
     
+    
+    
     [TestMethod]
     [ExpectedException(typeof(NotFoundException))]
     public void CreateThrowsStaffLogicExceptionOk()
@@ -108,6 +110,18 @@ public class MaintenanceLogicTests
         
         repo.VerifyAll();
         Assert.AreEqual(TrueSuccess, success);
+    }
+    
+    [TestMethod]
+    public void UpdateOk()
+    {
+        repo.Setup(repository => repository.Update(It.IsAny<MaintenanceStaff>()));
+        MaintenanceStaffLogic service = new MaintenanceStaffLogic(repo.Object);
+
+        MaintenanceStaff returnedWorker = service.Update(newStaff);
+        
+        repo.VerifyAll();
+        Assert.AreEqual(newStaff, returnedWorker);
     }
     
     [TestMethod]

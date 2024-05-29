@@ -30,7 +30,7 @@ public class InvitationTests
         _context.Database.EnsureCreated();
         
         invitationRepository = new InvitationRepository(_context);
-        newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com"};
+        newInvitation = new Invitation() { Status = "Pending", Name = "raul", RecipientEmail = "raul@gmail.com", Role = "CompanyManager"};
     }
     
     [TestMethod]
@@ -74,7 +74,7 @@ public class InvitationTests
     [TestMethod]
     public void DeleteOk()
     {
-        Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com"};
+        Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com", Role = "CompanyManager"};
         invitationRepository.Create(newInvitation);
         _context.SaveChanges();
         invitationRepository.Create(otherInvitation);
@@ -93,7 +93,7 @@ public class InvitationTests
     [TestMethod]
     public void UpdateOk()
     {
-        Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com"};
+        Invitation otherInvitation = new Invitation() { Status = "Pending", Name = "pepe", RecipientEmail = "pepe@gmail.com",Role = "CompanyManager"};
         invitationRepository.Create(newInvitation);
         _context.SaveChanges();
         invitationRepository.Create(otherInvitation);

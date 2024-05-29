@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
+      <ProjectReference Include="..\IImporter\IImporter.csproj" />
     </ItemGroup>
 
 </Project>
