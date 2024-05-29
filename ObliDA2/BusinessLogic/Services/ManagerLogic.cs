@@ -32,12 +32,16 @@ public class ManagerLogic : IManagerLogic
         return requests.FindAll(request => request.Category.Name == category);
     }
 
+    
     public bool AssignRequestToMaintenance(int requestId, MaintenanceStaff worker)
     {
-        Request returnedRequest = requestRepo.Get(requestId);
-        if (returnedRequest == null ||  returnedRequest.Status != RequestStatus.Open )
+        Request returnedRequest = GetRequest(requestId);
+        List<Building> workerBuildings = worker.Buildings.ToList();
+        Building requestBuilding = returnedRequest.Department.Building;
+        bool correctAssignment = workerBuildings.Exists(building => building.Id == requestBuilding.Id);
+        if (returnedRequest.Status != RequestStatus.Open || !correctAssignment)
         {
-            throw new InvalidRequestException();
+            return false;
         }
         Request request = requestRepo.Get(requestId);
         request.AssignedToMaintenanceId = worker.Id;
@@ -67,6 +71,16 @@ public class ManagerLogic : IManagerLogic
             throw new NotFoundException();
         }
         return returnedManager;
+    }
+    
+    public Request GetRequest(int id)
+    {
+        Request returnedRequest = requestRepo.Get(id);
+        if (returnedRequest == null)
+        {
+            throw new NotFoundException();
+        }
+        return returnedRequest;
     }
     
     public IEnumerable<Request> GetAllRequest()

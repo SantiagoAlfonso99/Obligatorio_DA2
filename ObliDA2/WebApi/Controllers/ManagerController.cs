@@ -32,9 +32,9 @@ public class ManagerController : ControllerBase
 
     [BaseAuthorization("Manager")]
     [HttpGet("requests")]
-    public IActionResult GetRequests(string category)
+    public IActionResult GetRequests([FromBody] GetRequestsModel category)
     {
-        var requests = _managerLogic.ViewRequests(category);
+        var requests = _managerLogic.ViewRequests(category.CategoryName);
         var response = requests.Select(r => new ManagerDetailModel(r)).ToList();
         return Ok(response);
     }

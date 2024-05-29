@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using System.Text.Json.Serialization;
+using Domain.Exceptions;
 
 namespace Domain.Models;
 
@@ -54,6 +55,7 @@ public class Building
     }
     public int? BuildingManagerId { get; set; }
     public virtual Manager? BuildingManager { get; set; }
+    [JsonIgnore]
     public virtual ICollection<MaintenanceStaff> Workers {get; set; }
     
     public override bool Equals(object obj)

@@ -56,8 +56,9 @@ public class ManagerControllerTests
         };
         List<Request> requests = new List<Request>() { newRequest, otherRequest};
         managerService.Setup(managerService => managerService.ViewRequests("Name")).Returns(requests);
-        
-        var result = controller.GetRequests("Name");
+
+        GetRequestsModel requestName = new GetRequestsModel() { CategoryName = "Name"};
+        var result = controller.GetRequests(requestName);
         var okResult = result as OkObjectResult;
         List<ManagerDetailModel> returnedRequests = okResult.Value as List<ManagerDetailModel>;
         List<ManagerDetailModel> expectedModels = requests.Select(request => new ManagerDetailModel(request)).ToList();

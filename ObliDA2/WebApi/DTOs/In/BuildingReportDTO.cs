@@ -2,5 +2,5 @@
 
 public class BuildingReportDTO
 {
-    
+    public string BuildingName { get; set; }
 }

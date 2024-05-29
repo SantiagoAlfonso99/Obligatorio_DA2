@@ -20,9 +20,9 @@ public class ReportController: ControllerBase
     }
     
     [HttpGet("building")]
-    public IActionResult GetRequestPerBuilding([FromBody] string buildingName)
+    public IActionResult GetRequestPerBuilding([FromBody] BuildingReportDTO buildingReport)
     {
-        return Ok(reportLogic.CreateRequestsPerBuildingReports(buildingName));
+        return Ok(reportLogic.CreateRequestsPerBuildingReports(buildingReport.BuildingName));
     }
     
     [HttpGet("maintenance")]

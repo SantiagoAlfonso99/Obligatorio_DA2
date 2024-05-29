@@ -17,6 +17,7 @@ public class ManagerLogicTests
     private Apartment newApartment;
     private Category newCategory;
     private DateTime timeNow;
+    private Request returnedRequest;
     
     [TestInitialize]
     public void Setup()
@@ -24,6 +25,10 @@ public class ManagerLogicTests
         newApartment = new Apartment(){Id = 1, Building = new Building(){Id = 1}};
         newCategory = new Category() { Name = "name" };
         timeNow = DateTime.Now;
+        var description = "New issue";
+        var department = new Apartment(){Id =1, Building = new Building(){Id =1}};
+        var category = new Category(){Name = "Vecino molesto"};
+        returnedRequest = new Request() {Category = category, Description = description, Department = department};
         mockManagerRepo = new Mock<IManagerRepository>();
         mockRequestRepo = new Mock<IRequestRepository>();
 
@@ -45,7 +50,7 @@ public class ManagerLogicTests
    
         var result = managerLogic.ViewRequests();
 
-   
+        mockRequestRepo.VerifyAll();
         Assert.AreEqual(2, result.Count());
     }
 
@@ -64,34 +69,67 @@ public class ManagerLogicTests
         var result = managerLogic.ViewRequests("Fontanero");
         var expectedList = new List<Request>() { new Request { Description = "Leaky faucet", Department = new Apartment(){Id =1}, Category = new Category(){Name = "Fontanero"}}};
         
+        mockRequestRepo.VerifyAll();
         CollectionAssert.AreEqual(expectedList, result.ToList());
     }
 
     [TestMethod]
     public void AssignRequestToMaintenance_ValidRequestAndMaintenance_ShouldReturnTrue()
     {
-   
-        mockRequestRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(true);
-        mockManagerRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(true);
-        mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(new Request());
+        mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(returnedRequest);
 
-        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1 };
+        List<Building> associatedBuildings = new List<Building>()
+            { new Building() { Id = 1 }, new Building() { Id = 2 }, new Building() { Id = 3 } };
+        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1, Buildings = associatedBuildings};
         var result = managerLogic.AssignRequestToMaintenance(1, newWorker);
 
-   
+        mockRequestRepo.VerifyAll();
         Assert.IsTrue(result);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(InvalidRequestException))]
+    public void AssignRequestToMaintenance_InvalidBuildingAssociated_ShouldReturnFalse()
+    {
+        this.returnedRequest.Department.Building.Id = 8;
+        mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(returnedRequest);
+
+        List<Building> associatedBuildings = new List<Building>()
+            { new Building() { Id = 1 }, new Building() { Id = 2 }, new Building() { Id = 3 } };
+        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1, Buildings = associatedBuildings};
+        var result = managerLogic.AssignRequestToMaintenance(1, newWorker);
+
+        mockRequestRepo.VerifyAll();
+        mockManagerRepo.VerifyAll();
+        Assert.IsFalse(result);
+    }
+    
+    [TestMethod]
+    public void AssignRequestToMaintenance_PendingStatusRequest_ShouldReturnFalse()
+    {
+        returnedRequest.Status = RequestStatus.Attending;
+        mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(returnedRequest);
+
+        List<Building> associatedBuildings = new List<Building>()
+            { new Building() { Id = 1 }, new Building() { Id = 2 }, new Building() { Id = 3 } };
+        MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1, Buildings = associatedBuildings};
+        var result = managerLogic.AssignRequestToMaintenance(1, newWorker);
+
+        mockRequestRepo.VerifyAll();
+        mockManagerRepo.VerifyAll();
+        Assert.IsFalse(result);
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(NotFoundException))]
     public void AssignRequestToMaintenance_InvalidRequestOrMaintenance_ShouldThrowException()
     {
-   
-        mockRequestRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(false);
-        mockManagerRepo.Setup(x => x.Exists(It.IsAny<int>())).Returns(false);
-
+        Request returnedRequest = null;
+        mockRequestRepo.Setup(x => x.Get(It.IsAny<int>())).Returns(returnedRequest);
+        
         MaintenanceStaff newWorker = new MaintenanceStaff() { Id = 1 };
         managerLogic.AssignRequestToMaintenance(1, newWorker);
+        
+        mockRequestRepo.VerifyAll();
     }
 
     [TestMethod]
@@ -119,7 +157,8 @@ public class ManagerLogicTests
 
         Manager newManager = managerLogic.Create(new Manager(){Name = "pepe", Email = "pepe@gmail.com", Password = "Password"});
         Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
-
+        
+        mockManagerRepo.VerifyAll();
         Assert.AreEqual(expectedManager, newManager);
     }
     
@@ -131,7 +170,8 @@ public class ManagerLogicTests
 
         Manager returnedManager = managerLogic.GetById(1);
         Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
-
+        
+        mockManagerRepo.VerifyAll();
         Assert.AreEqual(expectedManager, newManager);
     }
     
@@ -144,7 +184,8 @@ public class ManagerLogicTests
 
         Manager returnedManager = managerLogic.GetById(1);
         Manager expectedManager = new Manager() { Name = "pepe", Email = "pepe@gmail.com", Password = "Password" };
-
+        
+        mockManagerRepo.VerifyAll();
         Assert.AreEqual(expectedManager, newManager);
     }
 
