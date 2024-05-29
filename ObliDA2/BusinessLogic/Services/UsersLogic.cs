@@ -11,14 +11,17 @@ public class UsersLogic : IUsersLogic
     private IManagerRepository managerRepo;
     private IAdminRepository adminRepo;
     private ISessionRepository sessionRepository;
+    private ICompanyAdminRepository companyAdminRepository;
     private User? currentUser;
     
-    public UsersLogic(IMaintenanceStaffRepository staffRepoIn, IAdminRepository adminRepoIn, IManagerRepository managerRepoIn, ISessionRepository sessionRepo)
+    public UsersLogic(IMaintenanceStaffRepository staffRepoIn, IAdminRepository adminRepoIn, IManagerRepository managerRepoIn, ISessionRepository sessionRepo
+    , ICompanyAdminRepository companyAdminIn)
     {
         staffRepo = staffRepoIn;
         managerRepo = managerRepoIn;
         adminRepo = adminRepoIn;
         sessionRepository = sessionRepo;
+        companyAdminRepository = companyAdminIn;
     }
 
     public User? GetCurrentUser(Guid? token = null)
@@ -33,31 +36,28 @@ public class UsersLogic : IUsersLogic
     
     public void ValidateEmail(string email)
     {
-        bool duplicatedEmail = staffRepo.GetAll().Exists(staff => staff.Email == email);
-        duplicatedEmail = duplicatedEmail || managerRepo.GetAll().ToList().Exists(manager => manager.Email == email);
-        duplicatedEmail = duplicatedEmail || adminRepo.GetAll().Exists(admin => admin.Email == email);
-        if (duplicatedEmail)
+        try
         {
+            User returnedUser = FindUserByEmail(email);
             throw new DuplicateEntryException();
+        }
+        catch(NotFoundException)
+        {
+            return;
         }
     }
     
     public User FindUserByEmail(string email)
     {
-        Manager returnedManager = managerRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
-        Admin returnedAdmin = adminRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
-        MaintenanceStaff returnedStaff = staffRepo.GetAll().FirstOrDefault(staff => staff.Email == email);
-        if (returnedAdmin != null)
+        List<User> users = new List<User>();
+        users.AddRange(managerRepo.GetAll().ToList());
+        users.AddRange(adminRepo.GetAll());
+        users.AddRange(staffRepo.GetAll());
+        users.AddRange(companyAdminRepository.GetAll());
+        User returnedUser = users.FirstOrDefault(user => user.Email == email);
+        if (returnedUser != null)
         {
-            return returnedAdmin;
-        }
-        else if (returnedStaff != null)
-        {
-            return returnedStaff;
-        }
-        else if (returnedManager != null)
-        {
-            return returnedManager;
+            return returnedUser;
         }
         throw new NotFoundException();
     }

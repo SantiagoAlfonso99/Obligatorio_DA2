@@ -6,7 +6,7 @@ namespace BusinessLogic.Services;
 
 public class ReportLogic : IReportLogic
 {
-    private const int MinValue = 0;
+    private const double DoubleMinValue = 0;
     private const int Incrementer = 1;
     private const string EmptyString = "";
     
@@ -28,11 +28,7 @@ public class ReportLogic : IReportLogic
         List<RequestsPerBuildingReport> reports = new List<RequestsPerBuildingReport>();
         foreach (var building in returnedBuildings)
         {
-            RequestsPerBuildingReport newReport = new RequestsPerBuildingReport();
-            newReport.BuildingName = building.Name;
-            newReport.AttendingRequests = MinValue;
-            newReport.ClosedRequests = MinValue;
-            newReport.OpenRequests = MinValue;
+            RequestsPerBuildingReport newReport = new RequestsPerBuildingReport(building.Name);
             foreach (var request in returnedRequests)
             {
                 if (request.Department.BuildingId == building.Id)
@@ -63,19 +59,18 @@ public class ReportLogic : IReportLogic
     
     public List<RequestsPerMaintenanceStaffReport> CreateRequestsPerMaintenanceStaffReports(string workerName, int buildingId)
     {
-        List<MaintenanceStaff> workers = staffLogic.GetAll().Where(worker => worker.AssociatedBuilding.Id == buildingId).ToList();
+        List<MaintenanceStaff> workers = staffLogic.GetAll();
+
+        var filteredWorkers = workers
+            .Where(worker => worker.Buildings.Any(building => building.Id == buildingId))
+            .ToList();
         IEnumerable<Request> returnedRequests = managerLogic.GetAllRequest().Where(request => request.Department.BuildingId == buildingId).ToList();
         List<RequestsPerMaintenanceStaffReport> reports = new List<RequestsPerMaintenanceStaffReport>();
-        foreach (var worker in workers)
+        foreach (var worker in filteredWorkers)
         {
-            double closedRequestCounter = MinValue;
-            double totalClosingTime = MinValue;
-            RequestsPerMaintenanceStaffReport newReport = new RequestsPerMaintenanceStaffReport();
-            newReport.MaintenanceWorker = worker.Name;
-            newReport.AttendingRequests = MinValue;
-            newReport.ClosedRequests = MinValue;
-            newReport.OpenRequests = MinValue;
-            newReport.AverageClosingTime = MinValue;
+            double closedRequestCounter = DoubleMinValue;
+            double totalClosingTime = DoubleMinValue;
+            RequestsPerMaintenanceStaffReport newReport = new RequestsPerMaintenanceStaffReport(worker.Name);
             foreach (var request in returnedRequests)
             {
                 if (request.AssignedToMaintenanceId == worker.Id)
@@ -91,13 +86,16 @@ public class ReportLogic : IReportLogic
                     else if (request.Status == RequestStatus.Closed)
                     {
                         closedRequestCounter++;
-                        double closingTimeInHours = (request.Service_end - request.Service_start).TotalHours;
-                        totalClosingTime = totalClosingTime + closingTimeInHours;
+                        TimeSpan serviceDuration = request.Service_end - request.Service_start;
+                        totalClosingTime = totalClosingTime + serviceDuration.TotalHours;
                         newReport.ClosedRequests = newReport.ClosedRequests + Incrementer;   
                     }   
                 }
             }
-            newReport.AverageClosingTime = totalClosingTime / closedRequestCounter;
+            if (closedRequestCounter > DoubleMinValue)
+            {
+                newReport.AverageClosingTime = totalClosingTime / closedRequestCounter;
+            }
             reports.Add(newReport);
         }
         if (workerName == EmptyString)

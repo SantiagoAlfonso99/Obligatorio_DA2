@@ -22,7 +22,7 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     
     public List<MaintenanceStaff> GetAll()
     {
-        return Context.MaintenancePersonnel.ToList();
+        return Context.MaintenancePersonnel.Include(worker => worker.Buildings).ToList();
     }
     
     public MaintenanceStaff GetById(int id)
@@ -33,6 +33,12 @@ public class MaintenanceStaffRepository : IMaintenanceStaffRepository
     public void Delete(MaintenanceStaff staff)
     {
         Context.Set<MaintenanceStaff>().Remove(staff);
+        Context.SaveChanges();
+    }
+    
+    public void Update(MaintenanceStaff staff)
+    {
+        Context.Entry(staff).State = EntityState.Modified;
         Context.SaveChanges();
     }
 }

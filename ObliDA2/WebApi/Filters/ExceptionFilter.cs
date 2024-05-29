@@ -24,6 +24,10 @@ public class ExceptionFilter : IExceptionFilter
         {
             context.Result = new JsonResult("Make sure to enter valid values") { StatusCode = 400 };
         }
+        catch (DuplicateEntryException e)
+        {
+            context.Result = new JsonResult( "Input already exists in the system. Please enter a unique value.") { StatusCode = 400 };
+        }
         catch (InvalidOperationException e)
         {
             context.Result = new JsonResult("An invalid operation occurred:") { StatusCode = 409 };

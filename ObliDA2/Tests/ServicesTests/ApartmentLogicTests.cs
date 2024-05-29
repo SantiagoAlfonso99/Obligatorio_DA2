@@ -21,9 +21,10 @@ public class ApartmentLogicTests
     [TestInitialize]
     public void Initialize()
     {
+        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
         ApartmentOwner owner = new ApartmentOwner() {Id = 1, Name = "Pepito", LastName = "sanchez", Email = "pepe2@gmail.com"};
         Building newBuilding = new Building() {Id =1, Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
-            Latitude = 40.000, Longitude = 70.000, ConstructionCompany = "Company", BuildingManager = new Manager(){Id = 1}};
+            Latitude = 40.000, Longitude = 70.000, Company = company, BuildingManager = new Manager(){Id = 1}};
         newApartment = new Apartment()
         {
             Id =1, NumberOfBathrooms = 3, NumberOfBedrooms = 4,
@@ -92,29 +93,15 @@ public class ApartmentLogicTests
     }
     
     [TestMethod]
-    public void DeleteReturnsTrue()
+    public void DeleteOk()
     {
         repo.Setup(repository => repository.Delete(It.IsAny<Apartment>()));
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(new Apartment(){Id =1});
         ApartmentLogic service = new ApartmentLogic(repo.Object);
         
-        bool success = service.Delete(UserId);
+        var returnedApartment = service.Delete(newApartment);
         
         repo.VerifyAll();
-        Assert.AreEqual(success, DeleteSuccess);
-    }
-    
-    [TestMethod]
-    public void DeleteReturnsFalse()
-    {
-        Apartment nullApartment = null;
-        repo.Setup(repository => repository.GetById(It.IsAny<int>())).Returns(nullApartment);
-        ApartmentLogic service = new ApartmentLogic(repo.Object);
-        
-        bool success = service.Delete(UserId);
-        
-        repo.VerifyAll();
-        Assert.AreEqual(success, Unsuccessfully);
+        Assert.AreEqual(newApartment, returnedApartment);
     }
     
     [TestMethod]

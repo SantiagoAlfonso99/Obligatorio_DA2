@@ -68,6 +68,8 @@ public class Invitation
         }
     }
     
+    public string Role { get; set; }
+    
     public override bool Equals(object obj)
     {
         if (obj == null || GetType() != obj.GetType())
@@ -79,7 +81,8 @@ public class Invitation
                && RecipientEmail == other.RecipientEmail
                && Name == other.Name
                && DeadLine == other.DeadLine
-               && Status == other.Status;
+               && Status == other.Status
+               && Role == other.Role;
     }
 
     private bool InvalidStatus(string statusIn)

@@ -11,7 +11,7 @@ public class MaintenanceStaffDetailModel
         LastName = staffIn.LastName;
         Password = staffIn.Password;
         Email = staffIn.Email;
-        AssociatedBuilding = staffIn.AssociatedBuilding;
+        Buildings = staffIn.Buildings;
     }
     
     public int Id { get; set; }
@@ -19,7 +19,7 @@ public class MaintenanceStaffDetailModel
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public Building AssociatedBuilding { get; set; }
+    public ICollection<Building> Buildings { get; set; }
     
     public override bool Equals(object? obj)
     {
@@ -29,6 +29,6 @@ public class MaintenanceStaffDetailModel
             && LastName == otherStaffDetail.LastName
             && Password == otherStaffDetail.Password
             && Email == otherStaffDetail.Email
-            && AssociatedBuilding == otherStaffDetail.AssociatedBuilding;
+            && Buildings == otherStaffDetail.Buildings;
     }
 }

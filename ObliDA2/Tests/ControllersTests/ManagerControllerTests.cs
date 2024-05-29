@@ -18,7 +18,6 @@ public class ManagerControllerTests
     private Mock<IApartmentLogic> apartmentService;
     private Mock<IMaintenanceLogic> staffService;
     private Mock<IUsersLogic> userLogic;
-    private Mock<IBuildingLogic> buildingLogic;
     private ManagerController controller;
     private MaintenanceStaff returnedMaintenance;
     private DateTime timeNow;
@@ -39,8 +38,7 @@ public class ManagerControllerTests
         categoryService = new Mock<ICategoryLogic>();
         apartmentService = new Mock<IApartmentLogic>();
         staffService = new Mock<IMaintenanceLogic>();
-        buildingLogic = new Mock<IBuildingLogic>();
-        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object, buildingLogic.Object);
+        controller = new ManagerController(managerService.Object, categoryService.Object, apartmentService.Object, staffService.Object, userLogic.Object);
     }
     
     [TestMethod]
@@ -58,8 +56,9 @@ public class ManagerControllerTests
         };
         List<Request> requests = new List<Request>() { newRequest, otherRequest};
         managerService.Setup(managerService => managerService.ViewRequests("Name")).Returns(requests);
-        
-        var result = controller.GetRequests("Name");
+
+        GetRequestsModel requestName = new GetRequestsModel() { CategoryName = "Name"};
+        var result = controller.GetRequests(requestName);
         var okResult = result as OkObjectResult;
         List<ManagerDetailModel> returnedRequests = okResult.Value as List<ManagerDetailModel>;
         List<ManagerDetailModel> expectedModels = requests.Select(request => new ManagerDetailModel(request)).ToList();
@@ -80,7 +79,7 @@ public class ManagerControllerTests
         categoryService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newCategory);
         apartmentService.Setup(service => service.GetById(It.IsAny<int>())).Returns(newApartment);
         managerService.Setup(service =>
-                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>(),It.IsAny<Building>()))
+                service.CreateRequest(It.IsAny<string>(), It.IsAny<Apartment>(), It.IsAny<Category>()))
             .Returns(createdRequest);
         
         ManagerCreateModel createRequestModel = new ManagerCreateModel() { CategoryId = 1, DepartmentId = 1, Description = "El vecino no para de gritar" };
@@ -138,22 +137,21 @@ public class ManagerControllerTests
         };
         managerService.Setup(managerService => managerService.MaintenanceStaffAcceptRequest(It.IsAny<Request>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
-        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        MaintenanceStaffResponse expectedModel = new MaintenanceStaffResponse(returnedRequest);
         
         AcceptRequestDTO acceptRequest = new AcceptRequestDTO() { RequestId = 3 };
         var result = controller.AcceptRequest(acceptRequest);
         userLogic.VerifyAll();
         var okResult = result as OkObjectResult;
-        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
-    
+        MaintenanceStaffResponse returnedValue = okResult.Value as MaintenanceStaffResponse;
         
-        Assert.AreEqual(returnedValue, expectedModel);
+        Assert.AreEqual(expectedModel, returnedValue);
     }
     
     [TestMethod]
     public void MaintenanceStaffCompleteRequestOk()
     {
-        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
+       userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
        Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Attending, Category = newCategory,
@@ -169,27 +167,26 @@ public class ManagerControllerTests
         };
         managerService.Setup(managerService => managerService.MaintenanceStaffCompleteRequest(It.IsAny<Request>(), It.IsAny<int>(), It.IsAny<DateTime>()))
             .Returns(returnedRequest);
-        ManagerDetailModel expectedModel = new ManagerDetailModel(returnedRequest);
+        MaintenanceStaffResponse expectedModel = new MaintenanceStaffResponse(returnedRequest);
         
         CompleteRequestDTO acceptRequest = new CompleteRequestDTO() { RequestId = 3, FinalPrice = 500};
         var result = controller.CompleteRequest(acceptRequest);
         userLogic.VerifyAll();
         var okResult = result as OkObjectResult;
-        ManagerDetailModel returnedValue = okResult.Value as ManagerDetailModel;
+        MaintenanceStaffResponse returnedValue = okResult.Value as MaintenanceStaffResponse;
         
-        Assert.AreEqual(returnedValue, expectedModel);
+        Assert.AreEqual(expectedModel, returnedValue);
     }
     
     [TestMethod]
-    public void MaintenanceStaffAcceptInvitationThrowsNotFound()
+    public void MaintenanceStaffAcceptRequestThrowsNotFound()
     {
         returnedMaintenance = null;
-        Guid? token = null;
-        userLogic.Setup(service => service.GetCurrentUser(token)).Returns(returnedMaintenance);
+        userLogic.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(returnedMaintenance);
         Request createdRequest = new Request()
         {
             Id = 3, Department = newApartment, Status = RequestStatus.Open, Category = newCategory,
-            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = returnedMaintenance
+            Description = "El vecino no para de gritar", AssignedToMaintenanceId = 1, AssignedToMaintenance = new MaintenanceStaff{Id =1}
         };
         managerService.Setup(service => service.GetAllRequest()).Returns(new List<Request> { createdRequest });
         

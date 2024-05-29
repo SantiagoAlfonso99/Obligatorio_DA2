@@ -15,6 +15,8 @@ public class MaintenanceStaffTests
     private MaintenanceStaffRepository staffRepository;
     private MaintenanceStaff newWorker;
     private Building buildingAssociated;
+    private ConstructionCompany company;
+    private Manager buildingManager;
     
     [TestInitialize]
     public void Initialize()
@@ -29,11 +31,12 @@ public class MaintenanceStaffTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
+        company = new ConstructionCompany() { Name = "Company" };
         staffRepository = new MaintenanceStaffRepository(_context);
-        Manager buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
+        buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         buildingAssociated = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
-        newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
+        newWorker = new MaintenanceStaff{ Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",Buildings = new List<Building>(){buildingAssociated}};
     }
     
     [TestMethod]
@@ -42,7 +45,7 @@ public class MaintenanceStaffTests
         staffRepository.Create(newWorker);
         _context.SaveChanges();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
-            { new MaintenanceStaff() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",AssociatedBuilding = buildingAssociated } };
+            { new MaintenanceStaff() { Id = 1, Name = "pepe", LastName = "suarez", Password = "password", Email = "pepe@gmail.com",Buildings = new List<Building>(){buildingAssociated} } };
         
         List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
         
@@ -62,16 +65,33 @@ public class MaintenanceStaffTests
     }
     
     [TestMethod]
+    public void UpdateOk()
+    {
+        staffRepository.Create(newWorker);
+        Building otherBuilding = new Building() {Name = "name2", Address = "address2", CommonExpenses = 4, Longitude = 44.33, 
+            Latitude = 44.23, Company = company, BuildingManager = buildingManager};
+        newWorker.Buildings.Add(otherBuilding);
+        staffRepository.Update(newWorker);
+        List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
+            { newWorker};
+        
+        
+        List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();
+        
+        CollectionAssert.AreEqual(expectedStaff, returnedStaff);
+    }
+    
+    [TestMethod]
     public void DeleteOk()
     {
-        MaintenanceStaff otherWorker = new MaintenanceStaff{ Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated};
+        MaintenanceStaff otherWorker = new MaintenanceStaff{ Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",Buildings = new List<Building>(){buildingAssociated}};
         staffRepository.Create(newWorker);
         _context.SaveChanges();
         staffRepository.Create(otherWorker);
         staffRepository.Delete(newWorker);
         _context.SaveChanges();
         List<MaintenanceStaff> expectedStaff = new List<MaintenanceStaff>()
-            { new MaintenanceStaff() { Id = 2, Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",AssociatedBuilding = buildingAssociated } };
+            { new MaintenanceStaff() { Id = 2, Name = "luciano", LastName = "suarez", Password = "password", Email = "other@gmail.com",Buildings = new List<Building>(){buildingAssociated} } };
 
         
         List<MaintenanceStaff> returnedStaff = staffRepository.GetAll();

@@ -7,7 +7,6 @@ public class Manager : User
         Manager other = (Manager)obj;
         return Id == other.Id
                && Name == other.Name
-               && Email == other.Email
                && Password == other.Password
                && Email == other.Email;
     }

@@ -29,9 +29,10 @@ public class ReportControllerTests
             new RequestsPerBuildingReport { BuildingName = "Building 1", OpenRequests = 1, AttendingRequests = 0, ClosedRequests = 1 },
             new RequestsPerBuildingReport { BuildingName = "Building 2", OpenRequests = 0, AttendingRequests = 1, ClosedRequests = 1 }
         };
-        
+
+        BuildingReportDTO buildingReportDto = new BuildingReportDTO() { BuildingName = "name" };
         reportService.Setup(logic => logic.CreateRequestsPerBuildingReports(It.IsAny<string>())).Returns(returnedReport);
-        var result = controller.GetRequestPerBuilding("name");
+        var result = controller.GetRequestPerBuilding(buildingReportDto);
         var okResult = result as OkObjectResult;
         List<RequestsPerBuildingReport> controllerResult = okResult.Value as List<RequestsPerBuildingReport>;
         

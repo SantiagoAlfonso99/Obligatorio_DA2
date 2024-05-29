@@ -6,7 +6,7 @@ public class InvitationCreateModel
     public string Email { get; set; }
     public string Name { get; set; }
     public DateTime DeadLine { get; set; }
-    public int CreatorId { get; set; }
+    public string Role { get; set; }
     
     public Invitation ToEntity()
     {
@@ -14,7 +14,8 @@ public class InvitationCreateModel
         {
             RecipientEmail = this.Email,
             Name = this.Name,
-            DeadLine = this.DeadLine
+            DeadLine = this.DeadLine,
+            Role = Role
         };
     }
 }

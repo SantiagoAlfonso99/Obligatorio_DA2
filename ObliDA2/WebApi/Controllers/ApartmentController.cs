@@ -5,55 +5,70 @@ using IBusinessLogic;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
 using WebApi.Filters;
+using Domain.Models;
 namespace WebApi.Controllers;
 
 [ApiController]
 [Route("api/apartments")]
-[BaseAuthorization("Manager")]
 
 public class ApartmentController : ControllerBase
 {
     private IApartmentLogic apartmentLogic;
     private IBuildingLogic buildingLogic;
     private IApartmentOwnerLogic ownerLogic;
+    private IUsersLogic usersLogic;
 
-    public ApartmentController(IApartmentLogic apartmentLogicIn, IBuildingLogic buildingLogicIn, IApartmentOwnerLogic ownerLogicIn)
+    public ApartmentController(IApartmentLogic apartmentLogicIn, IBuildingLogic buildingLogicIn, IApartmentOwnerLogic ownerLogicIn
+    ,IUsersLogic usersLogicIn)
     {
         apartmentLogic = apartmentLogicIn;
         buildingLogic = buildingLogicIn;
         ownerLogic = ownerLogicIn;
+        usersLogic = usersLogicIn;
     }
 
+    [BaseAuthorization("Manager")]
     [HttpGet]
     public IActionResult Index()
     {
         return Ok(apartmentLogic.GetAll().Select(apartment => new ApartmentDetailModel(apartment)).ToList());
     }
 
+    [BaseAuthorization("Manager")]
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
         return Ok(new ApartmentDetailModel(apartmentLogic.GetById(id)));
     }
     
+    [BaseAuthorization("CompanyAdmin")]
     [HttpPost]
     public IActionResult Create([FromBody] ApartmentCreateModel newApartment)
     {
         var newApartmentModel = newApartment.ToEntity();
+        var user = (CompanyAdmin) usersLogic.GetCurrentUser();
         newApartmentModel.Building = buildingLogic.GetById(newApartment.BuildingId);
+        if (user.CompanyId != newApartmentModel.Building.CompanyId)
+        {
+            return BadRequest(new { Message = "You do not have access to the specified building." });
+        }
         newApartmentModel.Owner = ownerLogic.GetById(newApartment.OwnerId);
         newApartmentModel.BuildingId = newApartment.BuildingId;
         return Ok(new ApartmentDetailModel(apartmentLogic.Create(newApartmentModel)));
     }
     
+    [BaseAuthorization("Manager")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        bool success = apartmentLogic.Delete(id);
-        if (success)
+        var user = (Manager) usersLogic.GetCurrentUser();
+        var apartment = apartmentLogic.GetById(id);
+        var building = buildingLogic.GetById(apartment.BuildingId);
+        if (building.BuildingManagerId != user.Id)
         {
-            return NoContent();
+            return BadRequest(new { Message = "You do not have access to the specified building." });
         }
-        return NotFound(new { Message = "There is no apartment for that Id"});
+        apartmentLogic.Delete(apartment);
+        return NoContent();
     }
 }

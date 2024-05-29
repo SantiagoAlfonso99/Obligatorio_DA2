@@ -31,11 +31,12 @@ public class ApartmentTests
         _context = new DataAppContext(contextOptions);
         _context.Database.EnsureCreated();
 
-        apartmentRepository = new ApartmentRepository(_context);    
+        apartmentRepository = new ApartmentRepository(_context);
+        ConstructionCompany company = new ConstructionCompany() { Name = "Company" };
         buildingManager = new Manager() { Name = "pepe", Password = "password", Email = "pepe3@gmail.com" };
         owner = new ApartmentOwner() { Name = "pepe", LastName = "perez", Email = "pepe3@gmail.com" };
         newBuilding = new Building() {Name = "name", Address = "address", CommonExpenses = 4, Longitude = 44.33, 
-            Latitude = 44.22, ConstructionCompany = "Company", BuildingManager = buildingManager};
+            Latitude = 44.22, Company = company, BuildingManager = buildingManager};
         newApartment = new Apartment()
         {
             NumberOfBathrooms = 1, NumberOfBedrooms = 1,Floor = 1,Number = 1,

@@ -15,11 +15,15 @@ public class InvitationController : ControllerBase
 {
     private readonly IInvitationLogic invitationLogic;
     private readonly IManagerLogic managerLogic;
+    private readonly ICompanyAdminLogic companyAdminLogic;
+    private readonly IUsersLogic usersLogic;
     
-    public InvitationController(IInvitationLogic invitationLogicIn, IManagerLogic managerLogicIn)
+    public InvitationController(IInvitationLogic invitationLogicIn, IManagerLogic managerLogicIn, ICompanyAdminLogic companyAdminLogicIn, IUsersLogic userLogicIn)
     {
         invitationLogic = invitationLogicIn;
         managerLogic = managerLogicIn;
+        companyAdminLogic = companyAdminLogicIn;
+        usersLogic = userLogicIn;
     }
     
     [BaseAuthorization("Admin")]
@@ -41,6 +45,10 @@ public class InvitationController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] InvitationCreateModel newInvitation)
     {
+        if (newInvitation.Role != "CompanyAdmin" && newInvitation.Role != "Manager")
+        {
+            return BadRequest(new { Message = "Invalid role name" }); 
+        }
         var createdInvitation = invitationLogic.Create(newInvitation.ToEntity());
         return Ok(new InvitationDetailModel(createdInvitation));
     }
@@ -60,16 +68,20 @@ public class InvitationController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult InvitationResponse(int id, [FromBody] InvitationResponse response)
     {
-        if (string.IsNullOrEmpty(response.Email) || string.IsNullOrEmpty(response.Password))
-        {
-            return BadRequest(new { Message = "Please ensure to enter a non-null or non-empty email and password" });    
-        }
+        usersLogic.ValidateEmail(response.Email);
         var invitation = invitationLogic.InvitationResponse(id, response.Email, response.acceptInvitation);
         if (invitation.DeadLine < DateTime.Now)
         {
             return BadRequest(new { Message = "Invitation expired" });    
         }
-        managerLogic.Create(new Manager() { Email = response.Email, Password = response.Password, Name = invitation.Name});
+        if (invitation.Role == "Manager" && invitation.Status != "Rejected")
+        {
+            managerLogic.Create(new Manager() { Email = response.Email, Password = response.Password, Name = invitation.Name});
+        }
+        else if(invitation.Status != "Rejected")
+        {
+            companyAdminLogic.Create(new CompanyAdmin() { Email = response.Email, Password = response.Password, Name = invitation.Name});
+        }
         return Ok(new InvitationDetailModel(invitation));
     }
 }

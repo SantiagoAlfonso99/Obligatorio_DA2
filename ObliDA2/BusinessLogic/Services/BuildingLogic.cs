@@ -42,10 +42,10 @@ public class BuildingLogic : IBuildingLogic
         return newBuilding;
     }
     
-    public bool Delete(int id)
+    public bool Delete(int id, int managerId)
     {
         Building returnedBuilding = buildingRepo.GetById(id);
-        if (returnedBuilding == null)
+        if (returnedBuilding == null || returnedBuilding.BuildingManagerId != managerId)
         {
             return false;
         }
@@ -53,12 +53,21 @@ public class BuildingLogic : IBuildingLogic
         return true;
     }
     
-    public Building Update(int id,Building newAttributes)
+    public Building Update(int id,Building newAttributes, int managerId)
     {
         Building returnedBuilding = this.GetById(id);
+        if (returnedBuilding.BuildingManagerId != managerId)
+        {
+            throw new NotFoundException();
+        }
         returnedBuilding.CommonExpenses = newAttributes.CommonExpenses;
-        returnedBuilding.ConstructionCompany = newAttributes.ConstructionCompany;
         buildingRepo.Update(returnedBuilding);
         return returnedBuilding;
+    }
+    
+    public Building UpdateManager(Building newAttributes)
+    {
+        buildingRepo.Update(newAttributes);
+        return newAttributes;
     }
 }

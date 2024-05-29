@@ -51,4 +51,10 @@ public class MaintenanceStaffLogic : IMaintenanceLogic
         staffRepo.Delete(staffToRemove);
         return true;
     }
+
+    public MaintenanceStaff Update(MaintenanceStaff newStaff)
+    {
+        staffRepo.Update(newStaff);
+        return newStaff;
+    }
 }

@@ -190,9 +190,10 @@ public class InvitationLogicTests
     {
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
-
-        expectedInvitation.Status = AcceptedStatus;
+        
         Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  true);
+        expectedInvitation.Status = AcceptedStatus;
+        
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
     }
@@ -202,9 +203,10 @@ public class InvitationLogicTests
     {
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(expectedInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
-
-        expectedInvitation.Status = RejectedStatus;
+        
         Invitation returnedInvitation = service.InvitationResponse(1, ValidEmail,  false);
+        expectedInvitation.Status = RejectedStatus;
+        
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
     }
@@ -216,9 +218,10 @@ public class InvitationLogicTests
         Invitation nullInvitation = null;
         repo.Setup(invitationRepo => invitationRepo.GetById(It.IsAny<int>())).Returns(nullInvitation);
         InvitationLogic service = new InvitationLogic(repo.Object);
-
-        expectedInvitation.Status = RejectedStatus;
+        
         Invitation returnedInvitation = service.InvitationResponse(1, "",  false);
+        expectedInvitation.Status = RejectedStatus;
+        
         repo.VerifyAll();
         Assert.AreEqual(expectedInvitation, returnedInvitation);
     }

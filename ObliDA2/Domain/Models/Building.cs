@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using System.Text.Json.Serialization;
+using Domain.Exceptions;
 
 namespace Domain.Models;
 
@@ -38,18 +39,8 @@ public class Building
     }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    public string ConstructionCompany
-    {
-        get => constructionCompany;
-        set
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new EmptyOrNullException();
-            }
-            constructionCompany = value;
-        }
-    }
+    public int CompanyId { get; set; }
+    public virtual ConstructionCompany Company { get; set; }
     public int CommonExpenses
     {
         get => commonExpenses;
@@ -62,7 +53,10 @@ public class Building
             commonExpenses = value;
         }
     }
-    public virtual Manager BuildingManager { get; set; }
+    public int? BuildingManagerId { get; set; }
+    public virtual Manager? BuildingManager { get; set; }
+    [JsonIgnore]
+    public virtual ICollection<MaintenanceStaff> Workers {get; set; }
     
     public override bool Equals(object obj)
     {
@@ -76,7 +70,6 @@ public class Building
             && Address == other.Address
             && Latitude.Equals(other.Latitude)
             && Longitude.Equals(other.Longitude)
-            && ConstructionCompany == other.ConstructionCompany
             && CommonExpenses == other.CommonExpenses
             && BuildingManager.Equals(other.BuildingManager);
     }

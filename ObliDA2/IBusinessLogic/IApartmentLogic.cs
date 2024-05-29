@@ -7,5 +7,5 @@ public interface IApartmentLogic
     List<Apartment> GetAll();
     Apartment GetById(int id);
     Apartment Create(Apartment newApartment);
-    bool Delete(int id);
+    Apartment Delete(Apartment apartment);
 }
