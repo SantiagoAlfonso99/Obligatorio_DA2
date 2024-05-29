@@ -20,6 +20,7 @@ import { JoinComponent } from './pages/join/join.component';
 import { TeamComponent } from './pages/team/team.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { SubjectComponent } from './pages/subject/subject.component';
+import { SessionStorageService } from './services/session-storage.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent],
@@ -40,7 +41,7 @@ import { SubjectComponent } from './pages/subject/subject.component';
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, SessionStorageService
   ],
   bootstrap: [AppComponent],
 })
