@@ -26,9 +26,11 @@ import { AuthService } from './services/auth.service';
 import { AdminService } from './services/admin.service';
 import { CreteCategoryComponent } from './pages/crete-category/crete-category.component';
 import { CategoryService } from './services/category.service';
+import { InvitationComponent } from './pages/invitation/invitation.component';
+import { InvitationService } from './services/invitation.service';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent, InvitationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,7 +48,7 @@ import { CategoryService } from './services/category.service';
     HttpClientModule,
   ],
   providers: [
-    SessionStorageService, CategoryService,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, AdminService
+    SessionStorageService, CategoryService, InvitationService,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, AdminService
   ],
   bootstrap: [AppComponent],
 })
