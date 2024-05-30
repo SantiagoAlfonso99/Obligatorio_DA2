@@ -24,9 +24,11 @@ import { SessionStorageService } from './services/session-storage.service';
 import { CreateAdminComponent } from './pages/create-admin/create-admin.component';
 import { AuthService } from './services/auth.service';
 import { AdminService } from './services/admin.service';
+import { CreteCategoryComponent } from './pages/crete-category/crete-category.component';
+import { CategoryService } from './services/category.service';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -44,7 +46,7 @@ import { AdminService } from './services/admin.service';
     HttpClientModule,
   ],
   providers: [
-    SessionStorageService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, AdminService
+    SessionStorageService, CategoryService,{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, AdminService
   ],
   bootstrap: [AppComponent],
 })

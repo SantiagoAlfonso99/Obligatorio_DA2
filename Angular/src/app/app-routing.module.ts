@@ -6,6 +6,7 @@ import { JoinComponent } from './pages/join/join.component';
 import { TeamComponent } from './pages/team/team.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { CreateAdminComponent } from './pages/create-admin/create-admin.component';
+import { CreteCategoryComponent } from './pages/crete-category/crete-category.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'team', component: TeamComponent },
   { path: 'project', component: ProjectComponent },
   { path: 'admin/createAdmin', component: CreateAdminComponent },
+  { path: 'admin/createCategory', component: CreteCategoryComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Redirect to home by default
 ];
 

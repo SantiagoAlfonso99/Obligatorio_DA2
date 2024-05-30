@@ -1,5 +1,6 @@
-export interface LoginReturnModel{
-    token:string;
+export interface CategoryReturnModel{
+    int:number;
+    name:string;
 }
 
 export interface AdminReturnModel{

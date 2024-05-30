@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environment';
-import { LoginReturnModel } from './types';
 
 export interface IAuthService {
   login( email: string, password: string ): Observable<string>;
