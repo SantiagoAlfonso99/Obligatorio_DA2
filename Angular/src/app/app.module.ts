@@ -21,9 +21,10 @@ import { TeamComponent } from './pages/team/team.component';
 import { ProjectComponent } from './pages/project/project.component';
 import { SubjectComponent } from './pages/subject/subject.component';
 import { SessionStorageService } from './services/session-storage.service';
+import { CreateAdminComponent } from './pages/create-admin/create-admin.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
