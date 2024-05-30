@@ -5,7 +5,7 @@ import { environment } from '../environment';
 import { LoginReturnModel } from './types';
 
 export interface IAuthService {
-  login( email: string, password: string ): Observable<LoginReturnModel>;
+  login( email: string, password: string ): Observable<string>;
 }
 
 const BASE_URL = environment.apiPrefix;
@@ -17,7 +17,7 @@ export class AuthService implements IAuthService{
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string ): Observable<LoginReturnModel> {
+  login(email: string, password: string ): Observable<string> {
     return this.http.post<any>(`${BASE_URL}/api/session`, {
       email,
       password

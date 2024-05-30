@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   showPassword: boolean = false;
+  message: string = '';
 
   constructor(
     private router: Router,
@@ -28,8 +29,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.login(this.email, this.password).subscribe((response) => {
-      console.log('response', response.token);
-      this._sessionStorageService.setToken(response.token);
+      console.log('response', response);
+      this._sessionStorageService.setToken(response);
       this.router.navigate(['/home']);
     });
   }

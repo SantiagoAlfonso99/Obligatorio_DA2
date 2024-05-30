@@ -24,10 +24,6 @@ export class CreateAdminComponent {
 
   createAdmin() {
     this.adminService.createAdmin(this.email, this.password, this.name, this.lastName).subscribe((response) => {
-      console.log('response', response.email);
-      console.log('response', response.id);
-      console.log('response', response.name);
-      console.log('response', response.lastName);
       this.router.navigate(['/home']);
     });
   }

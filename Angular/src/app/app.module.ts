@@ -22,6 +22,8 @@ import { ProjectComponent } from './pages/project/project.component';
 import { SubjectComponent } from './pages/subject/subject.component';
 import { SessionStorageService } from './services/session-storage.service';
 import { CreateAdminComponent } from './pages/create-admin/create-admin.component';
+import { AuthService } from './services/auth.service';
+import { AdminService } from './services/admin.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent],
@@ -42,7 +44,7 @@ import { CreateAdminComponent } from './pages/create-admin/create-admin.componen
     HttpClientModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, SessionStorageService
+    SessionStorageService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService, AdminService
   ],
   bootstrap: [AppComponent],
 })

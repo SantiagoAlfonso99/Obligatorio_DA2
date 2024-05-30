@@ -27,6 +27,6 @@ public class SessionController : ControllerBase
         var newSession = new Session();
         newSession.UserEmail = returnedUser.Email;
         var token = userLogic.CreateSession(newSession);
-        return Ok(token);
+        return Ok(new { token = token });
     }
 }
