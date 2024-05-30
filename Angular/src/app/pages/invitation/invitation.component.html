@@ -1,4 +1,4 @@
-<form (ngSubmit)="createCategory()">
+<form (ngSubmit)="createInvitation()">
     <div>
       <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
       <input type="text" id="name" name="name" [(ngModel)]="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your name">
@@ -27,3 +27,20 @@
       </button>
     </div>
   </form>
+
+  <div *ngIf="invitations.length > 0; else loading">
+    <h2>Invitations</h2>
+    <ul>
+      <li *ngFor="let invitation of invitations">
+        <p>Name: {{ invitation.name }}</p>
+        <p>Email: {{ invitation.email }}</p>
+        <p>Deadline: {{ invitation.deadLine | date }}</p>
+        <p>Status: {{ invitation.status }}</p>
+        <button (click)="deleteInvitation(invitation.id)" class="btn btn-danger">Delete</button>
+      </li>
+    </ul>
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading invitations...</p>
+  </ng-template>
