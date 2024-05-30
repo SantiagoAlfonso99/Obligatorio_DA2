@@ -41,7 +41,6 @@ export class InvitationComponent implements OnInit{
   getAllInvitations() {
     this.invitationService.getAllInvitations().subscribe((response) => {
       this.invitations = response;
-      console.log('largo: ', this.invitations.length)
     });
   }
 }

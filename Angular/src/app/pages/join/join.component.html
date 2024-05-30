@@ -25,10 +25,14 @@
                                 6 characters long</mat-error>
                         </mat-form-field>
 
+                        <mat-form-field appearance="outline">
+                            <mat-label>Invitation ID</mat-label>
+                            <input matInput type="number" placeholder="Enter invitation ID" formControlName="invitationId" required>
+                            <mat-error *ngIf="joinForm.get('invitationId')?.hasError('required')">Invitation ID is required</mat-error>
+                        </mat-form-field>
+
                         <!-- Checkbox for invitation acceptance -->
-                        <mat-checkbox formControlName="acceptInvitation" required>Accept Invitation</mat-checkbox>
-                        <mat-error *ngIf="joinForm.get('acceptInvitation')?.hasError('required')">You must accept the
-                            invitation to continue.</mat-error>
+                        <mat-checkbox formControlName="acceptInvitation">Accept Invitation</mat-checkbox>
 
                     </mat-card-content>
                     <mat-card-actions>

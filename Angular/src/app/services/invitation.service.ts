@@ -8,6 +8,7 @@ export interface IInvitationService {
   createInvitation( email: string, name: string, deadLine : Date, role: string ): Observable<any>;
   getAllInvitations(): Observable<InvitationReturnModel[]>;
   deleteInvitation(invitationId: number): Observable<any>;
+  acceptInvitation(invitationId : number,email : string, password : string, response: boolean): Observable<any>;
 }
 
 const BASE_URL = environment.apiPrefix;
@@ -33,5 +34,14 @@ export class InvitationService implements IInvitationService{
 
   deleteInvitation(invitationId: number): Observable<any>{
     return this.http.delete<any>(`${BASE_URL}/api/invitations/${invitationId}`);
+  }
+
+  acceptInvitation(invitationId : number, email : string, password : string, response: boolean): Observable<any>{
+    console.log('Respuesta ', response);
+    return this.http.put<any>(`${BASE_URL}/api/invitations/${invitationId}`, {
+      email,
+      password,
+      acceptInvitation : response    
+    });
   }
 }

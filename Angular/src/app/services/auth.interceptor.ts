@@ -19,10 +19,11 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.sessionStorageService.getToken();
 
     let newRequest = request;
-    if (request.url.includes('login')) {
+    if (request.url.includes('session')) {
       return next.handle(request);
     }
 
+    
     if (!!token) {
       const headers = request.headers.set('Authorization', token);
       newRequest = request.clone({ headers });
