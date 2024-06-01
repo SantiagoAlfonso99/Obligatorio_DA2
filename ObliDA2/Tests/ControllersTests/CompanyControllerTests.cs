@@ -5,6 +5,7 @@ using WebApi.Controllers;
 using Moq;
 using WebApi.DTOs.In;
 using WebApi.DTOs.Out;
+using BusinessLogic.Services;
 
 namespace Tests.ControllersTests;
 
@@ -15,6 +16,7 @@ public class CompanyControllerTests
     private Mock<ICompanyAdminLogic> adminService;
     private ConstructionCompanyController controller;
     private const string Message = "An administrator of companies can only create a single construction company.";
+    private const string UpdateMessage = "The administrator does not have an assigned construction company";
     private CompanyCreateModel newCompany;
     private ConstructionCompany returnedCompany;
     private CompanyAdmin admin;
@@ -67,13 +69,18 @@ public class CompanyControllerTests
     {
         ConstructionCompany returnedCompany = new ConstructionCompany() { Name = "Company1", Id = 1 };
         
-        adminService.Setup(service => service.GetById(It.IsAny<int>()))
-            .Returns(returnedCompany);
-        adminService.Setup(service => service.UpdateCompany(It.IsAny<ConstructionCompany>()))
+        var user = new CompanyAdmin()
+        {
+            Name = "Name", Email = "email@gmail.com", Password = "password",
+            Id = 1, Company = returnedCompany
+        };
+        userService.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(user);
+        returnedCompany.Name = "Company2";
+        adminService.Setup(service => service.UpdateCompany(It.IsAny<ConstructionCompany>(), It.IsAny<string>()))
             .Returns(returnedCompany);
 
         CompanyCreateModel newModel = new CompanyCreateModel() { Name = "Company2" };
-        var result = controller.Update(1, newModel);
+        var result = controller.Update(newModel);
         var okResult = result as OkObjectResult;
         CompanyConstructionDetailModel expectedCompany = new CompanyConstructionDetailModel(returnedCompany);
         CompanyConstructionDetailModel company = okResult.Value as CompanyConstructionDetailModel;
@@ -81,5 +88,18 @@ public class CompanyControllerTests
         userService.VerifyAll();
         adminService.VerifyAll();
         Assert.AreEqual(expectedCompany.Name, company.Name);
+    }
+
+    [TestMethod]
+    public void UpdateReturnsBadRequest()
+    {
+        userService.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(admin);
+        
+        var result = controller.Update(newCompany);
+        var badResult = result as BadRequestObjectResult;
+        var message = badResult.Value.GetType().GetProperty("Message");
+        
+        userService.VerifyAll();
+        Assert.AreEqual(UpdateMessage, message.GetValue(badResult.Value));
     }
 }

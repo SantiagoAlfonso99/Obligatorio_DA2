@@ -28,9 +28,11 @@ import { CreteCategoryComponent } from './pages/crete-category/crete-category.co
 import { CategoryService } from './services/category.service';
 import { InvitationComponent } from './pages/invitation/invitation.component';
 import { InvitationService } from './services/invitation.service';
+import { CreateBuildingComponent } from './pages/create-building/create-building.component';
+import { CompanyComponent } from './pages/company/company.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent, InvitationComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent, InvitationComponent, CreateBuildingComponent, CompanyComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

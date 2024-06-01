@@ -1,0 +1,21 @@
+<div>
+    <form (ngSubmit)="createCompany()">
+      <h2>Crear Compañía</h2>
+      <div class="form-group">
+        <label for="companyName">Nombre de la Compañía:</label>
+        <input type="text" class="form-control" id="companyName" [(ngModel)]="name" name="name" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+  </div>
+  
+  <div *ngIf="showUpdateForm">
+    <form (ngSubmit)="updateCompany()">
+      <h2>Actualizar Compañía</h2>
+      <div class="form-group">
+        <label for="newCompanyName">Nuevo Nombre de la Compañía:</label>
+        <input type="text" class="form-control" id="newCompanyName" [(ngModel)]="newName" name="newName" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+  </div>

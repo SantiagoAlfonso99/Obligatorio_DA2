@@ -52,13 +52,14 @@ public class CompanyAdminLogic : ICompanyAdminLogic
         return company;
     }
 
-    public ConstructionCompany UpdateCompany(ConstructionCompany company)
+    public ConstructionCompany UpdateCompany(ConstructionCompany company, string newName)
     {
-        ConstructionCompany returnedCompany = companyRepo.GetAll().FirstOrDefault(company => company.Name == company.Name);
+        ConstructionCompany returnedCompany = companyRepo.GetAll().FirstOrDefault(company => company.Name == newName);
         if (returnedCompany != null)
         {
             throw new DuplicateEntryException();
         }
+        company.Name = newName;
         companyRepo.Update(company);
         return company;
     }

@@ -3,6 +3,10 @@ export interface CategoryReturnModel{
     name:string;
 }
 
+export interface SessionReturnModel{
+    token:string;
+}
+
 export interface InvitationReturnModel{
     id:number;
     name : string;

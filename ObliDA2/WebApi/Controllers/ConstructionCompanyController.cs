@@ -34,11 +34,14 @@ public class ConstructionCompanyController : ControllerBase
         return Ok(new CompanyConstructionDetailModel(adminLogic.CreateCompany(newCompany.ToEntity(), companyAdmin)));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] CompanyCreateModel newCompany)
+    [HttpPut]
+    public IActionResult Update([FromBody] CompanyCreateModel newCompany)
     {
-        var company = adminLogic.GetById(id);
-        company.Name = newCompany.Name; 
-        return Ok(new CompanyConstructionDetailModel(adminLogic.UpdateCompany(company)));
+        CompanyAdmin? companyAdmin = (CompanyAdmin?) usersLogic.GetCurrentUser();
+        if (companyAdmin != null && companyAdmin.Company == null)
+        {
+            return BadRequest(new { Message = "The administrator does not have an assigned construction company" });
+        }
+        return Ok(new CompanyConstructionDetailModel(adminLogic.UpdateCompany(companyAdmin.Company, newCompany.Name)));
     }
 }

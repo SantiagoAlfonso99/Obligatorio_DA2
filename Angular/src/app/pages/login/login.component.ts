@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService.login(this.email, this.password).subscribe((response) => {
-      console.log('response', response);
-      this._sessionStorageService.setToken(response);
+      console.log('Login Token respuesta', response.token);
+      this._sessionStorageService.setToken(response.token);
       this.router.navigate(['/home']);
     });
   }
