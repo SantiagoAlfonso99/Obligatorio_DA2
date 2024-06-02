@@ -30,9 +30,10 @@ import { InvitationComponent } from './pages/invitation/invitation.component';
 import { InvitationService } from './services/invitation.service';
 import { CreateBuildingComponent } from './pages/create-building/create-building.component';
 import { CompanyComponent } from './pages/company/company.component';
+import { ApartmentComponent } from './pages/apartment/apartment.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent, InvitationComponent, CreateBuildingComponent, CompanyComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, JoinComponent, TeamComponent, ProjectComponent, SubjectComponent, CreateAdminComponent, CreteCategoryComponent, InvitationComponent, CreateBuildingComponent, CompanyComponent, ApartmentComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

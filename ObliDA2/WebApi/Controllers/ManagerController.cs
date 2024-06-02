@@ -38,6 +38,13 @@ public class ManagerController : ControllerBase
         var response = requests.Select(r => new ManagerDetailModel(r)).ToList();
         return Ok(response);
     }
+
+    [BaseAuthorization("CompanyAdmin")]
+    [HttpGet]
+    public IActionResult Index()
+    {
+        return Ok(_managerLogic.GetAll().Select(manager => new ManagerReturnModel(manager)).ToList());
+    }
     
     [BaseAuthorization("Manager")]
     [HttpPost("requests")]

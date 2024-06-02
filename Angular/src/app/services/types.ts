@@ -15,6 +15,23 @@ export interface InvitationReturnModel{
     status : string;
 }
 
+export interface BuildingReturnModel{
+    managerName : string;
+    id : number;
+    name : string;
+    address : string;
+    latitude : number;
+    longitude : number;
+    constructionCompany : string;
+    commonExpenses : number;
+}
+
+export interface ManagerReturnModel{
+    id : number;
+    email : number;
+    name : string;
+}
+
 export interface AdminReturnModel{
     id : number;
     name : string;

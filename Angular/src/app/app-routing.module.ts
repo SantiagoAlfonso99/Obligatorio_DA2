@@ -9,6 +9,7 @@ import { CreateAdminComponent } from './pages/create-admin/create-admin.componen
 import { CreteCategoryComponent } from './pages/crete-category/crete-category.component';
 import { InvitationComponent } from './pages/invitation/invitation.component';
 import { CompanyComponent } from './pages/company/company.component';
+import { CreateBuildingComponent } from './pages/create-building/create-building.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'admin/createCategory', component: CreteCategoryComponent },
   { path: 'admin/createInvitation', component: InvitationComponent },
   { path: 'admin/company', component: CompanyComponent },
+  { path: 'admin/building', component: CreateBuildingComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, 
 ];
 

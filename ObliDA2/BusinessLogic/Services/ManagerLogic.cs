@@ -106,4 +106,8 @@ public class ManagerLogic : IManagerLogic
         requestRepo.Update(request);
         return request;
     }
+
+    public List<Manager> GetAll(){
+        return managerRepo.GetAll().ToList();
+    }
 }
