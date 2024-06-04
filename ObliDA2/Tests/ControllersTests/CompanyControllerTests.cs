@@ -93,6 +93,7 @@ public class CompanyControllerTests
     [TestMethod]
     public void UpdateReturnsBadRequest()
     {
+        admin.Company = null;
         userService.Setup(logic => logic.GetCurrentUser(It.IsAny<Guid?>())).Returns(admin);
         
         var result = controller.Update(newCompany);
