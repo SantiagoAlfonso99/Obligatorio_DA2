@@ -42,6 +42,23 @@ public class ManagerControllerTests
     }
     
     [TestMethod]
+    public void GetAllManagersOk()
+    {
+        Manager manager1 = new Manager() { Name = "Name1", Password = "Password1", Email = "email1@gmail.com" };
+        Manager manager2 = new Manager() { Name = "Name2", Password = "Password1", Email = "email2@gmail.com" };
+        List<Manager> managers = new List<Manager>() { manager1, manager2 };
+        managerService.Setup(service => service.GetAll()).Returns(new List<Manager>(managers));
+
+        var result = controller.Index();
+        var okResult = result as OkObjectResult;
+        List<ManagerReturnModel> returnedManagers = okResult.Value as List<ManagerReturnModel>;
+        List<ManagerReturnModel> expectedModels = managers.Select(manager => new ManagerReturnModel(manager)).ToList();
+        
+        managerService.VerifyAll();
+        CollectionAssert.AreEqual(expectedModels, returnedManagers);
+    }
+    
+    [TestMethod]
     public void GetRequestOk()
     {
         Request newRequest = new Request()

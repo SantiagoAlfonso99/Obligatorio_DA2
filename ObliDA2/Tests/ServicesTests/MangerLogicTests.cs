@@ -37,6 +37,18 @@ public class ManagerLogicTests
     }
 
     [TestMethod]
+    public void GetAllOk()
+    {
+        Manager manager1 = new Manager() { Name = "Name1", Password = "Password1", Email = "email1@gmail.com" };
+        Manager manager2 = new Manager() { Name = "Name2", Password = "Password1", Email = "email2@gmail.com" };
+        List<Manager> managers = new List<Manager>() { manager1, manager2 };
+        mockManagerRepo.Setup(service => service.GetAll()).Returns(managers);
+
+        List<Manager> returnedManagers = managerLogic.GetAll();
+        CollectionAssert.AreEqual(managers, returnedManagers);
+    }
+    
+    [TestMethod]
     public void ViewRequests_WithNullCategory_ShouldReturnAllRequests()
     {
    

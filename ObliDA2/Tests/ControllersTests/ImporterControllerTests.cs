@@ -11,18 +11,32 @@ using IImporter;
 [TestClass]
 public class ImporterControllerTests
 {
+    private Mock<IImporterLogic> importerService;
+    private Mock<IUsersLogic> usersService;
+    private ImportersController controller;
+    private ConstructionCompany company;
+    private CompanyAdmin admin;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        importerService = new Mock<IImporterLogic>();
+        usersService = new Mock<IUsersLogic>();
+        controller = new ImportersController(importerService.Object, usersService.Object);
+        company = new ConstructionCompany() { Id = 1, Name = "company1" };
+        admin = new CompanyAdmin()
+        {
+            Name = "name", Email = "Email@gmail.com", Password = "Password",
+            Company = company 
+        };
+    }
+    
+    
     [TestMethod]
     public void IndexOk()
     {
-        Mock<IImporterLogic> importerService = new Mock<IImporterLogic>();
-        Mock<IUsersLogic> usersService = new Mock<IUsersLogic>();
         ImporterStub stub = new ImporterStub();
         ImportersController controller = new ImportersController(importerService.Object, usersService.Object);
-        CompanyAdmin admin = new CompanyAdmin()
-        {
-            Name = "name", Email = "Email@gmail.com", Password = "Password",
-            Company = new ConstructionCompany() { Id = 1, Name = "company1" }
-        };
         usersService.Setup(service => service.GetCurrentUser(It.IsAny<Guid?>())).Returns(admin);
         importerService.Setup(service => service.GetAllImporters()).Returns(new List<ImporterInterface>(){stub});
 
@@ -37,15 +51,6 @@ public class ImporterControllerTests
     [TestMethod]
     public void ImportBuildingsOk()
     {
-        Mock<IImporterLogic> importerService = new Mock<IImporterLogic>();
-        Mock<IUsersLogic> usersService = new Mock<IUsersLogic>();
-        ImportersController controller = new ImportersController(importerService.Object, usersService.Object);
-        ConstructionCompany company = new ConstructionCompany() { Id = 1, Name = "company1" };
-        CompanyAdmin admin = new CompanyAdmin()
-        {
-            Name = "name", Email = "Email@gmail.com", Password = "Password",
-            Company = company 
-        };
         Building building1 = new Building() {Name = "BuildingName", Address = "Address", CommonExpenses = 5, 
             Latitude = 40.000, Longitude = 70.000, Company = company, BuildingManager = new Manager(){Id = 1}};
         Building building2 = new Building() {Name = "BuildingName2", Address = "Address2", CommonExpenses = 5, 
