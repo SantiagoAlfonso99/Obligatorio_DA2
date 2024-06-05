@@ -5,6 +5,7 @@ using BusinessLogic.Services;
 using Domain.Models;
 using DataAccess.Repositories;
 using BusinessLogic.IRepository;
+using IImporter;
 
 namespace ServiceFactory;
 
@@ -23,6 +24,7 @@ public class ServicesFactory
         serviceCollection.AddTransient<IBuildingLogic, BuildingLogic>();
         serviceCollection.AddTransient<IInvitationLogic, InvitationLogic>();
         serviceCollection.AddTransient<IReportLogic, ReportLogic>();
+        serviceCollection.AddTransient<IImporterLogic, ImporterLogic>();
         
         serviceCollection.AddScoped<IUsersLogic, UsersLogic>();
     }
